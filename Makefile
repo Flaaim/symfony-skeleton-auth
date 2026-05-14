@@ -33,3 +33,16 @@ build-api:
 
 try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build
+
+
+push: push-gateway push-frontend push-api
+
+push-gateway:
+	docker push ${REGISTRY}/symfony-gateway:${IMAGE_TAG}
+
+push-frontend:
+	docker push ${REGISTRY}/symfony-frontend:${IMAGE_TAG}
+
+push-api:
+	docker push ${REGISTRY}/symfony-api:${IMAGE_TAG}
+	docker push ${REGISTRY}/symfony-api-php-fpm:${IMAGE_TAG}
