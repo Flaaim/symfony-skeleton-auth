@@ -28,8 +28,9 @@ build-frontend:
 	docker --log-level=debug build --pull --file=frontend/docker/production/nginx/Dockerfile --tag=${REGISTRY}/symfony-frontend:${IMAGE_TAG} frontend
 
 build-api:
-	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/symfony-api-php-fpm:${IMAGE_TAG} api
 	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/symfony-api:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/symfony-api-php-fpm:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/symfony-api-php-cli:${IMAGE_TAG} api
 
 try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build
@@ -46,6 +47,7 @@ push-frontend:
 push-api:
 	docker push ${REGISTRY}/symfony-api:${IMAGE_TAG}
 	docker push ${REGISTRY}/symfony-api-php-fpm:${IMAGE_TAG}
+	docker push ${REGISTRY}/symfony-api-php-cli:${IMAGE_TAG}
 
 
 ifneq ("$(wildcard .env.production)","")

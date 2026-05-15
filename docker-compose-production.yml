@@ -25,3 +25,6 @@ services:
   api-php-fpm:
     image: ${REGISTRY}/symfony-api-php-fpm:${IMAGE_TAG}
     restart: always
+
+  api-php-cli:
+    image: ${REGISTRY}/symfony-api-php-cli:${IMAGE_TAG}
