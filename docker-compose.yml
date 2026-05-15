@@ -30,6 +30,8 @@ services:
     build:
       context: api/docker
       dockerfile: development/php-fpm/Dockerfile
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./api:/app
 
