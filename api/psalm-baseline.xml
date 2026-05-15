@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.16.1@f1f5de594dc76faf8784e02d3dc4716c91c6f6ac">
+  <file src="src/Http/Action/HomeAction.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[HomeAction]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedParam>
+      <code><![CDATA[$request]]></code>
+    </PossiblyUnusedParam>
+    <UnusedClass>
+      <code><![CDATA[HomeAction]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Infrastructure/Http/EventSubscriber/ApiExceptionSubscriber.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public static function getSubscribedEvents(): array]]></code>
+    </MissingOverrideAttribute>
+    <UnusedClass>
+      <code><![CDATA[ApiExceptionSubscriber]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Kernel.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Kernel]]></code>
+    </ClassMustBeFinal>
+  </file>
+</files>
