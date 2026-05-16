@@ -2,6 +2,7 @@ init: docker-down-clear docker-pull docker-build docker-up
 up: docker-up
 down: docker-down
 restart: down up
+check: lint analyze
 lint: api-lint
 analyze: api-analyze
 
