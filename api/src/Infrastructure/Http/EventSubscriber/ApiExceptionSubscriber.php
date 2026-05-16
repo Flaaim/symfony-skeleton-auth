@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Infrastructure\Http\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,7 +21,7 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
             'error' => [
                 'code' => $statusCode,
                 'message' => $exception->getMessage(),
-            ]
+            ],
         ], $statusCode);
 
         $event->setResponse($response);
