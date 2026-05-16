@@ -9,6 +9,10 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ValidateTest extends TestCase
 {
     /**
