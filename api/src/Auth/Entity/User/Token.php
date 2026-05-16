@@ -12,15 +12,16 @@ final class Token
     public function __construct(
         private string $value,
         private DateTimeImmutable $expiresAt
-
     ) {
         Assert::uuid($value);
         $this->value = mb_strtolower($value);
     }
+
     public function getValue(): string
     {
         return $this->value;
     }
+
     public function getExpiresAt(): DateTimeImmutable
     {
         return $this->expiresAt;

@@ -14,6 +14,7 @@ final readonly class Tokenizer
     public function __construct(
         private DateInterval $interval
     ) {}
+
     public function generate(DateTimeImmutable $date): Token
     {
         return new Token(
