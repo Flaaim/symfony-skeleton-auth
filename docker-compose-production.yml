@@ -1,6 +1,6 @@
 services:
   gateway:
-    image: ${REGISTRY}/symfony-gateway:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-gateway:${IMAGE_TAG}
     restart: always
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
@@ -13,18 +13,18 @@ services:
       - api
 
   frontend:
-    image: ${REGISTRY}/symfony-frontend:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-frontend:${IMAGE_TAG}
     restart: always
 
   api:
-    image: ${REGISTRY}/symfony-api:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-api:${IMAGE_TAG}
     restart: always
     depends_on:
       - api-php-fpm
 
   api-php-fpm:
-    image: ${REGISTRY}/symfony-api-php-fpm:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-api-php-fpm:${IMAGE_TAG}
     restart: always
 
   api-php-cli:
-    image: ${REGISTRY}/symfony-api-php-cli:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
