@@ -37,6 +37,8 @@ return new Config()
         'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
 
         'fopen_flags' => ['b_mode' => true],
+
+        'php_unit_strict' => false,
     ])
     // 💡 by default, Fixer looks for `*.php` files excluding `./vendor/` - here, you can groom this config
     ->setFinder(
