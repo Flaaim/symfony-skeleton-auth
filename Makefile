@@ -32,7 +32,7 @@ api-lint:
 	docker compose run --rm api-php-cli composer lint
 	docker compose run --rm api-php-cli composer php-cs-fixer check
 
-app-cs-fix:
+api-cs-fix:
 	docker compose run --rm api-php-cli composer php-cs-fixer fix
 
 api-analyze:
