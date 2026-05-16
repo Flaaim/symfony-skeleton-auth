@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomeAction
 {
     #[Route('/', name: 'home', methods: ['GET'])]
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $_request): ResponseInterface
     {
         $response = new Response(200);
         $response->getBody()->write('{}');
