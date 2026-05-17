@@ -12,6 +12,8 @@ interface UserRepository
 
     public function findByJoinConfirmToken(string $token): ?User;
 
+    public function findByPasswordResetToken(string $token): ?User;
+
     public function hasByNetwork(NetworkIdentity $identity): bool;
 
     /**

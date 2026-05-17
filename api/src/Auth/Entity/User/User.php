@@ -100,6 +100,16 @@ final class User
         return $this->passwordResetToken;
     }
 
+    public function resetPassword(string $token, DateTimeImmutable $date, string $hash): void
+    {
+        if (null === $this->passwordResetToken) {
+            throw new DomainException('Resetting is not requested.');
+        }
+        $this->passwordResetToken->validate($token, $date);
+        $this->passwordResetToken = null;
+        $this->passwordHash = $hash;
+    }
+
     public function isWait(): bool
     {
         return $this->status->isWait();
