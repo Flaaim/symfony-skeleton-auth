@@ -161,16 +161,6 @@ final class User
         $this->joinConfirmToken = null;
     }
 
-    public function getNewEmail(): ?Email
-    {
-        return $this->newEmail;
-    }
-
-    public function getNewEmailToken(): ?Token
-    {
-        return $this->newEmailToken;
-    }
-
     public function confirmEmailChanging(string $token, DateTimeImmutable $date): void
     {
         if (null === $this->newEmail || null === $this->newEmailToken) {
@@ -188,6 +178,23 @@ final class User
             throw new DomainException('Role is already assigned.');
         }
         $this->role = $role;
+    }
+
+    public function remove(): void
+    {
+        if (!$this->isWait()) {
+            throw new DomainException('Unable to remove active user.');
+        }
+    }
+
+    public function getNewEmail(): ?Email
+    {
+        return $this->newEmail;
+    }
+
+    public function getNewEmailToken(): ?Token
+    {
+        return $this->newEmailToken;
     }
 
     /**
