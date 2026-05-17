@@ -9,15 +9,15 @@ use Webmozart\Assert\Assert;
 final class Email
 {
     public function __construct(
-        public string $value {
-            get {
-                return $this->value;
-            }
-        }
-    )
-    {
+        public string $value
+    ) {
         Assert::notEmpty($value);
         Assert::email($value);
         $this->value = mb_strtolower($value);
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
     }
 }
