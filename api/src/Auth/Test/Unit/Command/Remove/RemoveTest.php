@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Test\Unit\Command\Remove;
 
+use App\Auth\Event\UserRemoved;
 use App\Auth\Test\Builder\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -20,8 +21,13 @@ final class RemoveTest extends TestCase
     {
         $user = new UserBuilder()
             ->build();
-
         $user->remove();
+
+        $this->assertNotEmpty($events = $user->releaseEvents());
+        $event = end($events);
+
+        self::assertInstanceOf(UserRemoved::class, $event);
+        self::assertEquals($user->getId(), $event->id);
     }
 
     public function testActive(): void

@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
+use App\Auth\Event\UserRemoved;
 use App\Auth\Service\PasswordHasher;
+use App\SharedDomain\AggregateRoot;
+use App\SharedDomain\Event\EventTrait;
 use ArrayObject;
 use DateTimeImmutable;
 use DomainException;
 
-final class User
+final class User implements AggregateRoot
 {
+    use EventTrait;
     private ?string $passwordHash = null;
     private ?Token $joinConfirmToken = null;
     private ArrayObject $networks;
@@ -185,6 +189,7 @@ final class User
         if (!$this->isWait()) {
             throw new DomainException('Unable to remove active user.');
         }
+        $this->recordEvent(new UserRemoved($this->id));
     }
 
     public function getNewEmail(): ?Email
