@@ -36,6 +36,8 @@ services:
       PHP_IDE_CONFIG: serverName=API
     volumes:
       - ./api:/app
+    depends_on:
+      - api-postgres
 
   api-php-cli:
     build:
@@ -43,3 +45,17 @@ services:
       dockerfile: development/php-cli/Dockerfile
     volumes:
       - ./api:/app
+
+  api-postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app
+    volumes:
+      - api-postgres:/var/lib/postgresql
+    ports:
+      - "54321:5432"
+
+volumes:
+  api-postgres:
