@@ -9,18 +9,27 @@ use DomainException;
 
 final class User
 {
-    private ?Token $joinConfirmToken;
-    private Status $status;
+    private ?string $passwordHash = null;
+    private ?Token $joinConfirmToken = null;
 
-    public function __construct(
+    private function __construct(
         private Id $id,
         private DateTimeImmutable $date,
         private Email $email,
-        private string $passwordHash,
+        private Status $status,
+    ) {}
+
+    public static function requestJoinByEmail(
+        Id $id,
+        DateTimeImmutable $date,
+        Email $email,
+        string $passwordHash,
         Token $token
-    ) {
-        $this->joinConfirmToken = $token;
-        $this->status = Status::wait();
+    ): self {
+        $user = new self($id, $date, $email, Status::wait());
+        $user->passwordHash = $passwordHash;
+        $user->joinConfirmToken = $token;
+        return $user;
     }
 
     public function getId(): Id

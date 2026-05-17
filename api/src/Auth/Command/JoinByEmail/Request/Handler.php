@@ -34,12 +34,18 @@ final class Handler
         }
         $date = new DateTimeImmutable();
 
-        $user = new User(
+        $user = User::requestJoinByEmail(
             Id::generate(),
             $date,
             $email,
             $this->hasher->hash($command->password),
             $token = $this->tokenizer->generate($date)
         );
+
+        $this->users->add($user);
+
+        $this->flusher->flush();
+
+        $this->sender->send($email, $token);
     }
 }
