@@ -7,6 +7,9 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/dbal": "^4.4",
+        "doctrine/doctrine-bundle": "^3.2",
+        "doctrine/orm": "^3.6",
         "nyholm/psr7": "^1.8.2",
         "ramsey/uuid": "^4.9.2",
         "symfony/console": "8.0.*",
@@ -88,7 +91,8 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.0.*"
+            "require": "8.0.*",
+            "docker": false
         }
     }
 }
