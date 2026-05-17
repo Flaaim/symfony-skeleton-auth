@@ -6,6 +6,7 @@ namespace App\Auth\Test\Unit\Command\JoinByEmail;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\User;
 use DateTimeImmutable;
@@ -36,5 +37,7 @@ final class RequestTest extends TestCase
 
         self::assertTrue($user->isWait());
         self::assertFalse($user->isActive());
+
+        self::assertEquals(Role::USER, $user->getRole()->getName());
     }
 }

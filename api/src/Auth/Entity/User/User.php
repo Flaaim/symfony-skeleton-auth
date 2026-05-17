@@ -17,6 +17,7 @@ final class User
     private ?Token $passwordResetToken = null;
     private ?Email $newEmail = null;
     private ?Token $newEmailToken = null;
+    private Role $role;
 
     private function __construct(
         private Id $id,
@@ -25,6 +26,7 @@ final class User
         private Status $status,
     ) {
         $this->networks = new ArrayObject();
+        $this->role = Role::user();
     }
 
     public static function requestJoinByEmail(
@@ -180,6 +182,14 @@ final class User
         $this->newEmailToken = null;
     }
 
+    public function changeRole(Role $role): void
+    {
+        if ($this->role->isEqualTo($role)) {
+            throw new DomainException('Role is already assigned.');
+        }
+        $this->role = $role;
+    }
+
     /**
      * @return NetworkIdentity[]
      */
@@ -187,5 +197,10 @@ final class User
     {
         /** @var NetworkIdentity[] */
         return $this->networks->getArrayCopy();
+    }
+
+    public function getRole(): Role
+    {
+        return $this->role;
     }
 }
