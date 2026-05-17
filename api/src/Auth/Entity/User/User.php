@@ -15,6 +15,8 @@ final class User
     private ?Token $joinConfirmToken = null;
     private ArrayObject $networks;
     private ?Token $passwordResetToken = null;
+    private ?Email $newEmail = null;
+    private ?Token $newEmailToken = null;
 
     private function __construct(
         private Id $id,
@@ -122,6 +124,21 @@ final class User
         $this->passwordHash = $hasher->hash($new);
     }
 
+    public function requestEmailChanging(Token $token, DateTimeImmutable $date, Email $email): void
+    {
+        if (!$this->isActive()) {
+            throw new DomainException('User is not active.');
+        }
+        if ($this->email->isEqualTo($email)) {
+            throw new DomainException('Email is already same.');
+        }
+        if (null !== $this->newEmailToken && !$this->newEmailToken->isExpiredTo($date)) {
+            throw new DomainException('Changing is already requested.');
+        }
+        $this->newEmail = $email;
+        $this->newEmailToken = $token;
+    }
+
     public function isWait(): bool
     {
         return $this->status->isWait();
@@ -140,6 +157,16 @@ final class User
         $this->joinConfirmToken->validate($token, $date);
         $this->status = Status::active();
         $this->joinConfirmToken = null;
+    }
+
+    public function getNewEmail(): ?Email
+    {
+        return $this->newEmail;
+    }
+
+    public function getNewEmailToken(): ?Token
+    {
+        return $this->newEmailToken;
     }
 
     /**
