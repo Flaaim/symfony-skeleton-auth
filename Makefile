@@ -38,6 +38,9 @@ api-lint:
 	docker compose run --rm api-php-cli composer lint
 	docker compose run --rm api-php-cli composer php-cs-fixer check
 
+api-validate-schema:
+	docker compose run --rm api-php-cli bin/console doctrine:schema:validate
+
 api-cs-fix:
 	docker compose run --rm api-php-cli composer php-cs-fixer fix
 
