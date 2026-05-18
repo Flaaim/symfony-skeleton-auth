@@ -6,7 +6,7 @@ namespace App\Auth\Entity\User;
 
 use Webmozart\Assert\Assert;
 
-final class NetworkIdentity
+final class Network
 {
     public function __construct(
         private string $network,

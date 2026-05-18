@@ -65,7 +65,7 @@ final class User implements AggregateRoot
         Id $id,
         DateTimeImmutable $date,
         Email $email,
-        NetworkIdentity $identity
+        Network $identity
     ) {
         $user = new self($id, $date, $email, Status::active());
         $user->networks->append($identity);
@@ -100,9 +100,9 @@ final class User implements AggregateRoot
         return $this->joinConfirmToken;
     }
 
-    public function attachNetwork(NetworkIdentity $identity): void
+    public function attachNetwork(Network $identity): void
     {
-        /** @var NetworkIdentity $existing */
+        /** @var Network $existing */
         foreach ($this->networks as $existing) {
             if ($existing->isEqualTo($identity)) {
                 throw new DomainException('Network is already attached.');
@@ -228,11 +228,11 @@ final class User implements AggregateRoot
     }
 
     /**
-     * @return NetworkIdentity[]
+     * @return Network[]
      */
     public function getNetworks(): array
     {
-        /** @var NetworkIdentity[] */
+        /** @var Network[] */
         return $this->networks->getArrayCopy();
     }
 
