@@ -17,7 +17,7 @@ final class LogOnUserRemovedHandler
 
     public function __invoke(UserRemoved $event): void
     {
-        $userId = $event->id->getValue();
+        $userId = $event->id;
 
         $this->logger->info('Removed user ' . $userId);
     }

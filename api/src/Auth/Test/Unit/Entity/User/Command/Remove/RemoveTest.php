@@ -27,7 +27,7 @@ final class RemoveTest extends TestCase
         $event = end($events);
 
         self::assertInstanceOf(UserRemoved::class, $event);
-        self::assertEquals($user->getId(), $event->id);
+        self::assertEquals($user->getId()->getValue(), $event->id);
     }
 
     public function testActive(): void
