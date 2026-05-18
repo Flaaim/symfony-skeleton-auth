@@ -1,10 +1,7 @@
 <?php
 
-declare(strict_types=1);
-use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
-
 return [
-    FrameworkBundle::class => ['all' => true],
-    DoctrineBundle::class => ['all' => true],
+    Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
+    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
+    Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
 ];

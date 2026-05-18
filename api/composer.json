@@ -9,6 +9,8 @@
         "ext-iconv": "*",
         "doctrine/dbal": "^4.4",
         "doctrine/doctrine-bundle": "^3.2",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "doctrine/migrations": "^3.9",
         "doctrine/orm": "^3.6",
         "nyholm/psr7": "^1.8.2",
         "ramsey/uuid": "^4.9.2",
