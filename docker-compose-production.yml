@@ -26,6 +26,9 @@ services:
     image: ${REGISTRY}/rtn-tests-api-php-fpm:${IMAGE_TAG}
     restart: always
     environment:
+      APP_DEBUG: 0
+      SITE_URL: ${API_SITE_URL}
+      SITE_NAME: ${API_SITE_NAME}
       DB_HOST: api-postgres
       DB_USER: app
       DB_PASSWORD: ${API_DB_PASSWORD}
@@ -40,6 +43,9 @@ services:
   api-php-cli:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
     environment:
+      APP_DEBUG: 0
+      SITE_URL: ${API_SITE_URL}
+      SITE_NAME: ${API_SITE_NAME}
       DB_HOST: api-postgres
       DB_USER: app
       DB_PASSWORD: ${API_DB_PASSWORD}
