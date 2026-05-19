@@ -9,6 +9,7 @@ use App\Auth\Event\UserCreated;
 use App\Auth\Event\PasswordReset;
 use App\Auth\Event\PasswordResetRequested;
 use App\Auth\Event\UserRemoved;
+use App\Auth\Event\UserRoleChanged;
 use App\Auth\Service\PasswordHasher;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
@@ -220,6 +221,8 @@ final class User implements AggregateRoot
             throw new DomainException('Role is already assigned.');
         }
         $this->role = $role;
+
+        $this->recordEvent(new UserRoleChanged($this->id->getValue(), $this->getRole()->getName()));
     }
 
     public function remove(): void

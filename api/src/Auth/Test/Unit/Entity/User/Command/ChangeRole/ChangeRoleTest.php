@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Test\Unit\Entity\User\Command\ChangeRole;
 
 use App\Auth\Entity\User\Role;
+use App\Auth\Event\UserRoleChanged;
 use App\Auth\Test\Builder\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -22,5 +23,11 @@ final class ChangeRoleTest extends TestCase
         $user->changeRole($role = new Role(Role::ADMIN));
 
         self::assertEquals($role, $user->getRole());
+
+        self::assertNotEmpty($events = $user->releaseEvents());
+
+        $event = end($events);
+        self::assertInstanceOf(UserRoleChanged::class, $event);
+        self::assertEquals(Role::ADMIN, $event->role);
     }
 }
