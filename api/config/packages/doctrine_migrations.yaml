@@ -5,3 +5,11 @@ doctrine_migrations:
         #'DoctrineMigrations': '%kernel.project_dir%/migrations'
         'App\Data\Migration': '%kernel.project_dir%/src/Data/Migration'
     enable_profiler: false
+
+    all_or_nothing: true
+
+    check_database_platform: false
+
+    storage:
+        table_storage:
+            table_name: 'doctrine_migration_versions'
