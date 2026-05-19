@@ -26,10 +26,13 @@ api-clear:
 docker-build:
 	docker compose build
 
-api-init: api-permissions api-composer-install
+api-init: api-permissions api-composer-install api-migrations
 
 api-composer-install:
 	docker compose run --rm api-php-cli composer install
+
+api-migrations:
+	docker compose run --rm api-php-cli bin/console doctrine:migrations:migrate -- --no-interaction
 
 api-permissions:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var
