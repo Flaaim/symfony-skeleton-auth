@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Frontend;
 
-final class FrontendUrlGenerator
+final class FrontendUrlGenerator implements FrontendUrlGeneratorInterface
 {
-    private string $baseUrl;
-
-    public function __construct(string $baseUrl)
-    {
-        $this->baseUrl = $baseUrl;
-    }
+    public function __construct(
+        private readonly string $baseUrl
+    ) {}
 
     public function generate(string $uri, array $params = []): string
     {

@@ -57,3 +57,10 @@ services:
         tags: [ 'doctrine.fixture.orm' ]
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Frontend\:
+        resource: '../src/Frontend'
+        tags: ['twig.extension']
+
+    App\Frontend\FrontendUrlGenerator:
+        arguments:
+            $baseUrl: '%env(resolve:FRONTEND_URL)%'
