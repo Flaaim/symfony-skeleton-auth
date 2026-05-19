@@ -26,6 +26,7 @@
     },
     "require-dev": {
         "dg/bypass-finals": "^1.9",
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
         "friendsofphp/php-cs-fixer": "^3.95.2",
         "lctrs/psalm-psr-container-plugin": "^1.11",
         "overtrue/phplint": "^9.7.1",
