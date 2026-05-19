@@ -51,6 +51,7 @@ services:
       MAILER_FROM_EMAIL: admin@site.ru
       MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:8000
+      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
     volumes:
       - ./api:/app
     depends_on:
@@ -78,6 +79,7 @@ services:
       MAILER_FROM_EMAIL: admin@site.ru
       MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:8000
+      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
 
   api-postgres:
     image: postgres:18-alpine
