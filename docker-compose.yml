@@ -69,7 +69,7 @@ services:
       MAILER_ENCRYPTION: tcp
       MAILER_FROM_EMAIL: mail@app.test
 
-api-postgres:
+  api-postgres:
     image: postgres:18-alpine
     environment:
       POSTGRES_USER: app
