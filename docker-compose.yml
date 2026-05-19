@@ -48,7 +48,8 @@ services:
       MAILER_USER: app
       MAILER_PASSWORD: secret
       MAILER_ENCRYPTION: tcp
-      MAILER_FROM_EMAIL: mail@app.test
+      MAILER_FROM_EMAIL: admin@site.ru
+      MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:8000
     volumes:
       - ./api:/app
@@ -74,7 +75,8 @@ services:
       MAILER_USER: app
       MAILER_PASSWORD: secret
       MAILER_ENCRYPTION: tcp
-      MAILER_FROM_EMAIL: mail@app.test
+      MAILER_FROM_EMAIL: admin@site.ru
+      MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:8000
 
   api-postgres:
