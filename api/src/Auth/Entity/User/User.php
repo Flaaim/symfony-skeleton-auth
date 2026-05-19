@@ -12,7 +12,6 @@ use App\Auth\Event\UserRemoved;
 use App\Auth\Service\PasswordHasher;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
-use ArrayObject;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -40,7 +39,7 @@ final class User implements AggregateRoot
 
     private function __construct(
         #[ORM\Id]
-        #[ORM\Column(type:'auth_user_id', length: 255)]
+        #[ORM\Column(type:'auth_user_id')]
         private Id $id,
         #[ORM\Column(type:'datetime_immutable')]
         private DateTimeImmutable $date,
