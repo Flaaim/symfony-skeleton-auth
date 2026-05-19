@@ -25,9 +25,21 @@ services:
   api-php-fpm:
     image: ${REGISTRY}/rtn-tests-api-php-fpm:${IMAGE_TAG}
     restart: always
+    environment:
+      MAILER_HOST: ${API_MAILER_HOST}
+      MAILER_PORT: ${API_MAILER_PORT}
+      MAILER_USER: ${API_MAILER_USER}
+      MAILER_PASSWORD: ${API_MAILER_PASSWORD}
+      MAILER_ENCRYPTION: tls
 
   api-php-cli:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
+    environment:
+      MAILER_HOST: ${API_MAILER_HOST}
+      MAILER_PORT: ${API_MAILER_PORT}
+      MAILER_USER: ${API_MAILER_USER}
+      MAILER_PASSWORD: ${API_MAILER_PASSWORD}
+      MAILER_ENCRYPTION: tls
 
   api-postgres:
     image: postgres:12.2-alpine

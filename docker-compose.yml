@@ -36,6 +36,11 @@ services:
       - "host.docker.internal:host-gateway"
     environment:
       PHP_IDE_CONFIG: serverName=API
+      MAILER_HOST: mailer
+      MAILER_PORT: 1025
+      MAILER_USER: app
+      MAILER_PASSWORD: secret
+      MAILER_ENCRYPTION: tcp
     volumes:
       - ./api:/app
     depends_on:
@@ -47,8 +52,15 @@ services:
       dockerfile: development/php-cli/Dockerfile
     volumes:
       - ./api:/app
+    environment:
+      MAILER_HOST: mailer
+      MAILER_PORT: 1025
+      MAILER_USER: app
+      MAILER_PASSWORD: secret
+      MAILER_ENCRYPTION: tcp
 
-  api-postgres:
+
+api-postgres:
     image: postgres:18-alpine
     environment:
       POSTGRES_USER: app
