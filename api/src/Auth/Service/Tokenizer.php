@@ -9,11 +9,12 @@ use DateInterval;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 
-final readonly class Tokenizer
+final class Tokenizer
 {
-    public function __construct(
-        private DateInterval $interval
-    ) {}
+    private DateInterval $interval;
+    public function __construct(string $interval) {
+        $this->interval = new DateInterval($interval);
+    }
 
     public function generate(DateTimeImmutable $date): Token
     {
