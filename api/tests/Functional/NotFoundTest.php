@@ -18,7 +18,7 @@ final class NotFoundTest extends WebTestCase
 
         self::assertJson($body = $client->getResponse()->getContent());
 
-        $data = json_decode($body, true);
+        $data = Json::decode($body);
 
         self::assertArraySubset(['error' => [
             'code' => 404,
