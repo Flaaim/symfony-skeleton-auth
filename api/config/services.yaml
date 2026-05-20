@@ -64,3 +64,7 @@ services:
     App\Frontend\FrontendUrlGenerator:
         arguments:
             $baseUrl: '%env(resolve:FRONTEND_URL)%'
+
+    App\Auth\Service\Tokenizer:
+        arguments:
+            $interval: '!php/object:DateInterval ["PT1H"]'
