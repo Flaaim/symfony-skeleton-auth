@@ -7,6 +7,7 @@ namespace App\Infrastructure\Http\Test;
 use DomainException;
 use Infrastructure\Http\EventSubscriber\DomainExceptionSubscriber;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,9 +30,10 @@ final class DomainExceptionSubscriberTest extends TestCase
     public function testProcessDomainException(): void
     {
         $exception = new DomainException('DomainException');
-        $subscriber = new DomainExceptionSubscriber();
+        $logger = $this->createMock(LoggerInterface::class);
+        $subscriber = new DomainExceptionSubscriber($logger);
 
-        $request = new Request();
+        $request = Request::create('http://localhost/api/test');
         $kernel = $this->createMock(HttpKernelInterface::class);
         $event = new ExceptionEvent(
             $kernel,
@@ -40,7 +42,13 @@ final class DomainExceptionSubscriberTest extends TestCase
             $exception
         );
 
-
+        $logger->expects(self::once())->method('warning')->with(
+            self::equalTo('DomainException'),
+            self::equalTo([
+                'exception' => $exception,
+                'url' => 'http://localhost/api/test',
+            ])
+        );
         $subscriber->onKernelException($event);
         $response = $event->getResponse();
 
@@ -55,7 +63,8 @@ final class DomainExceptionSubscriberTest extends TestCase
     public function testProcessException(): void
     {
         $exception = new RuntimeException('RuntimeException');
-        $subscriber = new DomainExceptionSubscriber();
+        $logger = $this->createMock(LoggerInterface::class);
+        $subscriber = new DomainExceptionSubscriber($logger);
 
         $request = new Request();
         $kernel = $this->createMock(HttpKernelInterface::class);
@@ -65,7 +74,7 @@ final class DomainExceptionSubscriberTest extends TestCase
             HttpKernelInterface::MAIN_REQUEST,
             $exception
         );
-
+        $logger->expects(self::never())->method('warning');
         $subscriber->onKernelException($event);
         $response = $event->getResponse();
 
