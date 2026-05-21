@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Infrastructure\Doctrine;
 
 use App\SharedDomain\AggregateRoot;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsDoctrineListener(event: Events::onFlush)]
+#[AsDoctrineListener(event: Events::postFlush)]
 final class DomainEventDispatcher
 {
     private array $events = [];
