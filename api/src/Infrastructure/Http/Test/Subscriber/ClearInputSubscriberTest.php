@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http\Test;
+namespace App\Infrastructure\Http\Test\Subscriber;
 
 use App\Infrastructure\Http\EventSubscriber\ClearEmptyInputSubscriber;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use org\bovigo\vfs\vfsStream;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class ClearInputSubscriberTest extends TestCase
