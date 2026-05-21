@@ -29,7 +29,6 @@ final class RequestActionTest extends WebTestCase
         /** @var EntityManagerInterface $em */
         $em = $container->get(EntityManagerInterface::class);
         $this->users = new UserRepository($em);
-
     }
     public function testUserAlreadyExists(): void
     {
@@ -39,7 +38,7 @@ final class RequestActionTest extends WebTestCase
         ]);
 
 
-        self::assertEquals(400, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
 
         self::assertJson($body = $this->client->getResponse()->getContent());
 
