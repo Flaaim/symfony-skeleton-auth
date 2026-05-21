@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Auth\Service;
 
 use App\Auth\Entity\User\Email;
-use App\Frontend\FrontendUrlGenerator;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;

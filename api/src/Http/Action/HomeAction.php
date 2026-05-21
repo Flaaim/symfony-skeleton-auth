@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Http\Action;
+namespace App\Http\Action;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

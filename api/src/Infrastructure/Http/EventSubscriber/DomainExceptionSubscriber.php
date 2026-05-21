@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Http\EventSubscriber;
+namespace App\Infrastructure\Http\EventSubscriber;
 
 use DomainException;
 use Psr\Log\LoggerInterface;

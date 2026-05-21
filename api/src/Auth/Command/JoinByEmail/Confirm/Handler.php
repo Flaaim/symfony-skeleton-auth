@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Auth\Command\JoinByEmail\Confirm;
 
 use App\Auth\Entity\User\UserRepository;
+use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
-use Infrastructure\Doctrine\Flusher;
 
 final class Handler
 {

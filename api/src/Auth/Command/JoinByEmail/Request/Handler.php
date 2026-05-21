@@ -8,12 +8,12 @@ use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\User;
 use App\Auth\Entity\User\UserRepository;
-use App\Auth\Service\JoinConfirmationSender;
 use App\Auth\Service\PasswordHasher;
 use App\Auth\Service\Tokenizer;
+use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
-use Infrastructure\Doctrine\Flusher;
+
 
 final class Handler
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Doctrine;
+namespace App\Infrastructure\Doctrine;
 
 use App\SharedDomain\AggregateRoot;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;

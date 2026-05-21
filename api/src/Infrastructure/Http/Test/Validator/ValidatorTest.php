@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Http\Test\Validator;
+namespace App\Infrastructure\Http\Test\Validator;
 
 use Exception;
-use Infrastructure\Http\Validator\ValidationException;
-use Infrastructure\Http\Validator\Validator;
+use App\Infrastructure\Http\Validator\ValidationException;
+use App\Infrastructure\Http\Validator\Validator;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Validator\ConstraintViolation;

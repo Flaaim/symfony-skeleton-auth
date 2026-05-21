@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Auth\Join;
 
-use App\Auth\Entity\User\UserRepository;
-use App\Auth\Event\JoinByEmailRequested;
-use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

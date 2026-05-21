@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Http\Action\V1\Auth\Join;
+namespace App\Http\Action\V1\Auth\Join;
 
 use App\Auth\Command\JoinByEmail\Request\Command;
 use App\Auth\Command\JoinByEmail\Request\Handler;
