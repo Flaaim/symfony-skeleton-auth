@@ -35,6 +35,7 @@
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "friendsofphp/php-cs-fixer": "^3.95.2",
         "lctrs/psalm-psr-container-plugin": "^1.11",
+        "mikey179/vfsstream": "^1.6",
         "overtrue/phplint": "^9.7.1",
         "phpunit/phpunit": "^13.1.10",
         "psalm/plugin-phpunit": "^0.19.7",
