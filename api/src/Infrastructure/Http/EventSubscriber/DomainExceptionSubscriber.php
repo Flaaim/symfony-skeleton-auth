@@ -31,7 +31,7 @@ final class DomainExceptionSubscriber implements EventSubscriberInterface
 
         $response = new JsonResponse([
             'message' => $exception->getMessage(),
-        ], JsonResponse::HTTP_BAD_REQUEST);
+        ], JsonResponse::HTTP_CONFLICT);
 
         $event->setResponse($response);
     }
