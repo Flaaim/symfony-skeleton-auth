@@ -6,9 +6,9 @@ namespace App\Auth\Command\ResetPassword\Reset;
 
 use App\Auth\Entity\User\UserRepository;
 use App\Auth\Service\PasswordHasher;
+use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
-use Infrastructure\Doctrine\Flusher;
 
 final class Handler
 {
