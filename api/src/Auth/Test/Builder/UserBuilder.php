@@ -6,7 +6,7 @@ namespace App\Auth\Test\Builder;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
-use App\Auth\Entity\User\Network;
+use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\User;
 use DateTimeImmutable;
@@ -19,6 +19,7 @@ final class UserBuilder
     private string $hash;
     private DateTimeImmutable $date;
     private Token $joinConfirmToken;
+    private ?Role $role = null;
     private bool $active = false;
     private ?string $network = null;
     private ?string $identity = null;
@@ -38,7 +39,12 @@ final class UserBuilder
         $clone->id = $id;
         return $clone;
     }
-
+    public function withRole(Role $role): self
+    {
+        $clone = clone $this;
+        $clone->role = $role;
+        return $clone;
+    }
     public function withJoinConfirmToken(Token $token): self
     {
         $clone = clone $this;
@@ -85,6 +91,9 @@ final class UserBuilder
             );
         }
 
+        if($this->role !== null){
+            $user->changeRole($this->role);
+        }
 
         if($this->network !== null && $this->identity !== null) {
             $user->attachNetwork($this->network, $this->identity);
