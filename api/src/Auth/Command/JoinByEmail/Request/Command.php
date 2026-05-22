@@ -13,7 +13,7 @@ final class Command
         #[Assert\Email]
         public string $email,
         #[Assert\NotBlank]
-        #[Assert\Length(min: 6)]
+        #[Assert\Length(min: 6, max: 32)]
         public string $password,
     ) {}
 }
