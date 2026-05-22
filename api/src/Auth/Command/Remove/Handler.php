@@ -6,7 +6,7 @@ namespace App\Auth\Command\Remove;
 
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\UserRepository;
-use Infrastructure\Doctrine\Flusher;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class Handler
 {
