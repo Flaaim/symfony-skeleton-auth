@@ -18,7 +18,7 @@ final class ConfirmAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/auth/confirm', name: 'auth_confirm', methods: ['POST'])]
+    #[Route('/v1/auth/confirm', name: 'auth.confirm', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();

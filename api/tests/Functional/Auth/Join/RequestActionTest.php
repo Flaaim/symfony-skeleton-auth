@@ -15,7 +15,7 @@ use Tests\Functional\Json;
 
 final class RequestActionTest extends WebTestCase
 {
-    private  KernelBrowser $client;
+    private KernelBrowser $client;
     private UserRepository $users;
     public function setUp(): void
     {
