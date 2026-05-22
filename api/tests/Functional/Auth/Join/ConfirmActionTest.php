@@ -52,14 +52,16 @@ final class ConfirmActionTest extends WebTestCase
     {
         $this->client->jsonRequest('POST', '/v1/auth/confirm');
 
-        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
         self::assertJson($body = $this->client->getResponse()->getContent());
 
         $data = Json::decode($body);
-        self::assertEquals(['message' => 'Incorrect token.'], $data);
+        self::assertEquals(['errors' => [
+            'token' => 'This value should not be blank.'
+        ]], $data);
     }
 
-    public function testNotExsisting(): void
+    public function testNotExisting(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/confirm', [
            'token' => Uuid::uuid4()->toString()
@@ -70,5 +72,22 @@ final class ConfirmActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['message' => 'Incorrect token.'], $data);
+    }
+
+    public function testInvalidToken(): void
+    {
+        $this->client->jsonRequest('POST', '/v1/auth/confirm', [
+            'token' => 'invalid_token'
+        ]);
+
+        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertEquals(['errors' => [
+            'token' => 'This is not a valid UUID.'
+        ]], $data);
     }
 }

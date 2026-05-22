@@ -10,6 +10,7 @@ final class Command
 {
     public function __construct(
         #[Assert\NotBlank]
+        #[Assert\Uuid]
         public string $token
     ) {}
 }

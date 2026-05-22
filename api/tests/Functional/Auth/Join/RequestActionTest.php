@@ -72,7 +72,23 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals($email, $message->email);
         self::assertNotEmpty($message->token);
 
+    }
 
+    public function testInvalidCredentials(): void
+    {
+        $this->client->jsonRequest('POST', '/v1/auth/join', [
+            'email' => 'some_text',
+            'password' => '',
+        ]);
 
+        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+        $data = Json::decode($body);
+
+        self::assertEquals(['errors' => [
+            'email' => 'This value is not a valid email address.',
+            'password' => 'This value is too short. It should have 6 characters or more.',
+        ]], $data);
     }
 }
