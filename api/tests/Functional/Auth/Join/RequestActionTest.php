@@ -32,7 +32,7 @@ final class RequestActionTest extends WebTestCase
     }
     public function testUserAlreadyExists(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/join', [
+        $this->client->jsonRequest('POST', '/v1/auth/join/request', [
             'email' => 'exists@email.com',
             'password' => 'password',
         ]);
@@ -54,7 +54,7 @@ final class RequestActionTest extends WebTestCase
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
 
-        $this->client->jsonRequest('POST', '/v1/auth/join', [
+        $this->client->jsonRequest('POST', '/v1/auth/join/request', [
             'email' => $email,
             'password' => $password,
         ]);
@@ -75,7 +75,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testInvalidCredentials(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/join', [
+        $this->client->jsonRequest('POST', '/v1/auth/join/request', [
             'email' => 'some_text',
             'password' => '',
         ]);

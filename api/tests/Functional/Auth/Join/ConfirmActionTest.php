@@ -36,7 +36,7 @@ final class ConfirmActionTest extends WebTestCase
     {
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
-        $this->client->jsonRequest('POST', '/v1/auth/confirm', [
+        $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
             'token' => ConfirmFixture::VALID
         ]);
 
@@ -54,7 +54,7 @@ final class ConfirmActionTest extends WebTestCase
 
     public function testExpired(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/confirm', [
+        $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
             'token' => ConfirmFixture::EXPIRED
         ]);
 
@@ -68,7 +68,7 @@ final class ConfirmActionTest extends WebTestCase
 
     public function testEmpty(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/confirm');
+        $this->client->jsonRequest('POST', '/v1/auth/join/confirm');
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
         self::assertJson($body = $this->client->getResponse()->getContent());
@@ -81,7 +81,7 @@ final class ConfirmActionTest extends WebTestCase
 
     public function testNotExisting(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/confirm', [
+        $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
            'token' => Uuid::uuid4()->toString()
         ]);
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -94,7 +94,7 @@ final class ConfirmActionTest extends WebTestCase
 
     public function testInvalidToken(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/confirm', [
+        $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
             'token' => 'invalid_token'
         ]);
 

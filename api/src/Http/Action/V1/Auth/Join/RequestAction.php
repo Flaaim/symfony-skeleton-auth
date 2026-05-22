@@ -17,7 +17,7 @@ final class RequestAction
         private readonly Handler $handler,
         private readonly Validator $validator,
     ) {}
-    #[Route('/v1/auth/join', name: 'auth.join', methods: ['POST'])]
+    #[Route('/v1/auth/join/request', name: 'auth.join.request', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();
