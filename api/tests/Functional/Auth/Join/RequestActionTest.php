@@ -71,7 +71,6 @@ final class RequestActionTest extends WebTestCase
         self::assertInstanceOf(JoinByEmailRequested::class, $message);
         self::assertEquals($email, $message->email);
         self::assertNotEmpty($message->token);
-
     }
 
     public function testInvalidCredentials(): void

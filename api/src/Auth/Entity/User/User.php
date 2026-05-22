@@ -8,6 +8,7 @@ use App\Auth\Event\JoinByEmailRequested;
 use App\Auth\Event\UserCreated;
 use App\Auth\Event\PasswordReset;
 use App\Auth\Event\PasswordResetRequested;
+use App\Auth\Event\UserJoinConfirmed;
 use App\Auth\Event\UserRemoved;
 use App\Auth\Event\UserRoleChanged;
 use App\Auth\Service\PasswordHasher;
@@ -202,6 +203,8 @@ final class User implements AggregateRoot
         $this->joinConfirmToken->validate($token, $date);
         $this->status = Status::active();
         $this->joinConfirmToken = null;
+
+        $this->recordEvent(new UserJoinConfirmed($this->email->getValue()));
     }
 
     public function confirmEmailChanging(string $token, DateTimeImmutable $date): void

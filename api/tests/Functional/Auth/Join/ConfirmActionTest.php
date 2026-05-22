@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Auth\Join;
 
+use App\Auth\Entity\User\Email;
+use App\Auth\Entity\User\UserRepository;
+use App\Auth\Event\UserJoinConfirmed;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -13,6 +17,7 @@ use Tests\Functional\Json;
 final class ConfirmActionTest extends WebTestCase
 {
     private  KernelBrowser $client;
+    private UserRepository $users;
     public function setUp(): void
     {
         parent::setUp();
@@ -22,16 +27,29 @@ final class ConfirmActionTest extends WebTestCase
         $fixturesLoader = new FixturesLoader($container);
         $fixturesLoader->loadFixtures([ConfirmFixture::class]);
 
+        /** @var EntityManagerInterface $em */
+        $em = $container->get(EntityManagerInterface::class);
+        $this->users = new UserRepository($em);
     }
 
     public function testSuccess(): void
     {
-
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
         $this->client->jsonRequest('POST', '/v1/auth/confirm', [
             'token' => ConfirmFixture::VALID
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
+
+        $user = $this->users->getByEmail(new Email(ConfirmFixture::VALID_EMAIL));
+        self::assertTrue($user->isActive());
+
+        self::assertCount(1, $transport->getSent());
+        $message = $transport->getSent()[0]->getMessage();
+
+        self::assertInstanceOf(UserJoinConfirmed::class, $message);
+        self::assertEquals($user->getEmail()->getValue(), $message->email);
     }
 
     public function testExpired(): void
