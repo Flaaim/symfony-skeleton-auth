@@ -59,7 +59,7 @@ final class RequestActionTest extends WebTestCase
             'password' => $password,
         ]);
 
-        self::assertEquals(204, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(201, $this->client->getResponse()->getStatusCode());
         $user = $this->users->getByEmail(new Email($email));
 
         self::assertEquals($user->getEmail()->getValue(), $email);

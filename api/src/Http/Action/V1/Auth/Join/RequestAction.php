@@ -30,6 +30,6 @@ final class RequestAction
 
         $this->handler->handle($command);
 
-        return new Response(null, Response::HTTP_NO_CONTENT );
+        return new Response(null, Response::HTTP_CREATED );
     }
 }
