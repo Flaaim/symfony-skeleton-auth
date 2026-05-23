@@ -9,9 +9,9 @@ use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\Network;
 use App\Auth\Entity\User\User;
 use App\Auth\Entity\User\UserRepository;
+use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
-use Infrastructure\Doctrine\Flusher;
 
 final class Handler
 {
@@ -22,22 +22,25 @@ final class Handler
 
     public function handle(Command $command): void
     {
-        $identity = new Network($command->network, $command->identity);
         $email = new Email($command->email);
-
-        if ($this->users->hasByNetwork($identity)) {
+        if ($this->users->hasByNetwork($command->network, $command->identity)) {
             throw new DomainException('User with this network already exists.');
         }
 
         if ($this->users->hasByEmail($email)) {
-            throw new DomainException('User with this email already exists.');
+            $user = $this->users->getByEmail(new Email($command->email));
+
+            $user->attachNetwork($command->network, $command->identity);
+            $this->flusher->flush();
+            return;
         }
 
         $user = User::joinByNetwork(
             Id::generate(),
             new DateTimeImmutable(),
             $email,
-            $identity
+            $command->network,
+            $command->identity
         );
 
         $this->users->add($user);

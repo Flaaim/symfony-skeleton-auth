@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Entity\User;
 
 use App\Auth\Event\JoinByEmailRequested;
+use App\Auth\Event\NetworkAttached;
 use App\Auth\Event\UserCreated;
 use App\Auth\Event\PasswordReset;
 use App\Auth\Event\PasswordResetRequested;
@@ -30,6 +31,7 @@ final class User implements AggregateRoot
     private ?string $passwordHash = null;
     #[ORM\Embedded(class: Token::class, columnPrefix: 'join_confirm_token_')]
     private ?Token $joinConfirmToken = null;
+    #[ORM\OneToMany(targetEntity: Network::class, mappedBy: 'user', cascade: ["ALL"], orphanRemoval: true)]
     private Collection $networks;
     #[ORM\Embedded(class: Token::class, columnPrefix: 'password_reset_token_')]
     private ?Token $passwordResetToken = null;
@@ -125,6 +127,8 @@ final class User implements AggregateRoot
             }
         }
         $this->networks->add($newNetwork);
+
+        $this->recordEvent(new NetworkAttached($network, $identity));
     }
 
     public function requestPasswordReset(Token $token, DateTimeImmutable $date): void

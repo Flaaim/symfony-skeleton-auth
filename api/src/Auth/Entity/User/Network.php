@@ -8,7 +8,9 @@ use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Embeddable]
+#[ORM\Entity]
+#[ORM\Table(name: 'user_networks')]
+#[ORM\UniqueConstraint(name: 'network_identity_idx', columns: ['network', 'identity'])]
 final class Network
 {
     #[ORM\Id]
