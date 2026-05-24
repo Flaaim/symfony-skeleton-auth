@@ -7,7 +7,7 @@ namespace App\Auth\Command\ChangePassword;
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\UserRepository;
 use App\Auth\Service\PasswordHasher;
-use Infrastructure\Doctrine\Flusher;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class Handler
 {
