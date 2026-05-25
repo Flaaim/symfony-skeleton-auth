@@ -56,8 +56,9 @@ final class DomainExceptionSubscriberTest extends TestCase
         self::assertNotNull($response);
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertEquals(JsonResponse::HTTP_BAD_REQUEST, $response->getStatusCode());
+        self::assertJson($body = (string)$response->getContent());
 
-        $data = json_decode($response->getContent(), true);
+        $data = json_decode($body, true);
 
         self::assertEquals(['message' => $exception->getMessage()], $data);
     }

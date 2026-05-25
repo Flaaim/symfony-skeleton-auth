@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Test\Subscriber;
 
 use App\Infrastructure\Http\EventSubscriber\ValidationExceptionSubscriber;
+use App\Infrastructure\Http\Validator\ValidationException;
 use DomainException;
-use Infrastructure\Http\Validator\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,7 +79,8 @@ final class ValidationExceptionSubscriberTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertEquals(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
 
-        self::assertJson($body = $response->getContent());
+        self::assertJson($body = (string)$response->getContent());
+
         $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals(['errors' => [
