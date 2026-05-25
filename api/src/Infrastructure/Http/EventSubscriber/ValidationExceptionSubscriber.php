@@ -39,7 +39,6 @@ final class ValidationExceptionSubscriber implements EventSubscriberInterface
     private static function errorsArray(ConstraintViolationListInterface $violations): array
     {
         $errors = [];
-        /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
             $errors[$violation->getPropertyPath()] = $violation->getMessage();
         }
