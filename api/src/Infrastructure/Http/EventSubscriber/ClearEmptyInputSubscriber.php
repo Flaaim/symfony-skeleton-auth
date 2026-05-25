@@ -37,6 +37,7 @@ final class ClearEmptyInputSubscriber implements EventSubscriberInterface
         }
     }
 
+    /** @psalm-suppress MissingReturnType MissingParamType */
     private static function filterStrings($items)
     {
         if (!\is_array($items)) {
