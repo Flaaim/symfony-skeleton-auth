@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
+use App\Auth\Event\ChangeEmailRequested;
 use App\Auth\Event\JoinByEmailRequested;
 use App\Auth\Event\NetworkAttached;
 use App\Auth\Event\PasswordReset;
@@ -188,6 +189,11 @@ final class User implements AggregateRoot
         }
         $this->newEmail = $email;
         $this->newEmailToken = $token;
+
+        $this->recordEvent(new ChangeEmailRequested(
+            $this->newEmail->getValue(),
+            $this->newEmailToken->getValue())
+        );
     }
 
     public function isWait(): bool

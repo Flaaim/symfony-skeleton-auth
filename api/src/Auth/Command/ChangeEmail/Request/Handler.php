@@ -35,13 +35,11 @@ final class Handler
         $date = new DateTimeImmutable();
 
         $user->requestEmailChanging(
-            $token = $this->tokenizer->generate($date),
+            $this->tokenizer->generate($date),
             $date,
             $email,
         );
 
         $this->flusher->flush();
-
-        $this->sender->send($email, $token->getValue());
     }
 }

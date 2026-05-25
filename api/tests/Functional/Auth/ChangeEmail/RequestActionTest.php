@@ -6,10 +6,12 @@ namespace Tests\Functional\Auth\ChangeEmail;
 
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\UserRepository;
+use App\Auth\Event\ChangeEmailRequested;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
@@ -119,6 +121,10 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
         $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
             'userId' => RequestFixture::VALID['userId'],
             'email' => 'some@email.ru',
@@ -128,5 +134,13 @@ final class RequestActionTest extends WebTestCase
 
         $user = $this->users->get(new Id(RequestFixture::VALID['userId']));
         self::assertNotNull($user->getNewEmailToken());
+
+        self::assertCount(1, $transport->getSent());
+
+        $message = $transport->getSent()[0]->getMessage();
+        self::assertInstanceOf(ChangeEmailRequested::class, $message);
+
+        self::assertEquals($user->getNewEmail()->getValue(), $message->newEmail);
+        self::assertEquals($user->getNewEmailToken()->getValue(), $message->newEmailToken);
     }
 }
