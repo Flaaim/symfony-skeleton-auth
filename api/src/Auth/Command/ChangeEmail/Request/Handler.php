@@ -9,9 +9,9 @@ use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\UserRepository;
 use App\Auth\Service\NewEmailConfirmTokenSender;
 use App\Auth\Service\Tokenizer;
+use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
-use Infrastructure\Doctrine\Flusher;
 
 final class Handler
 {
@@ -28,7 +28,7 @@ final class Handler
 
         $email = new Email($command->email);
 
-        if ($this->users->hasByEmail($email)) {
+        if ($this->users->hasByEmail($email) && !$user->getEmail()->isEqualTo($email)) {
             throw new DomainException('Email is already in use.');
         }
 
@@ -42,6 +42,6 @@ final class Handler
 
         $this->flusher->flush();
 
-        $this->sender->send($email, $token);
+        $this->sender->send($email, $token->getValue());
     }
 }
