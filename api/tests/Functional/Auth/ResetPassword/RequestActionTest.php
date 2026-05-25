@@ -43,7 +43,7 @@ final class RequestActionTest extends WebTestCase
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
 
-        $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset/request', [
             'email' => RequestFixture::ACTIVE_EMAIL,
         ]);
 
@@ -64,7 +64,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testUserNotActive(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset/request', [
             'email' => RequestFixture::NOT_ACTIVE_EMAIL,
         ]);
 
@@ -80,11 +80,11 @@ final class RequestActionTest extends WebTestCase
 
     public function testResetAlready(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset/request', [
             'email' => RequestFixture::ACTIVE_EMAIL,
         ]);
 
-        $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset/request', [
             'email' => RequestFixture::ACTIVE_EMAIL,
         ]);
 
@@ -98,7 +98,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testInvalid(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset/request', [
             'email' => 'invalid-email',
         ]);
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
@@ -112,7 +112,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmpty(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', []);
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset/request');
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 
         self::assertJson($body = $this->client->getResponse()->getContent());

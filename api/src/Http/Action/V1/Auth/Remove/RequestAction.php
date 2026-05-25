@@ -18,7 +18,7 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/auth/user/remove', name: 'auth.user.remove', methods: ['POST'])]
+    #[Route('/v1/auth/user/pending/remove', name: 'auth.user.pending.remove', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();

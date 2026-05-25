@@ -18,7 +18,7 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/auth/user/change-role', name: 'auth.user.change-role', methods: ['POST'])]
+    #[Route('/v1/auth/user/role/change', name: 'auth.user.role.change', methods: ['PUT'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();

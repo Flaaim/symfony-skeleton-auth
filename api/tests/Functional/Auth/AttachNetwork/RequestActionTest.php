@@ -39,7 +39,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testAlreadyAttached(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/join/network/attach', [
+        $this->client->jsonRequest('POST', '/v1/auth/network/attach', [
             'email' => RequestFixture::JOIN_BY_GOOGLE['email'],
             'network' => RequestFixture::JOIN_BY_GOOGLE['network'],
             'identity' => RequestFixture::JOIN_BY_GOOGLE['identity'],
@@ -55,7 +55,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testUserNotFound(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/join/network/attach', [
+        $this->client->jsonRequest('POST', '/v1/auth/network/attach', [
             'email' => 'not-exists@test.ru',
             'network' => RequestFixture::JOIN_BY_GOOGLE['email'],
             'identity' => RequestFixture::JOIN_BY_GOOGLE['network'],
@@ -75,7 +75,7 @@ final class RequestActionTest extends WebTestCase
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
         $this->client->catchExceptions(false);
-        $this->client->jsonRequest('POST', '/v1/auth/join/network/attach', [
+        $this->client->jsonRequest('POST', '/v1/auth/network/attach', [
             'email' => RequestFixture::JOIN_BY_YANDEX['email'],
             'network' => RequestFixture::JOIN_BY_YANDEX['network'],
             'identity' => RequestFixture::JOIN_BY_YANDEX['identity'],
@@ -100,7 +100,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmpty(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/join/network/attach');
+        $this->client->jsonRequest('POST', '/v1/auth/network/attach');
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 
@@ -117,7 +117,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testInvalidEmail(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/join/network/request', [
+        $this->client->jsonRequest('POST', '/v1/auth/network/attach', [
             'email' => 'invalid',
             'network' => 'facebook',
             'identity' => '0002',

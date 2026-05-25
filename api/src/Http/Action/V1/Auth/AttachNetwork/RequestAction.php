@@ -19,7 +19,7 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/auth/join/network/attach', name: 'auth.join.network.attach', methods: ['POST'])]
+    #[Route('/v1/auth/network/attach', name: 'auth.network.attach', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();

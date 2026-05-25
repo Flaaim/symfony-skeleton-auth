@@ -39,7 +39,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
             'userId' => Uuid::uuid4()->toString(),
             'email' => 'email@email.com',
         ]);
@@ -54,7 +54,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmailExists(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
             'userId' => RequestFixture::VALID['userId'],
             'email' => RequestFixture::EXISTS['email'],
         ]);
@@ -69,7 +69,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotActive(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request',[
             'userId' => RequestFixture::NOT_ACTIVE['userId'],
             'email' => 'some@email.ru',
         ]);
@@ -84,7 +84,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmailTheSame(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request',[
             'userId' => RequestFixture::VALID['userId'],
             'email' => RequestFixture::VALID['email'],
         ]);
@@ -97,12 +97,12 @@ final class RequestActionTest extends WebTestCase
 
     public function testRequestAlready(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
             'userId' => RequestFixture::VALID['userId'],
             'email' => 'some@email.ru',
         ]);
 
-        $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
             'userId' => RequestFixture::VALID['userId'],
             'email' => 'another@email.ru',
         ]);
@@ -125,7 +125,7 @@ final class RequestActionTest extends WebTestCase
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
 
-        $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
             'userId' => RequestFixture::VALID['userId'],
             'email' => 'some@email.ru',
         ]);

@@ -37,7 +37,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-password', [
+        $this->client->jsonRequest('PUT', '/v1/auth/user/password/change', [
             'userId' => 'd2b1416a-cf3b-4212-a9cb-7f2264eeed71',
             'currentPassword' => 'hashedPassword',
             'newPassword' => 'newPassword',
@@ -53,7 +53,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testOldPasswordNotFound(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-password', [
+        $this->client->jsonRequest('PUT', '/v1/auth/user/password/change', [
             'userId' => RequestFixture::JOIN_BY_GOOGLE['userId'],
             'currentPassword' => 'hashedPassword',
             'newPassword' => 'newPassword',
@@ -69,7 +69,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testIncorrectCurrentPassword(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-password', [
+        $this->client->jsonRequest('PUT', '/v1/auth/user/password/change', [
             'userId' => RequestFixture::USER_ID,
             'currentPassword' => 'Incorrect',
             'newPassword' => 'newPassword',
@@ -85,7 +85,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-password', [
+        $this->client->jsonRequest('PUT', '/v1/auth/user/password/change',[
             'userId' => RequestFixture::USER_ID,
             'currentPassword' => RequestFixture::PASSWORD,
             'newPassword' => 'newPassword',

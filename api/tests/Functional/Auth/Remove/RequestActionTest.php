@@ -38,7 +38,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testRemoveActive(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/remove', [
+        $this->client->jsonRequest('POST', '/v1/auth/user/pending/remove', [
             'userId' => RequestFixture::ID_ACTIVE_USER,
         ]);
 
@@ -57,7 +57,7 @@ final class RequestActionTest extends WebTestCase
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
 
-        $this->client->jsonRequest('POST', '/v1/auth/user/remove', [
+        $this->client->jsonRequest('POST', '/v1/auth/user/pending/remove', [
             'userId' => RequestFixture::ID_WAITING_USER,
         ]);
 

@@ -39,7 +39,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testAlready(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-role', [
+        $this->client->jsonRequest('PUT', '/v1/auth/user/role/change', [
             'userId' => RequestFixture::USER_ID,
             'role' => Role::USER,
         ]);
@@ -59,7 +59,7 @@ final class RequestActionTest extends WebTestCase
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
 
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-role', [
+        $this->client->jsonRequest('PUT', '/v1/auth/user/role/change', [
             'userId' => RequestFixture::USER_ID,
             'role' => Role::TEACHER,
         ]);
@@ -82,7 +82,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-role', [
+        $this->client->jsonRequest('PUT', '/v1/auth/user/role/change', [
             'userId' => 'c2cfad53-23dd-4817-8c2d-944b4c0101f1',
             'role' => Role::TEACHER,
         ]);
@@ -97,7 +97,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testInvalid(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-role', [
+        $this->client->jsonRequest('PUT', '/v1/auth/user/role/change', [
             'userId' => 'invalid-user-id',
             'role' => 'invalid-role',
         ]);
@@ -116,7 +116,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmpty(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/user/change-role');
+        $this->client->jsonRequest('PUT', '/v1/auth/user/role/change');
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 

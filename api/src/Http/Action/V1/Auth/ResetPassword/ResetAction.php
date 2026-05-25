@@ -18,7 +18,7 @@ final class ResetAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/auth/password/reset', name: 'auth.password.reset', methods: ['POST'])]
+    #[Route('/v1/auth/password/reset', name: 'auth.password.reset', methods: ['PUT'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();

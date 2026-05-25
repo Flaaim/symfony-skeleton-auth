@@ -19,7 +19,7 @@ final class ConfirmAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/auth/email/change/confirm', name: 'auth.email.change/confirm', methods: ['POST'])]
+    #[Route('/v1/auth/email/change/confirm', name: 'auth.email.change.confirm', methods: ['PUT'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();

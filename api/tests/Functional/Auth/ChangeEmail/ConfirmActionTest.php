@@ -32,7 +32,7 @@ final class ConfirmActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $this->client->jsonRequest('POST', '/v1/auth/email/change/confirm', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/confirm', [
             'token' => '3ba74adc-f54a-476f-af8e-02adf73c5c7a'
         ]);
 
@@ -47,7 +47,7 @@ final class ConfirmActionTest extends WebTestCase
     public function testSuccess(): void
     {
         $this->client->catchExceptions(false);
-        $this->client->jsonRequest('POST', '/v1/auth/email/change/confirm', [
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/confirm', [
            'token' => ConfirmFixture::VALID_TOKEN
         ]);
 
