@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Auth\ChangePassword;
 
+use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
@@ -12,6 +15,8 @@ use Tests\Functional\Json;
 final class RequestActionTest extends WebTestCase
 {
     private readonly KernelBrowser $client;
+
+    private readonly UserRepository $users;
     protected function setUp(): void
     {
         $this->client = RequestActionTest::createClient();
@@ -19,13 +24,17 @@ final class RequestActionTest extends WebTestCase
 
         $fixtures = new FixturesLoader($container);
         $fixtures->loadFixtures([RequestFixture::class]);
+
+        /** @var EntityManagerInterface $em */
+        $em = $container->get(EntityManagerInterface::class);
+        $this->users = new UserRepository($em);
     }
 
     public function testNotFound(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/user/change-password', [
             'userId' => 'd2b1416a-cf3b-4212-a9cb-7f2264eeed71',
-            'currentPassword' => 'hash',
+            'currentPassword' => 'hashedPassword',
             'newPassword' => 'newPassword',
         ]);
 
@@ -40,8 +49,8 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest('POST', '/v1/auth/user/change-password', [
             'userId' => RequestFixture::JOIN_BY_GOOGLE['userId'],
-            'currentPassword' => RequestFixture::JOIN_BY_GOOGLE['currentPassword'],
-            'newPassword' => RequestFixture::JOIN_BY_GOOGLE['newPassword'],
+            'currentPassword' => 'hashedPassword',
+            'newPassword' => 'newPassword',
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -76,5 +85,11 @@ final class RequestActionTest extends WebTestCase
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
+
+        $user = $this->users->get(new Id(RequestFixture::USER_ID));
+
+        self::assertTrue(password_verify('newPassword', $user->getPasswordHash()));
+
     }
+
 }
