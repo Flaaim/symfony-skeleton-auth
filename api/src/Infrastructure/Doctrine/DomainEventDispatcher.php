@@ -27,7 +27,7 @@ final class DomainEventDispatcher
 
         $entities = [];
 
-        foreach ($uow->getIdentityMap() as $class => $classEntities) {
+        foreach ($uow->getIdentityMap() as $classEntities) {
             foreach ($classEntities as $entity) {
                 $entities[] = $entity;
             }
