@@ -13,6 +13,15 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <directory name="src/Data/Migration" />
+                <directory name="src/Auth/Fixture" />
+                <directory name="src/Http/Action" />
+            </errorLevel>
+        </UnusedClass>
+    </issueHandlers>
 
     <plugins>
         <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin" />
