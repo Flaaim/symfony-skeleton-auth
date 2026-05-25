@@ -20,12 +20,13 @@ doctrine:
             Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         auto_mapping: true
         mappings:
-            App:
+            Auth:
                 type: attribute
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Auth/Entity'
                 prefix: 'App\Auth\Entity'
                 alias: App
+                alias: Auth
 
 when@test:
     doctrine:
