@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace App\OAuth\Entity;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 
 final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
-
+    private EntityRepository $repo;
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ){
+        $this->repo = $this->em->getRepository(RefreshToken::class);
+    }
     public function getNewRefreshToken(): ?RefreshTokenEntityInterface
     {
         return new RefreshToken();
@@ -17,17 +25,31 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
-        // TODO: Implement persistNewRefreshToken() method.
+        if ($this->exists($refreshTokenEntity->getIdentifier())) {
+            throw UniqueTokenIdentifierConstraintViolationException::create();
+        }
+        $this->em->persist($refreshTokenEntity);
+        $this->em->flush();
     }
 
     public function revokeRefreshToken(string $tokenId): void
     {
-        // TODO: Implement revokeRefreshToken() method.
+        if ($token = $this->repo->find($tokenId)) {
+            $this->em->remove($token);
+            $this->em->flush();
+        }
     }
 
     public function isRefreshTokenRevoked(string $tokenId): bool
     {
-        // TODO: Implement isRefreshTokenRevoked() method.
-        return false;
+        return !$this->exists($tokenId);
+    }
+    private function exists(string $id): bool
+    {
+        return $this->repo->createQueryBuilder('t')
+                ->select('COUNT(t.identifier)')
+                ->andWhere('t.identifier = :identifier')
+                ->setParameter(':identifier', $id)
+                ->getQuery()->getSingleScalarResult() > 0;
     }
 }
