@@ -13,18 +13,20 @@ use Twig\Environment;
 
 final class NewEmailConfirmTokenSender
 {
-    const string TEMPLATE = 'auth/email/confirm.html.twig';
+    public const string TEMPLATE = 'auth/email/confirm.html.twig';
+
     public function __construct(
         private MailerInterface $mailer,
         private Environment $twig
     ) {}
+
     public function send(Email $email, string $token): void
     {
         $message = new SymfonyEmail()
             ->subject('New Email Confirmation')
             ->to($email->getValue())
             ->html($this->twig->render(self::TEMPLATE, ['token' => $token]));
-        try{
+        try {
             $this->mailer->send($message);
         } catch (TransportExceptionInterface $e) {
             throw new TransportException($e->getMessage());

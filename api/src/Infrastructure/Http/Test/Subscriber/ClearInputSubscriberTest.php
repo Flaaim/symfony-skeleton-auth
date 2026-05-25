@@ -13,6 +13,10 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ClearInputSubscriberTest extends TestCase
 {
     public function testGetSubscribedEvents(): void
@@ -20,9 +24,8 @@ final class ClearInputSubscriberTest extends TestCase
         $subscriber = ClearEmptyInputSubscriber::getSubscribedEvents();
         self::assertArrayHasKey(KernelEvents::REQUEST, $subscriber);
         self::assertEquals(['onKernelRequest', 20], $subscriber['kernel.request']);
-
-
     }
+
     public function testParsedBody(): void
     {
         $subscriber = new ClearEmptyInputSubscriber();
@@ -36,7 +39,7 @@ final class ClearInputSubscriberTest extends TestCase
                 'null' => null,
                 'space' => ' ',
                 'name' => ' Name',
-            ]
+            ],
         ]);
 
         $kernel = $this->createMock(HttpKernelInterface::class);
@@ -56,7 +59,7 @@ final class ClearInputSubscriberTest extends TestCase
                 'null' => null,
                 'space' => '',
                 'name' => 'Name',
-            ]
+            ],
         ], $request->request->all());
     }
 
@@ -79,7 +82,6 @@ final class ClearInputSubscriberTest extends TestCase
             'arrayFiles' => [$realFile, $noFile],
             'emptyArray' => [$noFile, $noFile],
         ]);
-
 
         $kernel = $this->createMock(HttpKernelInterface::class);
         $event = new RequestEvent(

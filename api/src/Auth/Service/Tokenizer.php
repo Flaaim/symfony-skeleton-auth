@@ -12,7 +12,9 @@ use Ramsey\Uuid\Uuid;
 final class Tokenizer
 {
     private DateInterval $interval;
-    public function __construct(string $interval) {
+
+    public function __construct(string $interval)
+    {
         $this->interval = new DateInterval($interval);
     }
 

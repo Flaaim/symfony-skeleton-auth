@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Test\Subscriber;
 
-use DomainException;
 use App\Infrastructure\Http\EventSubscriber\ValidationExceptionSubscriber;
+use DomainException;
 use Infrastructure\Http\Validator\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,6 +16,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ValidationExceptionSubscriberTest extends TestCase
 {
     public function testSubscribedEvents(): void
@@ -48,7 +52,6 @@ final class ValidationExceptionSubscriberTest extends TestCase
 
     public function testProcessValidationException(): void
     {
-
         $violations = new ConstraintViolationList([
             new ConstraintViolation('Incorrect Email', null, [], null, 'email', 'not-email'),
             new ConstraintViolation('Empty Password', null, [], null, 'password', ''),
@@ -84,5 +87,4 @@ final class ValidationExceptionSubscriberTest extends TestCase
             'password' => 'Empty Password',
         ]], $data);
     }
-
 }

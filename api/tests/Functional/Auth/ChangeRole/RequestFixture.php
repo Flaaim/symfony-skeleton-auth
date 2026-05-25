@@ -18,21 +18,21 @@ final class RequestFixture extends AbstractFixture
 
     public function load(ObjectManager $manager): void
     {
-       $admin = new UserBuilder()
-           ->withId(new Id(self::ADMIN_ID))
-           ->withEmail(new Email('admin@email.ru'))
-           ->withRole(new Role(Role::ADMIN))
-           ->build();
+        $admin = new UserBuilder()
+            ->withId(new Id(self::ADMIN_ID))
+            ->withEmail(new Email('admin@email.ru'))
+            ->withRole(new Role(Role::ADMIN))
+            ->build();
 
-       $manager->persist($admin);
+        $manager->persist($admin);
 
-       $user = new UserBuilder()
-           ->withId(new Id(self::USER_ID))
-           ->withEmail(new Email('user@email.ru'))
-           ->build();
+        $user = new UserBuilder()
+            ->withId(new Id(self::USER_ID))
+            ->withEmail(new Email('user@email.ru'))
+            ->build();
 
-       $manager->persist($user);
+        $manager->persist($user);
 
-       $manager->flush();
+        $manager->flush();
     }
 }

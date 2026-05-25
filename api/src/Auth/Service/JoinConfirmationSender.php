@@ -11,21 +11,22 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email as SymfonyEmail;
 use Twig\Environment;
 
-
 final class JoinConfirmationSender
 {
-    const string TEMPLATE = 'auth/join/confirm.html.twig';
+    public const string TEMPLATE = 'auth/join/confirm.html.twig';
+
     public function __construct(
         private MailerInterface $mailer,
         private Environment $twig
     ) {}
+
     public function send(Email $email, string $token): void
     {
         $message = new SymfonyEmail()
             ->subject('Join confirmation')
             ->to($email->getValue())
             ->html($this->twig->render(self::TEMPLATE, ['token' => $token]));
-        try{
+        try {
             $this->mailer->send($message);
         } catch (TransportExceptionInterface $e) {
             throw new TransportException($e->getMessage());

@@ -15,14 +15,19 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private readonly KernelBrowser $client;
     private readonly UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->client = RequestActionTest::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixture = new FixturesLoader($container);
@@ -48,8 +53,8 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['message' => 'User with this network already exists.'], $data);
-
     }
+
     public function testAlreadyJoinedByEmail(): void
     {
         /** @var InMemoryTransport $transport */
@@ -103,7 +108,6 @@ final class RequestActionTest extends WebTestCase
         self::assertInstanceOf(UserCreated::class, $message);
 
         self::assertEquals(RequestFixture::JOIN_BY_YANDEX['email'], $message->email);
-
     }
 
     public function testEmpty(): void
@@ -134,8 +138,7 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['errors' => [
-            'email' => 'This value is not a valid email address.'
+            'email' => 'This value is not a valid email address.',
         ]], $data);
     }
-
 }

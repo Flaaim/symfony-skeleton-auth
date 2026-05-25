@@ -14,7 +14,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 final class ValidationExceptionSubscriber implements EventSubscriberInterface
 {
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -26,16 +25,17 @@ final class ValidationExceptionSubscriber implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
 
-        if(!$exception instanceof ValidationException){
+        if (!$exception instanceof ValidationException) {
             return;
         }
 
         $response = new JsonResponse([
-            'errors' => self::errorsArray($exception->getViolations())
+            'errors' => self::errorsArray($exception->getViolations()),
         ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
 
         $event->setResponse($response);
     }
+
     private static function errorsArray(ConstraintViolationListInterface $violations): array
     {
         $errors = [];

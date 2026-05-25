@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Validator;
 
+use LogicException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Throwable;
 
-final class ValidationException extends \LogicException
+final class ValidationException extends LogicException
 {
     private ConstraintViolationListInterface $violations;
 

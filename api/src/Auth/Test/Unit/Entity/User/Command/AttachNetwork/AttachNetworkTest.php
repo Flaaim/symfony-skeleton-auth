@@ -36,7 +36,6 @@ final class AttachNetworkTest extends TestCase
 
         $user->attachNetwork($name = 'vk', $identity = '0000001');
 
-
         $this->expectExceptionMessage('Network is already attached.');
         $user->attachNetwork('vk', '0000001');
     }

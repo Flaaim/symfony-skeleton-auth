@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Auth\ResetPassword;
 
-
 use App\Auth\Command\ResetPassword\Reset\Command;
 use App\Auth\Command\ResetPassword\Reset\Handler;
 use App\Infrastructure\Http\Validator\Validator;
@@ -15,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ResetAction
 {
     public function __construct(
-        private readonly Handler  $handler,
+        private readonly Handler $handler,
         private readonly Validator $validator
     ) {}
 
@@ -23,8 +22,8 @@ final class ResetAction
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();
-        $password = (string) ($body['password'] ?? '');
-        $token = (string) ($body['token'] ?? '');
+        $password = (string)($body['password'] ?? '');
+        $token = (string)($body['token'] ?? '');
 
         $command = new Command($token, $password);
 

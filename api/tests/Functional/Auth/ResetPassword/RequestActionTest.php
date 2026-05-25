@@ -14,11 +14,16 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private KernelBrowser $client;
     private UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = self::createClient();
@@ -31,6 +36,7 @@ final class RequestActionTest extends WebTestCase
         $em = $container->get(EntityManagerInterface::class);
         $this->users = new UserRepository($em);
     }
+
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
@@ -38,7 +44,7 @@ final class RequestActionTest extends WebTestCase
         $transport->reset();
 
         $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
-            'email' => RequestFixture::ACTIVE_EMAIL
+            'email' => RequestFixture::ACTIVE_EMAIL,
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
@@ -55,10 +61,11 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals($user->getEmail()->getValue(), $message->email);
         self::assertEquals($user->getPasswordResetToken()->getValue(), $message->token);
     }
+
     public function testUserNotActive(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
-            'email' => RequestFixture::NOT_ACTIVE_EMAIL
+            'email' => RequestFixture::NOT_ACTIVE_EMAIL,
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -74,11 +81,11 @@ final class RequestActionTest extends WebTestCase
     public function testResetAlready(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
-            'email' => RequestFixture::ACTIVE_EMAIL
+            'email' => RequestFixture::ACTIVE_EMAIL,
         ]);
 
         $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
-            'email' => RequestFixture::ACTIVE_EMAIL
+            'email' => RequestFixture::ACTIVE_EMAIL,
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -88,10 +95,11 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['message' => 'Resetting is already requested.'], $data);
     }
+
     public function testInvalid(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/password/reset-request', [
-            'email' => 'invalid-email'
+            'email' => 'invalid-email',
         ]);
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
         self::assertJson($body = $this->client->getResponse()->getContent());
@@ -112,7 +120,7 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals([
             'errors' => [
                 'email' => 'This value should not be blank.',
-            ]
+            ],
         ], $data);
     }
 }

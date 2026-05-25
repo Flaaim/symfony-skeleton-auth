@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Auth\AttachNetwork;
 
-
 use App\Auth\Command\AttachNetwork\Command;
 use App\Auth\Command\AttachNetwork\Handler;
 use App\Infrastructure\Http\Validator\Validator;

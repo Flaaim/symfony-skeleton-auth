@@ -14,13 +14,13 @@ final class RequestFixture extends AbstractFixture
     public const array JOIN_BY_GOOGLE = [
         'email' => 'test@gmail.com',
         'network' => 'google',
-        'identity' => '00001'
+        'identity' => '00001',
     ];
 
     public const array JOIN_BY_YANDEX = [
         'email' => 'test@yandex.ru',
         'network' => 'yandex',
-        'identity' => '00003'
+        'identity' => '00003',
     ];
 
     public function load(ObjectManager $manager): void

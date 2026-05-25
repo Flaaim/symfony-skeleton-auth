@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
+use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'user_networks')]
@@ -16,6 +16,7 @@ final class Network
     #[ORM\Id]
     #[ORM\Column(type: 'guid')]
     private string $id;
+
     public function __construct(
         #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'networks')]
         #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

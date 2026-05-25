@@ -14,6 +14,10 @@ use Symfony\Component\Mime\Email as SymfonyEmail;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class NewEmailConfirmTokenSenderTest extends TestCase
 {
     public function testSuccess(): void
@@ -32,7 +36,7 @@ final class NewEmailConfirmTokenSenderTest extends TestCase
             ->html($twig->render($template, ['token' => $token]));
 
         $mailer = $this->createMock(MailerInterface::class);
-        $mailer->expects($this->once())->method('send')
+        $mailer->expects(self::once())->method('send')
             ->willReturnCallback(static function (SymfonyEmail $message) use ($symfonyEmail): int {
                 self::assertEquals($symfonyEmail->getTo(), $message->getTo());
                 self::assertEquals($symfonyEmail->getSubject(), $message->getSubject());
@@ -50,7 +54,7 @@ final class NewEmailConfirmTokenSenderTest extends TestCase
         $to = new Email('user@app.test');
         $token = Uuid::uuid4()->toString();
         $template = 'auth/email/confirm.html.twig';
-        $loader = new ArrayLoader([$template => "<a href='{{ link }}'>Ссылка</a>",]);
+        $loader = new ArrayLoader([$template => "<a href='{{ link }}'>Ссылка</a>"]);
         $twig = new Environment($loader);
 
         $mailer = $this->createMock(MailerInterface::class);

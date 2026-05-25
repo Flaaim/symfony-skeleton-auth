@@ -14,15 +14,16 @@ final class RequestFixture extends AbstractFixture
     public const array JOIN_BY_GOOGLE = [
         'email' => 'test@gmail.com',
         'network' => 'google',
-        'identity' => '00001'
+        'identity' => '00001',
     ];
 
     public const array JOIN_BY_YANDEX = [
         'email' => 'test@yandex.ru',
         'network' => 'yandex',
-        'identity' => '00003'
+        'identity' => '00003',
     ];
     public const string EXISTS_EMAIL = 'exists@email.com';
+
     public function load(ObjectManager $manager): void
     {
         $userWithGoogle = new UserBuilder()
@@ -40,7 +41,5 @@ final class RequestFixture extends AbstractFixture
         $manager->persist($userByEmail);
 
         $manager->flush();
-
-
     }
 }

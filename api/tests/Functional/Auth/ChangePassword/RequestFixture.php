@@ -8,8 +8,6 @@ use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\User;
-use App\Auth\Service\PasswordHasher;
-use App\Auth\Test\Builder\UserBuilder;
 use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
@@ -24,8 +22,9 @@ final class RequestFixture extends AbstractFixture
         'userId' => 'd0d6e420-0e54-47c5-a90d-af75e8c8c7a6',
         'email' => 'test@gmail.com',
         'network' => 'google',
-        'identity' => '00001'
+        'identity' => '00001',
     ];
+
     public function load(ObjectManager $manager): void
     {
         $user = User::requestJoinByEmail(

@@ -22,8 +22,8 @@ final class RequestAction
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();
-        $userId = (string) ($body['userId'] ?? '');
-        $role = (string) ($body['role'] ?? '');
+        $userId = (string)($body['userId'] ?? '');
+        $role = (string)($body['role'] ?? '');
 
         $command = new Command($userId, $role);
 

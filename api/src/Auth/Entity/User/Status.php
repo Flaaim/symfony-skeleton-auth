@@ -36,6 +36,7 @@ final class Status
     {
         return self::ACTIVE === $this->name;
     }
+
     public function getValue(): string
     {
         return $this->name;

@@ -6,9 +6,14 @@ namespace Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class NotFoundTest extends WebTestCase
 {
     use ArraySubsetAssertTrait;
+
     public function testNotFound(): void
     {
         $client = self::createClient();

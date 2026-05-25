@@ -14,16 +14,17 @@ final class RequestFixture extends AbstractFixture
 {
     public const array VALID = [
         'email' => 'email@test.ru',
-        'userId' => 'fa666db8-4f82-4daf-8bc7-ebe510a1e9ae'
+        'userId' => 'fa666db8-4f82-4daf-8bc7-ebe510a1e9ae',
     ];
     public const array EXISTS = [
         'email' => 'exists@mail.ru',
-        'userId' => '931227c6-5387-464e-9d83-833bbd4f540f'
+        'userId' => '931227c6-5387-464e-9d83-833bbd4f540f',
     ];
     public const array NOT_ACTIVE = [
         'email' => 'notActive@mail.ru',
-        'userId' => 'ab04db44-0c0c-43ae-b61e-a8c385a7cae9'
+        'userId' => 'ab04db44-0c0c-43ae-b61e-a8c385a7cae9',
     ];
+
     public function load(ObjectManager $manager): void
     {
         $user = new UserBuilder()

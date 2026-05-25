@@ -7,6 +7,6 @@ namespace App\Auth\Event;
 final class UserJoinConfirmed
 {
     public function __construct(
-       public string $email
+        public string $email
     ) {}
 }

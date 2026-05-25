@@ -11,7 +11,6 @@ use Doctrine\Persistence\ObjectManager;
 
 final class RequestFixture extends AbstractFixture
 {
-
     public function load(ObjectManager $manager): void
     {
         $user = new UserBuilder()

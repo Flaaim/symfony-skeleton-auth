@@ -17,6 +17,7 @@ final class ConfirmFixture extends AbstractFixture
     public const VALID = 'bb27b246-d0e0-4ea3-ae80-4a9d2a7330a6';
     public const VALID_EMAIL = 'valid@app.test';
     public const EXPIRED = 'd432c71a-fd00-46c2-9e89-e3169c1daa7d';
+
     public function load(ObjectManager $manager): void
     {
         $user = User::requestJoinByEmail(

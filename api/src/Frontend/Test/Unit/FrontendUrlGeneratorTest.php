@@ -7,6 +7,10 @@ namespace App\Frontend\Test\Unit;
 use App\Frontend\FrontendUrlGenerator;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class FrontendUrlGeneratorTest extends TestCase
 {
     public function testEmpty(): void

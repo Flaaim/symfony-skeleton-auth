@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Auth\Command\ResetPassword\Request;
 
 use App\Auth\Entity\User\Email;
-use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\UserRepository;
 use App\Auth\Service\Tokenizer;
 use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
-use Ramsey\Uuid\Uuid;
 
 final class Handler
 {

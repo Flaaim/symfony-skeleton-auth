@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Test\Subscriber;
 
-use DomainException;
 use App\Infrastructure\Http\EventSubscriber\DomainExceptionSubscriber;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -15,11 +15,12 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-
+/**
+ * @internal
+ * @coversNothing
+ */
 final class DomainExceptionSubscriberTest extends TestCase
 {
-
-
     public function testGetSubscribedEvents(): void
     {
         $subscriber = DomainExceptionSubscriber::getSubscribedEvents();
@@ -60,6 +61,7 @@ final class DomainExceptionSubscriberTest extends TestCase
 
         self::assertEquals(['message' => $exception->getMessage()], $data);
     }
+
     public function testProcessException(): void
     {
         $exception = new RuntimeException('RuntimeException');

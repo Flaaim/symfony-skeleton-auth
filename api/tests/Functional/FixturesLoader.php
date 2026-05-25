@@ -16,6 +16,7 @@ final class FixturesLoader
     public function __construct(
         private readonly ContainerInterface $container,
     ) {}
+
     public function loadFixtures(array $fixtures): void
     {
         $loader = new Loader();
@@ -35,5 +36,4 @@ final class FixturesLoader
 
         $em->clear();
     }
-
 }

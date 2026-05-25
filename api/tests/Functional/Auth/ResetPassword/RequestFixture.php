@@ -13,6 +13,7 @@ final class RequestFixture extends AbstractFixture
 {
     public const string ACTIVE_EMAIL = 'active@test.ru';
     public const string NOT_ACTIVE_EMAIL = 'not_active@test.ru';
+
     public function load(ObjectManager $manager): void
     {
         $activeUser = new UserBuilder()

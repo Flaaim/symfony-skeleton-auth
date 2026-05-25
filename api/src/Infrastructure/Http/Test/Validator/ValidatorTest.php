@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Test\Validator;
 
-use Exception;
 use App\Infrastructure\Http\Validator\ValidationException;
 use App\Infrastructure\Http\Validator\Validator;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ValidatorTest extends TestCase
 {
     public function testValid(): void
@@ -23,7 +26,7 @@ final class ValidatorTest extends TestCase
 
         $validatorInterface->expects(self::once())->method('validate')
             ->with(self::equalTo($object))
-        ->willReturn(new ConstraintViolationList([]));
+            ->willReturn(new ConstraintViolationList([]));
 
         $validator->validate($object);
     }

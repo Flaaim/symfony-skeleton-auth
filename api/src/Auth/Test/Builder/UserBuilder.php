@@ -39,12 +39,14 @@ final class UserBuilder
         $clone->id = $id;
         return $clone;
     }
+
     public function withRole(Role $role): self
     {
         $clone = clone $this;
         $clone->role = $role;
         return $clone;
     }
+
     public function withJoinConfirmToken(Token $token): self
     {
         $clone = clone $this;
@@ -91,11 +93,11 @@ final class UserBuilder
             );
         }
 
-        if($this->role !== null){
+        if (null !== $this->role) {
             $user->changeRole($this->role);
         }
 
-        if($this->network !== null && $this->identity !== null) {
+        if (null !== $this->network && null !== $this->identity) {
             $user->attachNetwork($this->network, $this->identity);
         }
         return $user;

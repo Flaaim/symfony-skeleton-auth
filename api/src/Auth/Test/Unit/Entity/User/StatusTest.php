@@ -26,6 +26,7 @@ final class StatusTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         new Status('none');
     }
+
     public function testWait(): void
     {
         $status = Status::wait();

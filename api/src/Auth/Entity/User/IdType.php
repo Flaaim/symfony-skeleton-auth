@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\StringType;
 
 final class IdType extends StringType
 {
@@ -20,6 +20,7 @@ final class IdType extends StringType
     {
         return !empty($value) ? new Id((string)$value) : null;
     }
+
     public function getName(): string
     {
         return self::NAME;

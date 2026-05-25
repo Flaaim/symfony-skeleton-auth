@@ -14,7 +14,6 @@ use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
 
-
 final class Handler
 {
     public function __construct(

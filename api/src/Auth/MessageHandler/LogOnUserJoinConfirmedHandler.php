@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Auth\MessageHandler;
 
-
 use App\Auth\Event\UserJoinConfirmed;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

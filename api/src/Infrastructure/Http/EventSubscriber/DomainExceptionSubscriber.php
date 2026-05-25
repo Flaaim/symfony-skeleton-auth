@@ -16,6 +16,7 @@ final class DomainExceptionSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly LoggerInterface $logger
     ) {}
+
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
@@ -35,6 +36,7 @@ final class DomainExceptionSubscriber implements EventSubscriberInterface
 
         $event->setResponse($response);
     }
+
     public static function getSubscribedEvents(): array
     {
         return [

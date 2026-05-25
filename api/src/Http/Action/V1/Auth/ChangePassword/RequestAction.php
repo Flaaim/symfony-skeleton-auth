@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Auth\ChangePassword;
 
-
 use App\Auth\Command\ChangePassword\Command;
 use App\Auth\Command\ChangePassword\Handler;
 use App\Infrastructure\Http\Validator\Validator;
@@ -24,9 +23,9 @@ final class RequestAction
     {
         $body = $request->toArray();
 
-        $userId = (string) ($body['userId'] ?? '');
-        $currentPassword = (string) ($body['currentPassword'] ?? '');
-        $newPassword = (string) ($body['newPassword'] ?? '');
+        $userId = (string)($body['userId'] ?? '');
+        $currentPassword = (string)($body['currentPassword'] ?? '');
+        $newPassword = (string)($body['newPassword'] ?? '');
 
         $command = new Command($userId, $currentPassword, $newPassword);
 

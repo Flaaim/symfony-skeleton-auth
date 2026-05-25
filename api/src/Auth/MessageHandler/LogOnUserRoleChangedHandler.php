@@ -20,9 +20,11 @@ final class LogOnUserRoleChangedHandler
         $id = $event->id;
         $role = $event->role;
 
-        $this->logger->info('User role changed', [
-            'id' => $id,
-            'role' => $role
+        $this->logger->info(
+            'User role changed',
+            [
+                'id' => $id,
+                'role' => $role,
             ]
         );
     }

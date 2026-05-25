@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace App\Frontend\Test\Unit;
 
-use App\Frontend\FrontendUrlTwigExtension;
 use App\Frontend\FrontendUrlGeneratorInterface;
+use App\Frontend\FrontendUrlTwigExtension;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class FrontendUrlTwigExtensionTest extends TestCase
 {
     public function testSuccess(): void
     {
         $frontend = $this->createMock(FrontendUrlGeneratorInterface::class);
-        $frontend->expects($this->once())->method('generate')->with(
-            $this->equalTo('path'),
-            $this->equalTo(['a' => 1, 'b' => 2])
+        $frontend->expects(self::once())->method('generate')->with(
+            self::equalTo('path'),
+            self::equalTo(['a' => 1, 'b' => 2])
         )->willReturn('http://test/path?a=1&b=2');
 
         $twig = new Environment(new ArrayLoader([

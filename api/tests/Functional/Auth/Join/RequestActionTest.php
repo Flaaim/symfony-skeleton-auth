@@ -13,11 +13,16 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private KernelBrowser $client;
     private UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = self::createClient();
@@ -30,13 +35,13 @@ final class RequestActionTest extends WebTestCase
         $em = $container->get(EntityManagerInterface::class);
         $this->users = new UserRepository($em);
     }
+
     public function testUserAlreadyExists(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/request', [
             'email' => 'exists@email.com',
             'password' => 'password',
         ]);
-
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
 

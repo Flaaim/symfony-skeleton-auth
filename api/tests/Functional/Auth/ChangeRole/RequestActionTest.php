@@ -15,13 +15,18 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private KernelBrowser $client;
     private UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
-        $this->client = RequestActionTest::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixtures = new FixturesLoader($container);
@@ -30,7 +35,6 @@ final class RequestActionTest extends WebTestCase
         /** @var EntityManagerInterface $em */
         $em = $container->get(EntityManagerInterface::class);
         $this->users = new UserRepository($em);
-
     }
 
     public function testAlready(): void
@@ -48,6 +52,7 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['message' => 'Role is already assigned.'], $data);
     }
+
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
@@ -73,7 +78,6 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(RequestFixture::USER_ID, $message->id);
         self::assertEquals(Role::TEACHER, $message->role);
-
     }
 
     public function testNotFound(): void

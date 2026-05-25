@@ -14,6 +14,7 @@ final class RequestFixture extends AbstractFixture
 {
     public const string ID_ACTIVE_USER = '2a974384-bcf1-4c48-ab4b-59b241420436';
     public const string ID_WAITING_USER = 'd45bef55-df21-49dd-98d0-f044532a928f';
+
     public function load(ObjectManager $manager): void
     {
         $activeUser = new UserBuilder()
@@ -31,6 +32,5 @@ final class RequestFixture extends AbstractFixture
 
         $manager->persist($waitingUser);
         $manager->flush();
-
     }
 }

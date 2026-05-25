@@ -13,13 +13,18 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private readonly KernelBrowser $client;
     private readonly UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
-        $this->client = RequestActionTest::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixtures = new FixturesLoader($container);
@@ -92,12 +97,12 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
             'userId' => RequestFixture::VALID['userId'],
-            'email' => 'some@email.ru'
+            'email' => 'some@email.ru',
         ]);
 
         $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
             'userId' => RequestFixture::VALID['userId'],
-            'email' => 'another@email.ru'
+            'email' => 'another@email.ru',
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -116,13 +121,12 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest('POST', '/v1/auth/email/change-request', [
             'userId' => RequestFixture::VALID['userId'],
-            'email' => 'some@email.ru'
+            'email' => 'some@email.ru',
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
 
         $user = $this->users->get(new Id(RequestFixture::VALID['userId']));
         self::assertNotNull($user->getNewEmailToken());
-
     }
 }

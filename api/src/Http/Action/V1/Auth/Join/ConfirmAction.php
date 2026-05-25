@@ -22,7 +22,7 @@ final class ConfirmAction
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();
-        $token = (string) ($body['token'] ?? '');
+        $token = (string)($body['token'] ?? '');
 
         $command = new Command($token);
 

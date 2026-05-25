@@ -14,11 +14,16 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ConfirmActionTest extends WebTestCase
 {
-    private  KernelBrowser $client;
+    private KernelBrowser $client;
     private UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = self::createClient();
@@ -37,7 +42,7 @@ final class ConfirmActionTest extends WebTestCase
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
         $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
-            'token' => ConfirmFixture::VALID
+            'token' => ConfirmFixture::VALID,
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
@@ -55,7 +60,7 @@ final class ConfirmActionTest extends WebTestCase
     public function testExpired(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
-            'token' => ConfirmFixture::EXPIRED
+            'token' => ConfirmFixture::EXPIRED,
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -75,14 +80,14 @@ final class ConfirmActionTest extends WebTestCase
 
         $data = Json::decode($body);
         self::assertEquals(['errors' => [
-            'token' => 'This value should not be blank.'
+            'token' => 'This value should not be blank.',
         ]], $data);
     }
 
     public function testNotExisting(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
-           'token' => Uuid::uuid4()->toString()
+            'token' => Uuid::uuid4()->toString(),
         ]);
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
 
@@ -95,7 +100,7 @@ final class ConfirmActionTest extends WebTestCase
     public function testInvalidToken(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
-            'token' => 'invalid_token'
+            'token' => 'invalid_token',
         ]);
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
@@ -105,7 +110,7 @@ final class ConfirmActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['errors' => [
-            'token' => 'This is not a valid UUID.'
+            'token' => 'This is not a valid UUID.',
         ]], $data);
     }
 }

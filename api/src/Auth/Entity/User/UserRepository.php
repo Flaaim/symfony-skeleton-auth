@@ -12,6 +12,7 @@ final class UserRepository
 {
     private EntityRepository $repo;
     private EntityManagerInterface $em;
+
     public function __construct(EntityManagerInterface $em)
     {
         /** @var EntityRepository $repo */
@@ -19,17 +20,18 @@ final class UserRepository
         $this->repo = $repo;
         $this->em = $em;
     }
+
     public function hasByEmail(Email $email): bool
     {
-        return  $this->repo->createQueryBuilder('t')
-                ->select('COUNT(t.id)')
-                ->andWhere('t.email = :email')
-                ->setParameter(':email', $email->getValue())
-                ->getQuery()->getSingleScalarResult() > 0;
+        return $this->repo->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->andWhere('t.email = :email')
+            ->setParameter(':email', $email->getValue())
+            ->getQuery()->getSingleScalarResult() > 0;
     }
+
     /**
-     * @param string $token
-     * @return User|object|null
+     * @return object|User|null
      * @psalm-return User|null
      */
     public function findByJoinConfirmToken(string $token): ?User
@@ -37,9 +39,9 @@ final class UserRepository
         /** @psalm-var User|null */
         return $this->repo->findOneBy(['joinConfirmToken.value' => $token]);
     }
+
     /**
-     * @param string $token
-     * @return User|object|null
+     * @return object|User|null
      * @psalm-return User|null
      */
     public function findByPasswordResetToken(string $token): ?User
@@ -51,16 +53,16 @@ final class UserRepository
     public function hasByNetwork(string $network, string $identity): bool
     {
         return $this->repo->createQueryBuilder('t')
-                ->select('COUNT(t.id)')
-                ->innerJoin('t.networks', 'n')
-                ->andWhere('n.network = :network and n.identity = :identity')
-                ->setParameter(':network', $network)
-                ->setParameter(':identity', $identity)
-                ->getQuery()->getSingleScalarResult() > 0;
+            ->select('COUNT(t.id)')
+            ->innerJoin('t.networks', 'n')
+            ->andWhere('n.network = :network and n.identity = :identity')
+            ->setParameter(':network', $network)
+            ->setParameter(':identity', $identity)
+            ->getQuery()->getSingleScalarResult() > 0;
     }
+
     /**
-     * @param string $token
-     * @return User|object|null
+     * @return object|User|null
      * @psalm-return User|null
      */
     public function findByNewEmailToken(string $token): ?User

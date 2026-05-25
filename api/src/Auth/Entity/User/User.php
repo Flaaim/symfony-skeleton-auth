@@ -6,9 +6,9 @@ namespace App\Auth\Entity\User;
 
 use App\Auth\Event\JoinByEmailRequested;
 use App\Auth\Event\NetworkAttached;
-use App\Auth\Event\UserCreated;
 use App\Auth\Event\PasswordReset;
 use App\Auth\Event\PasswordResetRequested;
+use App\Auth\Event\UserCreated;
 use App\Auth\Event\UserJoinConfirmed;
 use App\Auth\Event\UserRemoved;
 use App\Auth\Event\UserRoleChanged;
@@ -18,8 +18,8 @@ use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use DomainException;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'users')]
@@ -31,7 +31,7 @@ final class User implements AggregateRoot
     private ?string $passwordHash = null;
     #[ORM\Embedded(class: Token::class, columnPrefix: 'join_confirm_token_')]
     private ?Token $joinConfirmToken = null;
-    #[ORM\OneToMany(targetEntity: Network::class, mappedBy: 'user', cascade: ["ALL"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Network::class, mappedBy: 'user', cascade: ['ALL'], orphanRemoval: true)]
     private Collection $networks;
     #[ORM\Embedded(class: Token::class, columnPrefix: 'password_reset_token_')]
     private ?Token $passwordResetToken = null;
@@ -44,18 +44,17 @@ final class User implements AggregateRoot
 
     private function __construct(
         #[ORM\Id]
-        #[ORM\Column(type:'auth_user_id')]
+        #[ORM\Column(type: 'auth_user_id')]
         private Id $id,
-        #[ORM\Column(type:'datetime_immutable')]
+        #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $date,
         #[ORM\Column(type: 'user_email')]
         private Email $email,
-        #[ORM\Column(type:'user_status')]
+        #[ORM\Column(type: 'user_status')]
         private Status $status,
     ) {
         $this->networks = new ArrayCollection();
         $this->role = Role::user();
-
     }
 
     public static function requestJoinByEmail(
@@ -269,13 +268,13 @@ final class User implements AggregateRoot
     #[ORM\PostLoad]
     public function checkEmbeddables(): void
     {
-        if ($this->joinConfirmToken !== null && $this->joinConfirmToken->isEmpty()) {
+        if (null !== $this->joinConfirmToken && $this->joinConfirmToken->isEmpty()) {
             $this->joinConfirmToken = null;
         }
-        if ($this->passwordResetToken !== null && $this->passwordResetToken->isEmpty()) {
+        if (null !== $this->passwordResetToken && $this->passwordResetToken->isEmpty()) {
             $this->passwordResetToken = null;
         }
-        if ($this->newEmailToken !== null && $this->newEmailToken->isEmpty()) {
+        if (null !== $this->newEmailToken && $this->newEmailToken->isEmpty()) {
             $this->newEmailToken = null;
         }
     }

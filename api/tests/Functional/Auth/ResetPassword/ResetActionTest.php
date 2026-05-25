@@ -15,15 +15,20 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ResetActionTest extends WebTestCase
 {
     private KernelBrowser $client;
 
     private UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixtures = new FixturesLoader($container);
@@ -33,6 +38,7 @@ final class ResetActionTest extends WebTestCase
         $em = $container->get(EntityManagerInterface::class);
         $this->users = new UserRepository($em);
     }
+
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
@@ -71,7 +77,7 @@ final class ResetActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'message' => 'Token is not found.'
+            'message' => 'Token is not found.',
         ], $data);
     }
 
@@ -88,11 +94,12 @@ final class ResetActionTest extends WebTestCase
         $data = Json::decode($body);
         self::assertEquals(['errors' => ['token' => 'This is not a valid UUID.']], $data);
     }
+
     public function testTokenExpired(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/password/reset', [
-           'token' => ResetFixture::EXPIRED_TOKEN,
-           'password' => 'new-password',
+            'token' => ResetFixture::EXPIRED_TOKEN,
+            'password' => 'new-password',
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());

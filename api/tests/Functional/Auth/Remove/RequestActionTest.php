@@ -14,13 +14,18 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
-    private readonly  KernelBrowser $client;
+    private readonly KernelBrowser $client;
     private readonly UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixtures = new FixturesLoader($container);
@@ -29,12 +34,12 @@ final class RequestActionTest extends WebTestCase
         /** @var EntityManagerInterface $em */
         $em = $container->get(EntityManagerInterface::class);
         $this->users = new UserRepository($em);
-
     }
+
     public function testRemoveActive(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/user/remove', [
-            'userId' => RequestFixture::ID_ACTIVE_USER
+            'userId' => RequestFixture::ID_ACTIVE_USER,
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -53,7 +58,7 @@ final class RequestActionTest extends WebTestCase
         $transport->reset();
 
         $this->client->jsonRequest('POST', '/v1/auth/user/remove', [
-            'userId' => RequestFixture::ID_WAITING_USER
+            'userId' => RequestFixture::ID_WAITING_USER,
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
@@ -64,6 +69,5 @@ final class RequestActionTest extends WebTestCase
 
         $message = $transport->getSent()[0]->getMessage();
         self::assertInstanceOf(UserRemoved::class, $message);
-
     }
 }

@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RequestAction
 {
     public function __construct(
-        private readonly Handler  $handler,
+        private readonly Handler $handler,
         private readonly Validator $validator
     ) {}
 
@@ -22,7 +22,7 @@ final class RequestAction
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();
-        $email = (string) ($body['email'] ?? '');
+        $email = (string)($body['email'] ?? '');
 
         $command = new Command($email);
         $this->validator->validate($command);

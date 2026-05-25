@@ -17,12 +17,13 @@ final class RequestAction
         private readonly Handler $handler,
         private readonly Validator $validator,
     ) {}
+
     #[Route('/v1/auth/join/request', name: 'auth.join.request', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();
-        $email = (string) ($body['email'] ?? '');
-        $password = (string) ($body['password'] ?? '');
+        $email = (string)($body['email'] ?? '');
+        $password = (string)($body['password'] ?? '');
 
         $command = new Command($email, $password);
 
@@ -30,6 +31,6 @@ final class RequestAction
 
         $this->handler->handle($command);
 
-        return new Response(null, Response::HTTP_CREATED );
+        return new Response(null, Response::HTTP_CREATED);
     }
 }

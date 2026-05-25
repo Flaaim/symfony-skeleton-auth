@@ -13,15 +13,20 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private readonly KernelBrowser $client;
 
     private readonly UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->client = RequestActionTest::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixtures = new FixturesLoader($container);
@@ -47,12 +52,13 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['message' => 'User with this network already exists.'], $data);
     }
+
     public function testUserNotFound(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/network/attach', [
-           'email' => 'not-exists@test.ru',
-           'network' => RequestFixture::JOIN_BY_GOOGLE['email'],
-           'identity' => RequestFixture::JOIN_BY_GOOGLE['network'],
+            'email' => 'not-exists@test.ru',
+            'network' => RequestFixture::JOIN_BY_GOOGLE['email'],
+            'identity' => RequestFixture::JOIN_BY_GOOGLE['network'],
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -62,6 +68,7 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['message' => 'User is not found.'], $data);
     }
+
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
@@ -77,7 +84,8 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
 
         self::assertTrue($this->users->hasByNetwork(
-            RequestFixture::JOIN_BY_YANDEX['network'], RequestFixture::JOIN_BY_YANDEX['identity']
+            RequestFixture::JOIN_BY_YANDEX['network'],
+            RequestFixture::JOIN_BY_YANDEX['identity']
         ));
 
         self::assertCount(1, $transport->getSent());
@@ -89,6 +97,7 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals(RequestFixture::JOIN_BY_YANDEX['network'], $message->network);
         self::assertEquals(RequestFixture::JOIN_BY_YANDEX['identity'], $message->identity);
     }
+
     public function testEmpty(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/network/attach');
@@ -105,6 +114,7 @@ final class RequestActionTest extends WebTestCase
             'identity' => 'This value should not be blank.',
         ]], $data);
     }
+
     public function testInvalidEmail(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/network/request', [
@@ -118,7 +128,7 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['errors' => [
-            'email' => 'This value is not a valid email address.'
+            'email' => 'This value is not a valid email address.',
         ]], $data);
     }
 }

@@ -9,7 +9,8 @@ use Doctrine\DBAL\Types\StringType;
 
 final class RoleType extends StringType
 {
-    const NAME = 'user_role';
+    public const NAME = 'user_role';
+
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         return $value instanceof Role ? $value->getName() : $value;
@@ -19,6 +20,7 @@ final class RoleType extends StringType
     {
         return !empty($value) ? new Role((string)$value) : null;
     }
+
     public function getName(): string
     {
         return self::NAME;

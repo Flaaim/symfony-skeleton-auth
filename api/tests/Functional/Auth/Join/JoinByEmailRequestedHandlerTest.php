@@ -8,12 +8,16 @@ use App\Auth\Event\JoinByEmailRequested;
 use App\Auth\MessageHandler\SendTokenOnJoinByEmailRequestedHandler;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-
+/**
+ * @internal
+ * @coversNothing
+ */
 final class JoinByEmailRequestedHandlerTest extends KernelTestCase
 {
-    public function testSuccess(): void{
+    public function testSuccess(): void
+    {
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $handler = $container->get(SendTokenOnJoinByEmailRequestedHandler::class);
 

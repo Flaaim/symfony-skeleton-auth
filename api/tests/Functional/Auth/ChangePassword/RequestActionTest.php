@@ -12,14 +12,19 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private readonly KernelBrowser $client;
 
     private readonly UserRepository $users;
+
     protected function setUp(): void
     {
-        $this->client = RequestActionTest::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixtures = new FixturesLoader($container);
@@ -45,6 +50,7 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['message' => 'User is not found.'], $data);
     }
+
     public function testOldPasswordNotFound(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/user/change-password', [
@@ -60,6 +66,7 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['message' => 'User does not have an old password.'], $data);
     }
+
     public function testIncorrectCurrentPassword(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/user/change-password', [
@@ -89,7 +96,5 @@ final class RequestActionTest extends WebTestCase
         $user = $this->users->get(new Id(RequestFixture::USER_ID));
 
         self::assertTrue(password_verify('newPassword', $user->getPasswordHash()));
-
     }
-
 }

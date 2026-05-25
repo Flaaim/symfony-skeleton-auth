@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Auth\Entity\User;
 
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 use DomainException;
 use Webmozart\Assert\Assert;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
 final class Token
@@ -26,10 +26,12 @@ final class Token
     {
         return $this->value;
     }
+
     public function isEmpty(): bool
     {
         return !isset($this->value);
     }
+
     public function getExpiresAt(): DateTimeImmutable
     {
         return $this->expiresAt;
