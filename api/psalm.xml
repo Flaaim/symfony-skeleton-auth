@@ -21,6 +21,13 @@
                 <directory name="src/Http/Action" />
             </errorLevel>
         </UnusedClass>
+
+        <MissingOverrideAttribute>
+            <errorLevel type="suppress">
+                <directory name="src" />
+            </errorLevel>
+        </MissingOverrideAttribute>
+
     </issueHandlers>
 
     <plugins>
