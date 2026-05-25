@@ -47,6 +47,7 @@
     <testsuites>
         <testsuite name="Unit">
             <directory>src/Auth/Test</directory>
+            <directory>src/OAuth/Test</directory>
         </testsuite>
         <testsuite name="Functional">
             <directory>tests/Functional</directory>
