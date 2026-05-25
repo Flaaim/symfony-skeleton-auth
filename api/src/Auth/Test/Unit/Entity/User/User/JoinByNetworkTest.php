@@ -36,7 +36,7 @@ final class JoinByNetworkTest extends TestCase
 
         self::assertCount(1, $networks = $user->getNetworks());
         /** @var array<Network> $networks */
-        self::assertEquals($name, $networks[0]->getNetwork() ?? null);
-        self::assertEquals($identity, $networks[0]->getIdentity() ?? null);
+        self::assertEquals($name, $networks[0]->getNetwork());
+        self::assertEquals($identity, $networks[0]->getIdentity());
     }
 }
