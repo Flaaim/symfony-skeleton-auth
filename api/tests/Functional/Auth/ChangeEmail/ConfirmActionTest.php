@@ -12,14 +12,19 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ConfirmActionTest extends WebTestCase
 {
     private readonly KernelBrowser $client;
 
     private readonly UserRepository $users;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
-        $this->client = ConfirmActionTest::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixtures = new FixturesLoader($container);
@@ -33,7 +38,7 @@ final class ConfirmActionTest extends WebTestCase
     public function testNotFound(): void
     {
         $this->client->jsonRequest('PUT', '/v1/auth/email/change/confirm', [
-            'token' => '3ba74adc-f54a-476f-af8e-02adf73c5c7a'
+            'token' => '3ba74adc-f54a-476f-af8e-02adf73c5c7a',
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -48,7 +53,7 @@ final class ConfirmActionTest extends WebTestCase
     {
         $this->client->catchExceptions(false);
         $this->client->jsonRequest('PUT', '/v1/auth/email/change/confirm', [
-           'token' => ConfirmFixture::VALID_TOKEN
+            'token' => ConfirmFixture::VALID_TOKEN,
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
@@ -56,7 +61,5 @@ final class ConfirmActionTest extends WebTestCase
         $user = $this->users->getByEmail(new Email(ConfirmFixture::NEW_EMAIL));
         self::assertNull($user->getNewEmailToken());
         self::assertNull($user->getNewEmail());
-
     }
-
 }

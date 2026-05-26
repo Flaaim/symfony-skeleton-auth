@@ -25,6 +25,7 @@ final class UserBuilder
     private ?string $identity = null;
     private ?Token $newEmailChangeToken = null;
     private ?Email $newEmail = null;
+
     public function __construct()
     {
         $this->id = Id::generate();
@@ -54,6 +55,7 @@ final class UserBuilder
         $clone->joinConfirmToken = $token;
         return $clone;
     }
+
     public function withNewEmailChangeToken(Token $token, Email $newEmail): self
     {
         $clone = clone $this;
@@ -61,6 +63,7 @@ final class UserBuilder
         $clone->newEmail = $newEmail;
         return $clone;
     }
+
     public function viaNetwork(string $network, string $identity): self
     {
         $clone = clone $this;
@@ -108,7 +111,7 @@ final class UserBuilder
             $user->attachNetwork($this->network, $this->identity);
         }
 
-        if(null !== $this->newEmailChangeToken && null !== $this->newEmail) {
+        if (null !== $this->newEmailChangeToken && null !== $this->newEmail) {
             $user->requestEmailChanging(
                 $this->newEmailChangeToken,
                 $this->newEmailChangeToken->getExpiresAt()->modify('+1 day'),

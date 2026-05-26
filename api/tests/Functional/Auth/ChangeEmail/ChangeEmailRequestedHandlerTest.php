@@ -8,6 +8,10 @@ use App\Auth\Event\ChangeEmailRequested;
 use App\Auth\MessageHandler\SendTokenOnChangeEmailRequestedHandler;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ChangeEmailRequestedHandlerTest extends KernelTestCase
 {
     public function testSuccess(): void

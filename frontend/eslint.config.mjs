@@ -20,10 +20,10 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-unused-vars": "error",
       "react/style-prop-object": "error",
-      "no-console": ["warn", { "allow": ["warn", "error"] }],
+      "no-console": ["warn", { allow: ["warn", "error"] }],
       "prefer-const": "error",
       "tailwindcss/no-custom-classname": "warn",
-    }
+    },
   },
   // Override default ignores of eslint-config-next.
   globalIgnores([

@@ -13,11 +13,13 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
     private EntityRepository $repo;
+
     public function __construct(
         private readonly EntityManagerInterface $em
-    ){
+    ) {
         $this->repo = $this->em->getRepository(RefreshToken::class);
     }
+
     public function getNewRefreshToken(): ?RefreshTokenEntityInterface
     {
         return new RefreshToken();
@@ -44,12 +46,13 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     {
         return !$this->exists($tokenId);
     }
+
     private function exists(string $id): bool
     {
         return $this->repo->createQueryBuilder('t')
-                ->select('COUNT(t.identifier)')
-                ->andWhere('t.identifier = :identifier')
-                ->setParameter(':identifier', $id)
-                ->getQuery()->getSingleScalarResult() > 0;
+            ->select('COUNT(t.identifier)')
+            ->andWhere('t.identifier = :identifier')
+            ->setParameter(':identifier', $id)
+            ->getQuery()->getSingleScalarResult() > 0;
     }
 }

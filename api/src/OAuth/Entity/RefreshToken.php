@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\OAuth\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
@@ -25,7 +26,7 @@ class RefreshToken implements RefreshTokenEntityInterface
     protected string $identifier;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    protected \DateTimeImmutable $expiryDateTime;
+    protected DateTimeImmutable $expiryDateTime;
     /**
      * @var non-empty-string|null
      */

@@ -30,7 +30,7 @@ final class AccessTokenBuilder
     {
         $token = new AccessToken($client, $this->scopes);
 
-        if ($this->userIdentifier !== null) {
+        if (null !== $this->userIdentifier) {
             $token->setUserIdentifier($this->userIdentifier);
         }
 

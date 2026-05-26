@@ -26,13 +26,11 @@ final class OAuthRepositoryFactory
      */
     public static function createClientRepository(array $clients): ClientRepository
     {
-        $clientObjects = array_map(static function (array $item): Client {
-            return new Client(
-                $item['client_id'],
-                $item['name'],
-                $item['redirect_uri']
-            );
-        }, $clients);
+        $clientObjects = array_map(static fn (array $item): Client => new Client(
+            $item['client_id'],
+            $item['name'],
+            $item['redirect_uri']
+        ), $clients);
 
         return new ClientRepository($clientObjects);
     }

@@ -7,7 +7,7 @@ namespace App\Auth\Event;
 final class ChangeEmailRequested
 {
     public function __construct(
-       public string $newEmail,
-       public string $newEmailToken,
+        public string $newEmail,
+        public string $newEmailToken,
     ) {}
 }

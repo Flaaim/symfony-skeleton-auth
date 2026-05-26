@@ -190,9 +190,11 @@ final class User implements AggregateRoot
         $this->newEmail = $email;
         $this->newEmailToken = $token;
 
-        $this->recordEvent(new ChangeEmailRequested(
-            $this->newEmail->getValue(),
-            $this->newEmailToken->getValue())
+        $this->recordEvent(
+            new ChangeEmailRequested(
+                $this->newEmail->getValue(),
+                $this->newEmailToken->getValue()
+            )
         );
     }
 

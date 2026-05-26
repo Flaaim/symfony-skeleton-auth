@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\OAuth\Test\Unit\Entity;
 
-use App\OAuth\Entity\AccessToken;
 use App\OAuth\Entity\RefreshToken;
 use App\OAuth\Test\Builder\AccessTokenBuilder;
 use App\OAuth\Test\Builder\ClientBuilder;

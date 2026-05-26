@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final class SendTokenOnChangeEmailRequestedHandler
 {
     public function __construct(
-      private readonly NewEmailConfirmTokenSender $sender,
+        private readonly NewEmailConfirmTokenSender $sender,
     ) {}
 
     public function __invoke(ChangeEmailRequested $event): void

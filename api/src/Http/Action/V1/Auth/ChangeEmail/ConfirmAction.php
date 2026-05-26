@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Auth\ChangeEmail;
 
-
 use App\Auth\Command\ChangeEmail\Confirm\Command;
 use App\Auth\Command\ChangeEmail\Confirm\Handler;
 use App\Infrastructure\Http\Validator\Validator;
@@ -32,5 +31,4 @@ final class ConfirmAction
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
-
 }

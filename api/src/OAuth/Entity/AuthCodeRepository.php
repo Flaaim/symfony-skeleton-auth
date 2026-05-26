@@ -13,12 +13,13 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 final class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
     private EntityRepository $repo;
+
     public function __construct(
         private readonly EntityManagerInterface $em
-    )
-    {
+    ) {
         $this->repo = $this->em->getRepository(AuthCode::class);
     }
+
     public function getNewAuthCode(): AuthCodeEntityInterface
     {
         return new AuthCode();
@@ -46,12 +47,13 @@ final class AuthCodeRepository implements AuthCodeRepositoryInterface
     {
         return !$this->exists($codeId);
     }
+
     private function exists(string $id): bool
     {
         return $this->repo->createQueryBuilder('t')
-                ->select('COUNT(t.identifier)')
-                ->andWhere('t.identifier = :identifier')
-                ->setParameter(':identifier', $id)
-                ->getQuery()->getSingleScalarResult() > 0;
+            ->select('COUNT(t.identifier)')
+            ->andWhere('t.identifier = :identifier')
+            ->setParameter(':identifier', $id)
+            ->getQuery()->getSingleScalarResult() > 0;
     }
 }

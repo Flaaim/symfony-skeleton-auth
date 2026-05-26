@@ -85,7 +85,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/auth/user/password/change',[
+        $this->client->jsonRequest('PUT', '/v1/auth/user/password/change', [
             'userId' => RequestFixture::USER_ID,
             'currentPassword' => RequestFixture::PASSWORD,
             'newPassword' => 'newPassword',

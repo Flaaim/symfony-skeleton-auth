@@ -69,7 +69,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotActive(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request',[
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
             'userId' => RequestFixture::NOT_ACTIVE['userId'],
             'email' => 'some@email.ru',
         ]);
@@ -84,7 +84,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmailTheSame(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request',[
+        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
             'userId' => RequestFixture::VALID['userId'],
             'email' => RequestFixture::VALID['email'],
         ]);

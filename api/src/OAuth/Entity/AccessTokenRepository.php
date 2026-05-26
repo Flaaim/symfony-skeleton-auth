@@ -10,7 +10,6 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 final class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
-
     public function getNewToken(
         ClientEntityInterface $clientEntity,
         array $scopes,
@@ -18,7 +17,7 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
     ): AccessTokenEntityInterface {
         $accessToken = new AccessToken($clientEntity, $scopes);
 
-        if ($userIdentifier !== null) {
+        if (null !== $userIdentifier) {
             $accessToken->setUserIdentifier($userIdentifier);
         }
 
