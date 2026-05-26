@@ -9,12 +9,21 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - frontend
+      - frontend-node
       - api
 
-  frontend:
-    image: ${REGISTRY}/rtn-tests-frontend:${IMAGE_TAG}
+  frontend-node:
+    image: ${REGISTRY}/rtn-tests-frontend-node:${IMAGE_TAG}
     restart: always
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BACKEND_URL=https://api.${API_SITE_NAME}
+      - INTERNAL_BACKEND_URL=http://api
+      - PORT=3000
+    expose:
+      - "3000"
+    depends_on:
+      - api
 
   api:
     image: ${REGISTRY}/rtn-tests-api:${IMAGE_TAG}
