@@ -74,6 +74,7 @@ frontend-yarn-install:
 
 frontend-ready:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
+
 frontend-lint-style:
 	docker compose run --rm frontend-node-cli yarn prettier-check
 
@@ -82,6 +83,9 @@ frontend-format:
 
 frontend-test:
 	docker compose run --rm frontend-node-cli yarn test --watchAll=false
+
+frontend-analyze:
+	docker compose run --rm frontend-node-cli yarn lint
 
 build: build-gateway build-frontend build-api
 
