@@ -2,6 +2,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import tailwind from "eslint-plugin-tailwindcss";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -21,7 +22,6 @@ const eslintConfig = defineConfig([
       "react/style-prop-object": "error",
       "no-console": ["warn", { "allow": ["warn", "error"] }],
       "prefer-const": "error",
-      "semi": "error",
       "tailwindcss/no-custom-classname": "warn",
     }
   },
@@ -33,6 +33,7 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  eslintConfigPrettier,
 ]);
 
 export default eslintConfig;
