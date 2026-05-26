@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
+    "prettier-fix": "prettier --write .",
+    "prettier-check": "prettier --check .",
     "test:watch": "jest --watch"
   },
   "dependencies": {

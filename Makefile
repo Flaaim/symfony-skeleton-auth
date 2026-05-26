@@ -6,10 +6,12 @@ up: docker-up
 down: docker-down
 restart: down up
 check: lint analyze test
-lint: api-lint
-analyze: api-analyze
+lint: api-lint frontend-lint-style
+analyze: api-analyze frontend-analyze
 test: api-test frontend-test
 api-test: unit-test functional-test
+format: api-cs-fix frontend-format
+
 
 docker-up:
 	docker compose up -d
@@ -72,6 +74,11 @@ frontend-yarn-install:
 
 frontend-ready:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
+frontend-lint-style:
+	docker compose run --rm frontend-node-cli yarn prettier-check
+
+frontend-format:
+	docker compose run --rm frontend-node-cli yarn prettier-fix
 
 frontend-test:
 	docker compose run --rm frontend-node-cli yarn test --watchAll=false
