@@ -16,6 +16,7 @@ export default function SiteLayout({children}: Readonly<{
       </header>
       <main className="col-start-2 col-end-4">
         {children}
+        <Toaster position="top-center" richColors />
       </main>
       <footer className="col-start-2 col-end-4">
         Footer
