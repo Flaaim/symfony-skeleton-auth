@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Handjet } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import React from "react";
 
-const handJet = Handjet({
-  variable: "--font-handjet",
+
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["cyrillic"],
   weight: ["400"],
 });
@@ -21,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${handJet.className} flex min-h-full flex-col antialiased`}>
+      <body className={`${inter.className} flex min-h-full flex-col antialiased`}>
         {children}
       </body>
     </html>
