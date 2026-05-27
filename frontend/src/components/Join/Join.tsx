@@ -1,11 +1,14 @@
 import Link from "next/link";
+import JoinForm from "@/components/Join/JoinForm/JoinForm";
 
 
 export default function Join() {
   return (
     <>
-      <h1 className="text-4xl font-extrabold text-gray-600 sm:text-5xl">Присоединиться</h1>
-      <p>Вы тут.</p>
+      <h1>Присоединиться</h1>
+      <div className="flex h-screen items-center justify-center">
+        <JoinForm />
+      </div>
       <Link href='/'>Назад на главную</Link>
     </>
 

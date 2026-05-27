@@ -12,6 +12,12 @@ describe("Join page", () => {
     const testHeading = screen.getByText(/Присоединиться/i)
     expect(testHeading).toBeInTheDocument()
 
+    const inputEmail  = screen.getByLabelText(/Электронная почта/i)
+    const inputPassword  = screen.getByLabelText(/Пароль/i)
+
+    expect(inputEmail).toBeInTheDocument();
+    expect(inputPassword).toBeInTheDocument();
+
     const homeLink = screen.getByRole("link", { name: /Назад на главную/i });
     expect(homeLink).toBeInTheDocument();
     expect(homeLink).toHaveAttribute("href", "/");
