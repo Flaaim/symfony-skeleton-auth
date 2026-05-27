@@ -13,7 +13,7 @@ export default function NotFound() {
       <p className="mt-2 text-base text-gray-500">
         Запрашиваемая страница не может быть найдена...
       </p>
-      <Link href="/" className="text-decoration-underline mt-2 text-base">
+      <Link href="/" className="mt-2 text-base underline">
         Вернуться на главную
       </Link>
     </div>
