@@ -85,7 +85,7 @@ frontend-test:
 	docker compose run --rm frontend-node-cli yarn test --watchAll=false
 
 frontend-analyze:
-	docker compose run --rm frontend-node-cli yarn lint
+	docker compose run --rm frontend-node-cli yarn eslint
 
 build: build-gateway build-frontend build-api
 
