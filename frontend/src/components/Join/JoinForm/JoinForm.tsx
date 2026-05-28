@@ -7,11 +7,22 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import JoinAction from "@/actions/auth";
 
 
 const schema = z.object({
   email: z.email("Пожалуйста, введите корректный email адрес."),
-  password: z.string().min(6, "Пароль должен содержать минимум 6 символов.").max(18, "Пароль должен содержать максимум 18 символов.")
+  password: z.string().min(8, "Пароль должен содержать минимум 8 символов.").max(18, "Пароль должен содержать максимум 18 символов."),
+  confirm_password: z.string().min(8, "Пароль должен содержать минимум 8 символов.").max(18, "Пароль должен содержать максимум 18 символов.")
+})
+  .superRefine(({confirm_password, password}, ctx) => {
+    if (confirm_password !== password) {
+      ctx.addIssue({
+        code: "custom",
+        message: 'Пароли не совпадают',
+        path: ['confirm_password'],
+      });
+    }
 })
 
 type FormData = z.infer<typeof schema>
@@ -23,34 +34,39 @@ export default function JoinForm() {
     resolver: zodResolver(schema),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
+      confirm_password: ""
     }
   });
 
-  function onSubmit(values: FormData) {
-    console.log("Отправка на сервер:", values);
+  async function onSubmit(values: FormData) {
+    const result = await JoinAction(values)
 
+    if(!result.success){
+      form.setError("root", { type: "server", message: result.error });
+      return;
+    }
   }
   return (
     <Card className="w-full max-w-md mx-auto shadow-sm">
       <CardHeader className="text-center space-y-2">
-        <CardTitle className="text-2xl font-semibold tracking-tight">Вход в систему</CardTitle>
+        <CardTitle className="text-2xl font-semibold tracking-tight">Регистрация в системе</CardTitle>
           <CardDescription>
-            Введите email и пароль для доступа к аккаунту
+            Зарегистрируйтесь, чтобы получить полный доступ к функциям системы и управлять вашими данными.
           </CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="login-form" onSubmit={form.handleSubmit(onSubmit)} method="POST">
+        <form id="join-form" onSubmit={form.handleSubmit(onSubmit)} method="POST">
           <FieldGroup>
             <Controller
               name="email"
               control={form.control}
               render={({field, fieldState}) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="login-email">Электронная почта</FieldLabel>
+                  <FieldLabel htmlFor="join-email">Электронная почта</FieldLabel>
                   <Input
                     {...field}
-                    id="login-email"
+                    id="join-email"
                     value={field.value}
                     placeholder="Email"
                     aria-invalid={fieldState.invalid}
@@ -67,13 +83,35 @@ export default function JoinForm() {
               control={form.control}
               render={({field, fieldState}) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="login-password">Пароль</FieldLabel>
+                  <FieldLabel htmlFor="join-password">Пароль</FieldLabel>
                   <Input
                     {...field}
-                    id="login-password"
+                    id="join-password"
                     type="password"
                     value={field.value}
-                    placeholder="Пароль"
+                    placeholder="Укажите пароль"
+                    aria-invalid={fieldState.invalid}
+                    autoComplete="current-password"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]}/>
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="confirm_password"
+              control={form.control}
+              render={({field, fieldState}) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="join-confirm-password">Подтвердите пароль</FieldLabel>
+                  <Input
+                    {...field}
+                    id="join-confirm-password"
+                    type="password"
+                    value={field.value}
+                    placeholder="Подтвердите пароль"
                     aria-invalid={fieldState.invalid}
                     autoComplete="current-password"
                   />
@@ -87,14 +125,23 @@ export default function JoinForm() {
         </form>
       </CardContent>
       <CardFooter>
-        <Button
-          type="submit"
-          form="login-form"
-          className="w-full"
-          disabled={form.formState.isSubmitting}
-        >
-          {form.formState.isSubmitting ? "Вход..." : "Войти"}
-        </Button>
+        <div className="pt-4 space-y-4">
+          {form.formState.errors.root && (
+            <div className="text-sm font-medium text-destructive text-center bg-destructive/10 p-2 rounded-md">
+              {form.formState.errors.root.message}
+            </div>
+          )}
+          <Button
+            type="submit"
+            form="join-form"
+            disabled={form.formState.isSubmitting}
+            className="py-2"
+          >
+            {form.formState.isSubmitting ? "Загрузка..." : "Присоединиться"}
+          </Button>
+        </div>
+
+
       </CardFooter>
     </Card>
 
