@@ -9,6 +9,8 @@ import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import JoinAction from "@/actions/auth";
 import Link from "next/link";
+import {useState} from "react";
+import {MailCheck} from "lucide-react";
 
 
 const schema = z.object({
@@ -29,6 +31,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export default function JoinByEmail() {
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({
     mode: 'onBlur',
@@ -47,6 +50,36 @@ export default function JoinByEmail() {
       form.setError("root", { type: "server", message: result.error });
       return;
     }
+    setIsSuccess(true)
+  }
+  if(isSuccess){
+    return (
+      <Card className="w-full max-w-md mx-auto shadow-sm text-center py-6">
+        <CardHeader className="space-y-4">
+          <div className="mx-auto bg-green-100 p-4 rounded-full w-fit">
+            <MailCheck className="w-10 h-10 text-green-600" />
+          </div>
+          <CardTitle className="text-2xl font-semibold tracking-tight">
+            Проверьте вашу почту
+          </CardTitle>
+          <CardDescription className="text-base">
+            Мы отправили письмо со ссылкой для подтверждения на адрес<br/>
+            <strong className="text-foreground">{form.getValues("email")}</strong>.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Пожалуйста, перейдите по ссылке в письме, чтобы завершить регистрацию и активировать аккаунт.
+          </p>
+        </CardContent>
+        <CardFooter>
+          <Button variant="link" className="w-full">
+            <Link href="/join/login">Вернуться на страницу входа</Link>
+          </Button>
+        </CardFooter>
+
+      </Card>
+    );
   }
   return (
     <div className="flex h-screen items-center justify-center">
