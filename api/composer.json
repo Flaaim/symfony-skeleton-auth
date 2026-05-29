@@ -13,7 +13,7 @@
         "doctrine/migrations": "^3.9",
         "doctrine/orm": "^3.6",
         "guzzlehttp/guzzle": "^7.10",
-        "league/oauth2-server": "^9.3",
+        "league/oauth2-server-bundle": "^1.1",
         "ramsey/uuid": "^4.9.2",
         "sentry/sentry-symfony": "^5.10",
         "symfony/console": "8.0.*",

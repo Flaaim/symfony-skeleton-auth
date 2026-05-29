@@ -29,9 +29,9 @@ doctrine:
             OAuth:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/OAuth/Entity'
-                prefix: 'App\OAuth\Entity'
-                alias: OAuth
+                dir: '%kernel.project_dir%/src/Oauth/Entity'
+                prefix: 'App\Oauth\Entity'
+                alias: Oauth
 
 when@test:
     doctrine:

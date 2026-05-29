@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\OAuth\Test\Builder;
+namespace App\Oauth\Test\Builder;
 
 use App\OAuth\Entity\AccessToken;
 use App\OAuth\Entity\Client;
