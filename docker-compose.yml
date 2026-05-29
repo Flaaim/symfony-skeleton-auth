@@ -68,10 +68,15 @@ services:
       TELEGRAM_CHAT_ID: 1954013093
       SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
       JWT_ENCRYPTION_KEY: secret
+      JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
+      JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
     volumes:
       - ./api:/app
     depends_on:
       - api-postgres
+    secrets:
+      - jwt_public_key
+      - jwt_private_key
 
   api-php-cli:
     build:
@@ -100,6 +105,11 @@ services:
       TELEGRAM_CHAT_ID: 1954013093
       SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
       JWT_ENCRYPTION_KEY: secret
+      JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
+      JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+    secrets:
+      - jwt_public_key
+      - jwt_private_key
 
   api-postgres:
     image: postgres:18-alpine
@@ -114,6 +124,13 @@ services:
 
   mailer:
     image: mailhog/mailhog
+
+secrets:
+  jwt_public_key:
+    file: ./docker/development/secrets/jwt_public.key
+  jwt_private_key:
+    file: ./docker/development/secrets/jwt_private.key
+
 
 volumes:
   api-postgres:

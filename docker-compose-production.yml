@@ -55,6 +55,11 @@ services:
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       SENTRY_DSN: ${SENTRY_DSN}
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
+      JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
+      JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+    secrets:
+      - jwt_public_key
+      - jwt_private_key
 
   api-php-cli:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
@@ -79,6 +84,11 @@ services:
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       SENTRY_DSN: ${SENTRY_DSN}
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
+      JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
+      JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+    secrets:
+      - jwt_public_key
+      - jwt_private_key
 
   api-postgres:
     image: postgres:12.2-alpine
@@ -92,3 +102,9 @@ services:
 
 volumes:
   api-postgres:
+
+secrets:
+  jwt_public_key:
+    file: ./secrets/jwt_public.key
+  jwt_private_key:
+    file: ./secrets/jwt_private.key
