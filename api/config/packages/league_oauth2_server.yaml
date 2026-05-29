@@ -1,9 +1,13 @@
 league_oauth2_server:
     authorization_server:
-        private_key: '%env(resolve:OAUTH_PRIVATE_KEY)%'
+        private_key: '%env(resolve:JWT_PRIVATE_KEY_PATH)%'
         encryption_key: '%env(resolve:JWT_ENCRYPTION_KEY)%'
+        access_token_ttl: PT10M
+        refresh_token_ttl: P7D
+        auth_code_ttl: PT1M
+
     resource_server:
-        public_key: '%env(resolve:OAUTH_PUBLIC_KEY)%'
+        public_key: '%env(resolve:JWT_PUBLIC_KEY_PATH)%'
     scopes:
         available: ['email']
         default: ['email']
