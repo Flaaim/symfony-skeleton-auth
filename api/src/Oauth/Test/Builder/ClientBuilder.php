@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Oauth\Test\Builder;
 
-use App\OAuth\Entity\Client;
+use App\Oauth\Entity\Client;
 use Ramsey\Uuid\Uuid;
 
 final class ClientBuilder

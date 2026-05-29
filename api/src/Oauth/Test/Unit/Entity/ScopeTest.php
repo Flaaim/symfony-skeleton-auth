@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Oauth\Test\Unit\Entity;
 
-use App\OAuth\Entity\Scope;
+use App\Oauth\Entity\Scope;
 use PHPUnit\Framework\TestCase;
 
 /**

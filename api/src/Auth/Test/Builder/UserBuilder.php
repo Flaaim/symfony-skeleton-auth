@@ -16,7 +16,7 @@ final class UserBuilder
 {
     private Id $id;
     private Email $email;
-    private string $hash;
+    private string $passwordHash;
     private DateTimeImmutable $date;
     private Token $joinConfirmToken;
     private ?Role $role = null;
@@ -30,7 +30,7 @@ final class UserBuilder
     {
         $this->id = Id::generate();
         $this->email = new Email('mail@example.com');
-        $this->hash = 'hash';
+        $this->passwordHash = 'hash';
         $this->date = new DateTimeImmutable();
         $this->joinConfirmToken = new Token(Uuid::uuid4()->toString(), $this->date->modify('+1 day'));
     }
@@ -41,7 +41,12 @@ final class UserBuilder
         $clone->id = $id;
         return $clone;
     }
-
+    public function withPasswordHash(string $passwordHash): self
+    {
+        $clone = clone $this;
+        $clone->passwordHash = $passwordHash;
+        return $clone;
+    }
     public function withRole(Role $role): self
     {
         $clone = clone $this;
@@ -92,7 +97,7 @@ final class UserBuilder
             $this->id,
             $this->date,
             $this->email,
-            $this->hash,
+            $this->passwordHash,
             $this->joinConfirmToken
         );
 

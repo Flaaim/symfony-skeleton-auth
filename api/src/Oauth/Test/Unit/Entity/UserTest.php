@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Oauth\Test\Unit\Entity;
 
-use App\OAuth\Entity\User;
+use App\Oauth\Entity\User;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

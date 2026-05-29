@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Oauth\Test\Unit\Entity;
 
-use App\OAuth\Entity\RefreshToken;
-use App\OAuth\Test\Builder\AccessTokenBuilder;
-use App\OAuth\Test\Builder\ClientBuilder;
+use App\Oauth\Entity\RefreshToken;
+use App\Oauth\Test\Builder\AccessTokenBuilder;
+use App\Oauth\Test\Builder\ClientBuilder;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
