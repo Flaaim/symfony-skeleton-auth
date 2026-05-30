@@ -38,7 +38,7 @@ final class UserFixture extends AbstractFixture
             new Id('00000000-0000-0000-0000-000000000002'),
             $date = new DateTimeImmutable('-30 days'),
             new Email('flaaim@list.ru'),
-            $passwordHasher->hash('123456'),
+            $passwordHasher->hash('12345678'),
             new Token($value = Uuid::uuid4()->toString(), $date->modify('+1 day'))
         );
 
