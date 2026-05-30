@@ -1,14 +1,9 @@
 "use server"
 
-import { cookies } from "next/headers";
+import { JoinData, LoginData } from "@/interfaces/auth.interface";
+import {cookies} from "next/headers";
 
-interface JoinData {
-  email: string,
-  password: string,
-  confirm_password?: string
-}
-
-export default async function JoinAction(data: JoinData) {
+export async function JoinAction(data: JoinData) {
   const { confirm_password, ...payload } = data;
 
   try {

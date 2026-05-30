@@ -1,7 +1,7 @@
 import {render, screen } from "@testing-library/react";
 import JoinByEmail from "./JoinByEmail";
 import userEvent from "@testing-library/user-event";
-import JoinAction from "../../../actions/auth";
+import {JoinAction} from "../../../actions/auth";
 
 jest.mock("../../../actions/auth", () => {
   const mockFn = jest.fn();
