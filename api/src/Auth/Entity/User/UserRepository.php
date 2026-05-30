@@ -94,7 +94,15 @@ final class UserRepository
         /** @var User $user */
         return $user;
     }
-
+    public function findByEmail(Email $email): ?User
+    {
+        $user = $this->repo->findOneBy(['email' => $email->getValue()]);
+        if (!$user) {
+            return null;
+        }
+        /** @var User $user */
+        return $user;
+    }
     public function add(User $user): void
     {
         $this->em->persist($user);

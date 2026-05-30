@@ -7,6 +7,7 @@ namespace Tests\Functional\OAuth;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\ArraySubsetAssertTrait;
+use Tests\Functional\Auth\Join\RequestFixture;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
@@ -27,68 +28,19 @@ final class AuthorizeTest extends WebTestCase
 
     public function testWithoutParams(): void
     {
-        self::markTestIncomplete();
-        $this->client->request('GET', '/authorize');
-
+        $this->client->request('POST', '/token');
         self::assertEquals(400, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testPageWithoutChallenge(): void
-    {
-        self::markTestIncomplete();
-
-        $this->client->request(
-            'GET',
-            '/authorize?' . http_build_query([
-                'response_type' => 'code',
-                'client_id' => 'frontend',
-                'redirect_uri' => 'http://localhost:3000/oauth',
-                'scope' => 'common',
-                'state' => 'sTaTe',
-            ])
-        );
-
-        self::assertEquals(401, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testPageWithChallenge(): void
-    {
-        self::markTestIncomplete();
-
-        $this->client->request(
-            'GET',
-            '/authorize?' . http_build_query([
-                'response_type' => 'code',
-                'client_id' => 'frontend',
-                'code_challenge' => PKCE::challenge(PKCE::verifier()),
-                'code_challenge_method' => 'S256',
-                'redirect_uri' => 'http://localhost:3000/oauth',
-                'scope' => 'common',
-                'state' => 'sTaTe',
-            ])
-        );
-
-        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
-        self::assertNotEmpty($content = (string)$this->client->getResponse()->getContent());
-        self::assertStringContainsString('<title>Авторизация</title>', $content);
     }
 
     public function testInvalidClient(): void
     {
-        self::markTestIncomplete();
-
-        $this->client->request(
-            'GET',
-            '/authorize?' . http_build_query([
-                'response_type' => 'code',
-                'client_id' => 'invalid',
-                'redirect_uri' => 'http://localhost:3000/oauth',
-                'code_challenge' => PKCE::challenge(PKCE::verifier()),
-                'code_challenge_method' => 'S256',
-                'scope' => 'common',
-                'state' => 'sTaTe',
-            ])
-        );
+        $this->client->request('POST', '/token',[
+            'grant_type' => 'password',
+            'client_id' => 'invalid',
+            'client_secret' => 'my-super-secret-123',
+            'username' => AuthorizeFixture::ACTIVE_EMAIL,
+            'password' => AuthorizeFixture::PASSWORD,
+        ]);
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
         self::assertJson($content = (string)$this->client->getResponse()->getContent());
@@ -102,91 +54,62 @@ final class AuthorizeTest extends WebTestCase
 
     public function testAuthActiveUser(): void
     {
-        self::markTestIncomplete();
-
-        $this->client->request(
-            'POST',
-            '/authorize?' . http_build_query([
-                'response_type' => 'code',
+        $this->client->request('POST', '/token', [
+                'grant_type' => 'password',
                 'client_id' => 'frontend',
-                'redirect_uri' => 'http://localhost:3000/oauth',
-                'code_challenge' => PKCE::challenge(PKCE::verifier()),
-                'code_challenge_method' => 'S256',
-                'scope' => 'common',
-                'state' => 'sTaTe',
-            ]),
-            [
-                'email' => 'aCTive@app.test',
-                'password' => 'password',
+                'client_secret' => 'my-super-secret-123',
+                'username' => AuthorizeFixture::ACTIVE_EMAIL,
+                'password' => AuthorizeFixture::PASSWORD,
             ]
         );
 
-        self::assertEquals(302, $this->client->getResponse()->getStatusCode());
-        self::assertNotEmpty($location = $this->client->getResponse()->getHeaderLine('Location'));
+        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        /** @var array{query:string} $url */
-        $url = parse_url($location);
+        self::assertJson($content = (string)$this->client->getResponse()->getContent());
 
-        self::assertNotEmpty($url['query']);
+        $data = Json::decode($content);
 
-        /** @var array{code:string,state:string} $query */
-        parse_str($url['query'], $query);
-
-        self::assertArrayHasKey('code', $query);
-        self::assertNotEmpty($query['code']);
-        self::assertArrayHasKey('state', $query);
-        self::assertEquals('sTaTe', $query['state']);
+        self::assertArraySubset([
+            'token_type' => 'Bearer',
+            'expires_in' => 600,
+        ], $data);
     }
 
     public function testAuthWaitUser(): void
     {
-        self::markTestIncomplete();
-
-        $this->client->request(
-            'POST',
-            '/authorize?' . http_build_query([
-                'response_type' => 'code',
-                'client_id' => 'frontend',
-                'redirect_uri' => 'http://localhost:3000/oauth',
-                'code_challenge' => PKCE::challenge(PKCE::verifier()),
-                'code_challenge_method' => 'S256',
-                'scope' => 'common',
-                'state' => 'sTaTe',
-            ]),
+        $this->client->request('POST', '/token',
             [
-                'email' => 'wait@app.test',
-                'password' => 'password',
+                'grant_type' => 'password',
+                'client_id' => 'frontend',
+                'client_secret' => 'my-super-secret-123',
+                'username' => AuthorizeFixture::WAIT_EMAIL,
+                'password' => AuthorizeFixture::PASSWORD,
             ]
         );
 
-        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(401, $this->client->getResponse()->getStatusCode());
         self::assertNotEmpty($content = (string)$this->client->getResponse()->getContent());
         self::assertStringContainsString('User is not confirmed.', $content);
     }
 
     public function testAuthInvalidUser(): void
     {
-        self::markTestIncomplete();
-
-        $this->client->request(
-            'POST',
-            '/authorize?' . http_build_query([
-                'response_type' => 'code',
+        $this->client->request('POST', '/token' , [
+                'grant_type' => 'password',
                 'client_id' => 'frontend',
-                'redirect_uri' => 'http://localhost:3000/oauth',
-                'code_challenge' => PKCE::challenge(PKCE::verifier()),
-                'code_challenge_method' => 'S256',
-                'scope' => 'common',
-                'state' => 'sTaTe',
-            ]),
-            [
-                'email' => 'active@app.test',
+                'client_secret' => 'my-super-secret-123',
+                'username' => AuthorizeFixture::ACTIVE_EMAIL,
                 'password' => '',
             ]
         );
 
         self::assertEquals(400, $this->client->getResponse()->getStatusCode());
-        self::assertNotEmpty($content = (string)$this->client->getResponse()->getContent());
-        self::assertStringContainsString('Incorrect email or password.', $content);
+
+        self::assertJson($body = (string)$this->client->getResponse()->getContent());
+        $data = Json::decode($body);
+
+        self::assertArraySubset([
+            'error' => 'invalid_request',
+        ], $data);
     }
 }

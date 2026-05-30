@@ -9,6 +9,7 @@ use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\User;
+use App\Auth\Service\PasswordHasher;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 
@@ -16,7 +17,7 @@ final class UserBuilder
 {
     private Id $id;
     private Email $email;
-    private string $passwordHash;
+    private string $password;
     private DateTimeImmutable $date;
     private Token $joinConfirmToken;
     private ?Role $role = null;
@@ -25,14 +26,16 @@ final class UserBuilder
     private ?string $identity = null;
     private ?Token $newEmailChangeToken = null;
     private ?Email $newEmail = null;
+    private PasswordHasher $hasher;
 
     public function __construct()
     {
         $this->id = Id::generate();
         $this->email = new Email('mail@example.com');
-        $this->passwordHash = 'hash';
+        $this->password = '123456';
         $this->date = new DateTimeImmutable();
         $this->joinConfirmToken = new Token(Uuid::uuid4()->toString(), $this->date->modify('+1 day'));
+        $this->hasher = new PasswordHasher(16);
     }
 
     public function withId(Id $id): self
@@ -41,10 +44,10 @@ final class UserBuilder
         $clone->id = $id;
         return $clone;
     }
-    public function withPasswordHash(string $passwordHash): self
+    public function withPassword(string $password): self
     {
         $clone = clone $this;
-        $clone->passwordHash = $passwordHash;
+        $clone->password = $password;
         return $clone;
     }
     public function withRole(Role $role): self
@@ -97,7 +100,7 @@ final class UserBuilder
             $this->id,
             $this->date,
             $this->email,
-            $this->passwordHash,
+            $this->hasher->hash($this->password),
             $this->joinConfirmToken
         );
 

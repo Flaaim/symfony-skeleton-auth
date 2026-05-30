@@ -9,6 +9,7 @@ use App\Auth\Service\PasswordHasher;
 use App\Auth\Entity\User\UserRepository as DomainUserRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 
 final class UserRepository implements UserRepositoryInterface
@@ -25,10 +26,11 @@ final class UserRepository implements UserRepositoryInterface
         ClientEntityInterface $clientEntity
     ): ?UserEntityInterface
     {
-        $user = $this->domainUserRepository->getByEmail(new Email($username));
 
-        if (!$user) {
-            return null;
+        $user = $this->domainUserRepository->findByEmail(new Email($username));
+
+        if($user->isWait()){
+            throw OAuthServerException::accessDenied('User is not confirmed.');
         }
 
         if(!$this->passwordHasher->validate($password, $user->getPasswordHash())){
