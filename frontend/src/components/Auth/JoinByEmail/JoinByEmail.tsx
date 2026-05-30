@@ -7,10 +7,10 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import JoinAction from "@/actions/auth";
 import Link from "next/link";
 import {useState} from "react";
 import {MailCheck} from "lucide-react";
+import {JoinAction} from "@/actions/auth";
 
 
 const schema = z.object({
