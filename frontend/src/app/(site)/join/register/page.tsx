@@ -1,4 +1,4 @@
-import JoinByEmail from "@/components/Join/JoinByEmail/JoinByEmail";
+import JoinByEmail from "@/components/Auth/JoinByEmail/JoinByEmail";
 
 export default function Page() {
   return <JoinByEmail />

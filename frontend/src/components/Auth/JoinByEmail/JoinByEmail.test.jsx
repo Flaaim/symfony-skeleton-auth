@@ -8,7 +8,7 @@ jest.mock("../../../actions/auth", () => {
   return {
     __esModule: true,
     default: mockFn,
-    JoinAction: mockFn,  
+    JoinAction: mockFn,
   };
 });
 
@@ -27,6 +27,8 @@ describe('join form', () => {
     expect(screen.getByLabelText("Подтвердите пароль")).toBeInTheDocument();
 
     expect(screen.getByRole("button", {name: "Присоединиться"})).toBeInTheDocument();
+
+    expect(screen.getByRole("link", {name: /Войти в систему/i})).toBeInTheDocument();
   })
 
   it("shows validation errors", async () => {
