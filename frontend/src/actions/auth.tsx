@@ -3,6 +3,7 @@
 import { JoinData, LoginData } from "@/interfaces/auth.interface";
 import {cookies} from "next/headers";
 import {apiFetch} from "@/lib/apiClient";
+import {redirect} from "next/navigation";
 
 export async function JoinAction(data: JoinData) {
   const { confirm_password, ...payload } = data;
@@ -172,4 +173,12 @@ export async function RefreshSessionAction() {
     console.error("Fetch error:", error);
     return {success: false, error: "Не удалось подключиться к серверу API"};
   }
+}
+
+export async function Logout() {
+  const cookieStore = await cookies();
+  cookieStore.delete('refresh_token');
+  cookieStore.delete('access_token');
+
+  redirect("/join/login");
 }

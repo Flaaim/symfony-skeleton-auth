@@ -120,7 +120,9 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    a {
+  }
+  @components {
+    .link {
       @apply text-blue-600 underline-offset-4 hover:text-blue-800 hover:underline transition-colors duration-200;
     }
   }
