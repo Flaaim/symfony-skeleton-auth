@@ -14,11 +14,11 @@ export function middleware(request: NextRequest) {
   }
 
   if(pathname === "/join/login" && token){
-    return NextResponse.redirect(new URL("/user/dashboard", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/user/:path*", "/join/login"],
+  matcher: ["/dashboard/:path*", "/join/login"],
 };
