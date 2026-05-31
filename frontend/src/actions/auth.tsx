@@ -1,9 +1,9 @@
 "use server"
 
-import { JoinData, LoginData } from "@/interfaces/auth.interface";
+import {JoinData, LoginData} from "@/interfaces/auth.interface";
 import {cookies} from "next/headers";
-import {apiFetch} from "@/lib/apiClient";
 import {redirect} from "next/navigation";
+import {apiFetch} from "@/lib/apiClient";
 
 export async function JoinAction(data: JoinData) {
   const { confirm_password, ...payload } = data;
@@ -111,15 +111,8 @@ export async function LoginAction(data: LoginData){
   }
 }
 
-export async function RefreshSessionAction() {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get('refresh_token');
-
-  if(!refreshToken){
-    return { success: false }
-  }
-
-  try {
+export async function RefreshSessionAction(refreshToken: string) {
+  try{
     const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/token`, {
       method: "POST",
       headers: {
@@ -127,52 +120,22 @@ export async function RefreshSessionAction() {
         "Accept": "application/json",
       },
       body: JSON.stringify({
-        refresh_token: refreshToken.value,
+        refresh_token: refreshToken,
         grant_type: "refresh_token",
         client_id: String(process.env.CLIENT_ID),
         client_secret: String(process.env.CLIENT_SECRET)
       })
-    })
-    const responseText = await response.text();
-
-    let result;
-    try {
-      result = responseText ? JSON.parse(responseText) : {};
-    } catch (parseError) {
-      console.error("Ошибка парсинга:", responseText);
-      return { success: false, error: "Сервер вернул некорректный ответ." };
-    }
+    });
 
     if(!response.ok){
-      cookieStore.delete('refresh_token');
-      cookieStore.delete('access_token');
-      return { success: false }
+      return null;
     }
-    if(response.ok && result.access_token){
-      cookieStore.set({
-        name: 'access_token',
-        value: String(result.access_token),
-        httpOnly: true,
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: Number(result.expires_in),
-      })
-      cookieStore.set({
-        name: 'refresh_token',
-        value: String(result.refresh_token),
-        httpOnly: true,
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 2592000
-      })
-
-      return { success: true, access_token: result.access_token };
-    }
-
-  } catch (error) {
-    console.error("Fetch error:", error);
-    return {success: false, error: "Не удалось подключиться к серверу API"};
+    return await response.json();
+  }catch (error){
+    console.error("Auth API Error:", error);
+    return null;
   }
+
 }
 
 export async function Logout() {
