@@ -179,6 +179,7 @@ export default function JoinByEmail() {
 
           <div className="pt-4 space-y-4">
             Есть аккаунт? <Link
+            className="link"
             href="/join/login"
           >Войти в систему</Link>
           </div>

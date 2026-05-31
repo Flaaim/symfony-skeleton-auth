@@ -118,6 +118,7 @@ export default function Login() {
             </div>
             <div className="pt-4 space-y-4">
               Нет аккаунта? <Link
+              className="link"
               href="/join/register"
             >Зарегистрироваться</Link>
             </div>
