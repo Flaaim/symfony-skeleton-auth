@@ -10,6 +10,7 @@ use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 
+/** @psalm-suppress UnusedClass  */
 final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
     private EntityRepository $repo;
@@ -36,7 +37,9 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 
     public function revokeRefreshToken(string $tokenId): void
     {
-        if ($token = $this->repo->find($tokenId)) {
+        $token = $this->repo->find($tokenId);
+
+        if (null !== $token) {
             $this->em->remove($token);
             $this->em->flush();
         }

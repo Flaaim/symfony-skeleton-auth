@@ -28,7 +28,7 @@ final class UserRepository implements UserRepositoryInterface
     ): ?UserEntityInterface {
         $user = $this->domainUserRepository->findByEmail(new Email($username));
 
-        if($user === null) {
+        if (null === $user) {
             return null;
         }
 
@@ -37,7 +37,7 @@ final class UserRepository implements UserRepositoryInterface
         }
 
         $hash = $user->getPasswordHash();
-        if($hash !== null){
+        if (null !== $hash) {
             if (!$this->passwordHasher->validate($password, $hash)) {
                 return null;
             }

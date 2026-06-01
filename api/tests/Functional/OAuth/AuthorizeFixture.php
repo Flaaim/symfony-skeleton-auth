@@ -14,6 +14,7 @@ final class AuthorizeFixture extends AbstractFixture
     public const string ACTIVE_EMAIL = 'active@app.test';
     public const string WAIT_EMAIL = 'wait@app.test';
     public const string PASSWORD = 'password';
+
     public function load(ObjectManager $manager): void
     {
         $user = new UserBuilder()

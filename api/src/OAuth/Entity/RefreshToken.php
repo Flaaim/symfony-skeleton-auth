@@ -11,6 +11,10 @@ use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ * @psalm-suppress ClassMustBeFinal
+ */
 #[ORM\Entity]
 #[ORM\Table(name: 'oauth_refresh_tokens')]
 class RefreshToken implements RefreshTokenEntityInterface
@@ -41,6 +45,7 @@ class RefreshToken implements RefreshTokenEntityInterface
 
     public function getUserIdentifier(): ?string
     {
+        /** @var non-empty-string|null */
         return $this->userIdentifier;
     }
 }

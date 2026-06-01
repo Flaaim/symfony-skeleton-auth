@@ -7,23 +7,26 @@ namespace Tests\Functional\OAuth;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\ArraySubsetAssertTrait;
-use Tests\Functional\Auth\Join\RequestFixture;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class AuthorizeTest extends WebTestCase
 {
     use ArraySubsetAssertTrait;
     private readonly KernelBrowser $client;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = AuthorizeTest::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixtures = new FixturesLoader($container);
         $fixtures->loadFixtures([AuthorizeFixture::class]);
-
     }
 
     public function testWithoutParams(): void
@@ -34,7 +37,7 @@ final class AuthorizeTest extends WebTestCase
 
     public function testInvalidClient(): void
     {
-        $this->client->request('POST', '/token',[
+        $this->client->request('POST', '/token', [
             'grant_type' => 'password',
             'client_id' => 'invalid',
             'client_secret' => 'my-super-secret-123',
@@ -54,7 +57,10 @@ final class AuthorizeTest extends WebTestCase
 
     public function testAuthActiveUser(): void
     {
-        $this->client->request('POST', '/token', [
+        $this->client->request(
+            'POST',
+            '/token',
+            [
                 'grant_type' => 'password',
                 'client_id' => 'frontend',
                 'client_secret' => 'my-super-secret-123',
@@ -77,7 +83,9 @@ final class AuthorizeTest extends WebTestCase
 
     public function testAuthWaitUser(): void
     {
-        $this->client->request('POST', '/token',
+        $this->client->request(
+            'POST',
+            '/token',
             [
                 'grant_type' => 'password',
                 'client_id' => 'frontend',
@@ -94,7 +102,10 @@ final class AuthorizeTest extends WebTestCase
 
     public function testAuthInvalidUser(): void
     {
-        $this->client->request('POST', '/token' , [
+        $this->client->request(
+            'POST',
+            '/token',
+            [
                 'grant_type' => 'password',
                 'client_id' => 'frontend',
                 'client_secret' => 'my-super-secret-123',

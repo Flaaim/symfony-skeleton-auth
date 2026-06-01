@@ -17,6 +17,7 @@ final class User implements UserEntityInterface
 
     public function getIdentifier(): string
     {
+        /** @var non-empty-string */
         return $this->identifier;
     }
 }

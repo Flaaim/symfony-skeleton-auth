@@ -44,12 +44,14 @@ final class UserBuilder
         $clone->id = $id;
         return $clone;
     }
+
     public function withPassword(string $password): self
     {
         $clone = clone $this;
         $clone->password = $password;
         return $clone;
     }
+
     public function withRole(Role $role): self
     {
         $clone = clone $this;

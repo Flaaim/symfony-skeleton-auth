@@ -9,7 +9,7 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 
 final class ClientRepository implements ClientRepositoryInterface
 {
-    /** @var array<Client> */
+    /** @param  array<Client> $clients */
     public function __construct(
         private array $clients = [],
     ) {}

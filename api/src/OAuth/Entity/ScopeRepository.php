@@ -10,9 +10,9 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 
 final class ScopeRepository implements ScopeRepositoryInterface
 {
-    /** @var array<Scope> */
+    /** @param array<Scope> $scopes*/
     public function __construct(
-        private array $scopes,
+        private readonly array $scopes,
     ) {}
 
     public function getScopeEntityByIdentifier(string $identifier): ?ScopeEntityInterface
