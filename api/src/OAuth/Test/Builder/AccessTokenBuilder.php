@@ -29,9 +29,9 @@ final class AccessTokenBuilder
     public function build(Client $client): AccessToken
     {
         $token = new AccessToken($client, $this->scopes);
-
-        if (null !== $this->userIdentifier) {
-            $token->setUserIdentifier($this->userIdentifier);
+        $userIdentifier = $this->userIdentifier;
+        if (null !== $userIdentifier && '' !== $userIdentifier) {
+            $token->setUserIdentifier($userIdentifier);
         }
 
         return $token;
