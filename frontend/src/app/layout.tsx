@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import React from "react";
 
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["cyrillic"],
@@ -22,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${inter.className} flex min-h-full flex-col antialiased`}>
-        {children}
-      </body>
+      <body className={`${inter.className} flex min-h-full flex-col antialiased`}>{children}</body>
     </html>
   );
 }

@@ -1,10 +1,6 @@
-"use client"
+"use client";
 
-import {
-  LayoutDashboard,
-  User,
-  LogOut,
-} from "lucide-react";
+import { LayoutDashboard, User, LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,14 +13,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import {Logout} from "@/actions/auth";
+import { Logout } from "@/actions/auth";
+import { useState } from "react";
 
-const items = [
-  { title: "Панель", url: "/user/dashboard", icon: LayoutDashboard },
-];
-
-export function DashboardSidebar() {
-
+const items = [{ title: "Панель", url: "/user/dashboard", icon: LayoutDashboard }];
+export interface DashboardSidebarProps {
+  email: string;
+}
+export function DashboardSidebar({ email }: DashboardSidebarProps) {
   const handleLogout = async () => {
     await Logout();
   };
@@ -38,7 +34,8 @@ export function DashboardSidebar() {
           <SidebarMenu>
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton >
+                <SidebarMenuButton>
+                  <item.icon />
                   <a href={item.url}>
                     <span>{item.title}</span>
                   </a>
@@ -60,8 +57,7 @@ export function DashboardSidebar() {
                 <User className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">TEST</span>
-                <span className="truncate text-xs">EMAIL</span>
+                <span className="truncate text-xs">{email}</span>
               </div>
             </SidebarMenuButton>
             <SidebarMenuButton onClick={handleLogout} className="text-destructive cursor-pointer">

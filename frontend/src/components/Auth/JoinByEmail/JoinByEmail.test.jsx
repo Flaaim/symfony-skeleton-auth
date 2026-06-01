@@ -1,7 +1,7 @@
-import {render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import JoinByEmail from "./JoinByEmail";
 import userEvent from "@testing-library/user-event";
-import {JoinAction} from "../../../actions/auth";
+import { JoinAction } from "../../../actions/auth";
 
 jest.mock("../../../actions/auth", () => {
   const mockFn = jest.fn();
@@ -12,57 +12,58 @@ jest.mock("../../../actions/auth", () => {
   };
 });
 
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: jest.fn() }),
 }));
 
 const mockJoinAction = jest.mocked(JoinAction);
-describe('join form', () => {
-  it('renders all fields and the submit button', () => {
-
-    render(<JoinByEmail />)
+describe("join form", () => {
+  it("renders all fields and the submit button", () => {
+    render(<JoinByEmail />);
     expect(screen.getByText("Регистрация в системе")).toBeInTheDocument();
     expect(screen.getByLabelText(/Электронная почта/i)).toBeInTheDocument();
     expect(screen.getByLabelText("Пароль")).toBeInTheDocument();
     expect(screen.getByLabelText("Подтвердите пароль")).toBeInTheDocument();
 
-    expect(screen.getByRole("button", {name: "Присоединиться"})).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Присоединиться" })).toBeInTheDocument();
 
-    expect(screen.getByRole("link", {name: /Войти в систему/i})).toBeInTheDocument();
-  })
+    expect(screen.getByRole("link", { name: /Войти в систему/i })).toBeInTheDocument();
+  });
 
   it("shows validation errors", async () => {
-    const user = userEvent.setup()
+    const user = userEvent.setup();
 
-    render(<JoinByEmail />)
+    render(<JoinByEmail />);
 
     const emailInput = screen.getByLabelText(/Электронная почта/i);
-    const passwordInput = screen.getByLabelText("Пароль")
-    const confirmPasswordInput = screen.getByLabelText("Подтвердите пароль")
+    const passwordInput = screen.getByLabelText("Пароль");
+    const confirmPasswordInput = screen.getByLabelText("Подтвердите пароль");
 
     await user.type(emailInput, "invalid-email");
     await user.click(passwordInput);
 
-    expect(await screen.findByText(/Пожалуйста, введите корректный email адрес/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Пожалуйста, введите корректный email адрес/i)
+    ).toBeInTheDocument();
 
     await user.type(passwordInput, "123");
-    await user.click(emailInput)
-    expect(await screen.findByText(/Пароль должен содержать минимум 8 символов/i)).toBeInTheDocument();
+    await user.click(emailInput);
+    expect(
+      await screen.findByText(/Пароль должен содержать минимум 8 символов/i)
+    ).toBeInTheDocument();
 
     await user.type(passwordInput, "12345678");
     await user.type(confirmPasswordInput, "123456789");
-    await user.click(emailInput)
+    await user.click(emailInput);
 
     expect(await screen.findByText(/Пароли не совпадают/i));
-
-  })
+  });
 
   it("show success card", async () => {
-    const user = userEvent.setup()
-    mockJoinAction.mockResolvedValue({ success: true })
+    const user = userEvent.setup();
+    mockJoinAction.mockResolvedValue({ success: true });
 
-
-    render(<JoinByEmail/>);
+    render(<JoinByEmail />);
 
     const emailInput = screen.getByLabelText(/Электронная почта/i);
     const passwordInput = screen.getByLabelText("Пароль");
@@ -77,7 +78,5 @@ describe('join form', () => {
 
     const successTitle = await screen.findByText(/Проверьте вашу почту/i);
     expect(successTitle).toBeInTheDocument();
-
-  })
-
+  });
 });

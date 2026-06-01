@@ -1,47 +1,55 @@
-"use client"
+"use client";
 
-import {z} from "zod";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
+import { z } from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {LoginAction} from "@/actions/auth";
-import { useRouter } from 'next/navigation';
+import { LoginAction } from "@/actions/auth";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   email: z.email("Пожалуйста, введите корректный email адрес."),
-  password: z.string().min(8, "Пароль должен содержать минимум 8 символов.").max(18, "Пароль должен содержать максимум 18 символов."),
+  password: z
+    .string()
+    .min(8, "Пароль должен содержать минимум 8 символов.")
+    .max(18, "Пароль должен содержать максимум 18 символов."),
 });
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>;
 
 export default function Login() {
   const router = useRouter();
-
 
   const form = useForm({
     mode: "onSubmit",
     resolver: zodResolver(schema),
     defaultValues: {
       email: "",
-      password: ""
-    }
-  })
+      password: "",
+    },
+  });
 
   async function onSubmit(values: FormData) {
-    const result = await LoginAction(values)
+    const result = await LoginAction(values);
 
     if (!result.success) {
-      form.setError("root", {type: "server", message: result.error});
+      form.setError("root", { type: "server", message: result.error });
       return;
     }
 
-    router.push('/user/dashboard');
+    router.push("/user/dashboard");
   }
-
 
   return (
     <div className="flex h-screen items-center justify-center">
@@ -58,7 +66,7 @@ export default function Login() {
               <Controller
                 name="email"
                 control={form.control}
-                render={({field, fieldState}) => (
+                render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="login-email">Электронная почта</FieldLabel>
                     <Input
@@ -69,16 +77,14 @@ export default function Login() {
                       aria-invalid={fieldState.invalid}
                       autoComplete="email"
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]}/>
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
               <Controller
                 name="password"
                 control={form.control}
-                render={({field, fieldState}) => (
+                render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="login-password">Пароль</FieldLabel>
                     <Input
@@ -90,9 +96,7 @@ export default function Login() {
                       aria-invalid={fieldState.invalid}
                       autoComplete="password"
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]}/>
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -117,14 +121,14 @@ export default function Login() {
               </Button>
             </div>
             <div className="pt-4 space-y-4">
-              Нет аккаунта? <Link
-              className="link"
-              href="/join/register"
-            >Зарегистрироваться</Link>
+              Нет аккаунта?{" "}
+              <Link className="link" href="/join/register">
+                Зарегистрироваться
+              </Link>
             </div>
           </div>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
