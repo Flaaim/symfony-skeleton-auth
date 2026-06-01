@@ -36,6 +36,6 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
 
     public function isAccessTokenRevoked(string $tokenId): bool
     {
-        // TODO: Implement isAccessTokenRevoked() method.
+        return false;
     }
 }
