@@ -1,4 +1,4 @@
-import {cookies, headers} from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export async function apiFetch(url: string, options: RequestInit = {}): Promise<Response> {
   const { headers: customHeaders, ...restOptions } = options;
@@ -6,7 +6,7 @@ export async function apiFetch(url: string, options: RequestInit = {}): Promise<
   const headersList = await headers();
   const cookieStore = await cookies();
 
-  const access_token = headersList.get('x-access-token') || cookieStore.get("access_token")?.value;
+  const access_token = headersList.get("x-access-token") || cookieStore.get("access_token")?.value;
 
   const fetchHeaders = new Headers(customHeaders);
 
@@ -18,5 +18,4 @@ export async function apiFetch(url: string, options: RequestInit = {}): Promise<
     ...restOptions,
     headers: Object.fromEntries(fetchHeaders.entries()),
   });
-
 }
