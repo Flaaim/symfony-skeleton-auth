@@ -132,8 +132,46 @@ export async function RefreshSessionAction(refreshToken: string) {
 
 export async function Logout() {
   const cookieStore = await cookies();
+  const refreshToken = cookieStore.get("refresh_token")?.value;
+
+  if (refreshToken) {
+    try {
+      await fetch(`${process.env.INTERNAL_BACKEND_URL}/v1/auth/token/revoke`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ token: refreshToken }),
+      });
+    } catch (error) {
+      console.error("Revoke API Error:", error);
+    }
+  }
+
   cookieStore.delete("refresh_token");
   cookieStore.delete("access_token");
 
   redirect("/join/login");
+}
+
+export async function joinConfirm(token: string): Promise<ActionResponse> {
+  try {
+    const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/v1/auth/join/confirm`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ token: token }),
+    });
+    const parsed = await handleApiResponse(response);
+    if (!parsed.ok) {
+      return { success: false, error: parsed.error };
+    }
+    return { success: true };
+  } catch (error) {
+    console.error("Join confirm token request error:", error);
+    return { success: false, error: "Не удалось подключиться к серверу API." };
+  }
 }

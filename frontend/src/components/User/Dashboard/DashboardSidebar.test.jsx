@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import {DashboardSidebar} from "./DashboardSidebar";
-import {SidebarProvider} from "../../ui/sidebar";
+import { DashboardSidebar } from "./DashboardSidebar";
+import { SidebarProvider } from "../../ui/sidebar";
 
 beforeAll(() => {
-  Object.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, "matchMedia", {
     writable: true,
-    value: jest.fn().mockImplementation(query => ({
+    value: jest.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -16,8 +16,7 @@ beforeAll(() => {
       dispatchEvent: jest.fn(),
     })),
   });
-})
-
+});
 
 describe("show sidebar panel", () => {
   it("render email", () => {
@@ -25,8 +24,8 @@ describe("show sidebar panel", () => {
       <SidebarProvider>
         <DashboardSidebar email="test@email.com" />
       </SidebarProvider>
-    )
+    );
 
-    expect(screen.getByRole("button", {name: "test@email.com"})).toBeInTheDocument();
-  })
-})
+    expect(screen.getByRole("button", { name: "test@email.com" })).toBeInTheDocument();
+  });
+});

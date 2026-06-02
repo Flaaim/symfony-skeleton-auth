@@ -89,7 +89,9 @@ export default function JoinByEmail() {
         </CardContent>
         <CardFooter>
           <Button variant="link" className="w-full">
-            <Link href="/join/login">Вернуться на страницу входа</Link>
+            <Link className="link" href="/join/login">
+              Вернуться на страницу входа
+            </Link>
           </Button>
         </CardFooter>
       </Card>
