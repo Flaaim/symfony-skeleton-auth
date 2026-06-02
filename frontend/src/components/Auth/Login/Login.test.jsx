@@ -27,7 +27,13 @@ describe("Login form", () => {
     expect(screen.getByLabelText("Электронная почта")).toBeInTheDocument();
     expect(screen.getByLabelText("Пароль")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Войти" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Зарегистрироваться" })).toBeInTheDocument();
+
+    const registerLink = screen.getByRole("link", { name: "Зарегистрироваться" });
+    expect(registerLink).toHaveAttribute('href', '/join/register');
+
+    const forgotPassword = screen.getByRole("link", {name: "Забыли свой пароль?"});
+    expect(forgotPassword).toHaveAttribute('href', '/join/reset');
+
   });
 
   it("shows validations errors", async () => {
