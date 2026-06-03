@@ -96,9 +96,9 @@ export default function Login() {
                       aria-invalid={fieldState.invalid}
                       autoComplete="password"
                     />
-                    <div className="items-end flex">
+                    <div className="items-rigth flex">
                       <Link
-                        href="/join/reset"
+                        href="/join/reset/request"
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                       >
                         Забыли свой пароль?
