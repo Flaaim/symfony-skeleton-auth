@@ -22,7 +22,7 @@ const eslintConfig = defineConfig([
       "react/style-prop-object": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "prefer-const": "error",
-      "tailwindcss/no-custom-classname": "warn",
+      "tailwindcss/no-custom-classname": "off",
     },
   },
   // Override default ignores of eslint-config-next.
