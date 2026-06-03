@@ -53,7 +53,7 @@ export async function middleware(request: NextRequest) {
         secure: process.env.NODE_ENV === "production",
         maxAge: 2592000,
       });
-    } catch (error) {
+    } catch {
       return NextResponse.redirect(new URL("/join/login", request.url));
     }
   }

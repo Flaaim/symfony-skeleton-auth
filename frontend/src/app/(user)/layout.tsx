@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import { toast, Toaster } from "sonner";
+import { Toaster } from "sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/User/Dashboard/DashboardSidebar";
 import { fetchEmail } from "@/actions/user";
@@ -20,14 +20,14 @@ export default async function UserDashboardLayout({
     <SidebarProvider>
       <div className="grid min-h-screen w-full grid-cols-[auto_1fr] max-[765px]:grid-cols-1">
         <DashboardSidebar email={data.email} />
-        <div className="flex flex-col min-h-screen">
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background">
+        <div className="flex min-h-screen flex-col">
+          <header className="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
-            <div className="h-4 w-px bg-border my-auto mx-2" />
+            <div className="bg-border mx-2 my-auto h-4 w-px" />
             <span className="font-medium">Панель пользователя</span>
           </header>
           <main className="flex-1 p-6 max-[765px]:p-2.5">{children}</main>
-          <footer className="p-4 border-t text-sm text-muted-foreground">Footer</footer>
+          <footer className="text-muted-foreground border-t p-4 text-sm">Footer</footer>
         </div>
       </div>
 

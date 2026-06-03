@@ -14,7 +14,7 @@ interface TokenResponseData {
 }
 async function handleApiResponse(
   response: Response
-): Promise<ApiResponse<T = any>> {
+): Promise<ApiResponse<T>> {
   const text = await response.text();
   let data;
 

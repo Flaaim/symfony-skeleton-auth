@@ -59,7 +59,7 @@ export default function JoinByEmail() {
   async function onSubmit(values: FormData) {
     const result = await JoinAction(values);
 
-    if (!result.success) {
+    if (!result.ok) {
       form.setError("root", { type: "server", message: result.error });
       return;
     }
@@ -67,10 +67,10 @@ export default function JoinByEmail() {
   }
   if (isSuccess) {
     return (
-      <Card className="w-full max-w-md mx-auto shadow-sm text-center py-6">
+      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
-          <div className="mx-auto bg-green-100 p-4 rounded-full w-fit">
-            <MailCheck className="w-10 h-10 text-green-600" />
+          <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
+            <MailCheck className="h-10 w-10 text-green-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Проверьте вашу почту
@@ -82,7 +82,7 @@ export default function JoinByEmail() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Пожалуйста, перейдите по ссылке в письме, чтобы завершить регистрацию и активировать
             аккаунт.
           </p>
@@ -99,8 +99,8 @@ export default function JoinByEmail() {
   }
   return (
     <div className="flex h-screen items-center justify-center">
-      <Card className="w-full max-w-md mx-auto shadow-sm">
-        <CardHeader className="text-center space-y-2">
+      <Card className="mx-auto w-full max-w-md shadow-sm">
+        <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Регистрация в системе
           </CardTitle>
@@ -174,9 +174,9 @@ export default function JoinByEmail() {
         </CardContent>
         <CardFooter>
           <div className="flex flex-col">
-            <div className="pt-4 space-y-4">
+            <div className="space-y-4 pt-4">
               {form.formState.errors.root && (
-                <div className="text-sm font-medium text-destructive text-center bg-destructive/10 p-2 rounded-md">
+                <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
                   {form.formState.errors.root.message}
                 </div>
               )}
@@ -184,13 +184,13 @@ export default function JoinByEmail() {
                 type="submit"
                 form="join-form"
                 disabled={form.formState.isSubmitting}
-                className="py-2 cursor-pointer"
+                className="cursor-pointer py-2"
               >
                 {form.formState.isSubmitting ? "Загрузка..." : "Присоединиться"}
               </Button>
             </div>
 
-            <div className="pt-4 space-y-4">
+            <div className="space-y-4 pt-4">
               Есть аккаунт?{" "}
               <Link className="link" href="/join/login">
                 Войти в систему

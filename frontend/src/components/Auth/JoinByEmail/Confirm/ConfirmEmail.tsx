@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useSearchParams } from "next/navigation";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { JSX, Suspense, useEffect, useRef, useState } from "react";
-import { CheckCircle2, Loader2, MailOpen, XCircle } from "lucide-react";
+import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { joinConfirm } from "@/actions/auth";
 import { ActionResponse } from "@/interfaces/response.interface";
 import Link from "next/link";
@@ -52,10 +52,10 @@ const ConfirmEmailContent = (): JSX.Element => {
     initializeConfirmToken();
   }, [token]);
   return (
-    <Card className="w-full max-w-md mx-auto shadow-sm text-center py-6">
+    <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
       <CardHeader className="space-y-4">
         <div
-          className={`mx-auto p-4 rounded-full w-fit ${
+          className={`mx-auto w-fit rounded-full p-4 ${
             loading
               ? "bg-blue-100 text-blue-600"
               : error || (result && !result.success)
@@ -63,9 +63,9 @@ const ConfirmEmailContent = (): JSX.Element => {
                 : "bg-green-100 text-green-600"
           }`}
         >
-          {loading && <Loader2 className="w-10 h-10 animate-spin" />}
-          {(error || (result && !result.success)) && <XCircle className="w-10 h-10" />}
-          {result?.success && <CheckCircle2 className="w-10 h-10" />}
+          {loading && <Loader2 className="h-10 w-10 animate-spin" />}
+          {(error || (result && !result.success)) && <XCircle className="h-10 w-10" />}
+          {result?.success && <CheckCircle2 className="h-10 w-10" />}
         </div>
         <CardTitle className="text-2xl font-semibold tracking-tight">
           {loading ? "Проверка данных..." : "Подтверждение почты"}

@@ -43,7 +43,7 @@ export default function Login() {
   async function onSubmit(values: FormData) {
     const result = await LoginAction(values);
 
-    if (!result.success) {
+    if (!result.ok) {
       form.setError("root", { type: "server", message: result.error });
       return;
     }
@@ -53,8 +53,8 @@ export default function Login() {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <Card className="w-full max-w-md mx-auto shadow-sm">
-        <CardHeader className="text-center space-y-2">
+      <Card className="mx-auto w-full max-w-md shadow-sm">
+        <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-semibold tracking-tight">Вход в систему</CardTitle>
           <CardDescription>
             Войдите в свой аккаунт, чтобы продолжить работу и управлять вашими данными.
@@ -96,7 +96,7 @@ export default function Login() {
                       aria-invalid={fieldState.invalid}
                       autoComplete="password"
                     />
-                    <div className="flex items-rigth">
+                    <div className="items-end flex">
                       <Link
                         href="/join/reset"
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
@@ -113,9 +113,9 @@ export default function Login() {
         </CardContent>
         <CardFooter>
           <div className="flex flex-col">
-            <div className="pt-2 space-y-2">
+            <div className="space-y-2 pt-2">
               {form.formState.errors.root && (
-                <div className="text-sm font-medium text-destructive text-center bg-destructive/10 p-2 rounded-md">
+                <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
                   {form.formState.errors.root.message}
                 </div>
               )}
@@ -123,12 +123,12 @@ export default function Login() {
                 type="submit"
                 form="login-form"
                 disabled={form.formState.isSubmitting}
-                className="py-2 cursor-pointer"
+                className="cursor-pointer py-2"
               >
                 {form.formState.isSubmitting ? "Загрузка..." : "Войти"}
               </Button>
             </div>
-            <div className="pt-4 space-y-4">
+            <div className="space-y-4 pt-4">
               Нет аккаунта?{" "}
               <Link className="link" href="/join/register">
                 Зарегистрироваться
