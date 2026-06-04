@@ -7,6 +7,7 @@ namespace App\OAuth\Entity;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+
 /** @psalm-suppress UnusedClass */
 final class AccessTokenRepository implements AccessTokenRepositoryInterface
 {

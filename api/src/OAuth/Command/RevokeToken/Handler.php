@@ -26,7 +26,7 @@ final class Handler
 
             if (is_file($keyContent)) {
                 $keyContent = file_get_contents($keyContent);
-                if($keyContent === false) {
+                if (false === $keyContent) {
                     throw new Exception('Unable to read key file.');
                 }
             }
@@ -39,7 +39,7 @@ final class Handler
                 $decrypted = Crypto::decryptWithPassword($cleanToken, $keyContent);
                 $payload = json_decode($decrypted, true);
             }
-            if (is_array($payload) && isset($payload['refresh_token_id'])) {
+            if (\is_array($payload) && isset($payload['refresh_token_id'])) {
                 $this->refreshTokenRepository->revokeRefreshToken($payload['refresh_token_id']);
             }
         } catch (Exception $e) {

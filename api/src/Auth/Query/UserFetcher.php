@@ -8,13 +8,11 @@ use App\Auth\ReadModel\UserFetcherInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
-
 final class UserFetcher implements UserFetcherInterface
 {
     public function __construct(
         private readonly Connection $connection
-    )
-    {}
+    ) {}
 
     /**
      * @throws Exception
@@ -24,7 +22,7 @@ final class UserFetcher implements UserFetcherInterface
         $qb = $this->connection->createQueryBuilder();
         $qb->select('id, email')
             ->from('users')
-            ->where("id = :id")
+            ->where('id = :id')
             ->setParameter('id', $id)
             ->executeQuery();
 

@@ -20,6 +20,7 @@ final class RequestAction
         private readonly Handler $handler,
         private readonly Security $security,
     ) {}
+
     public function __invoke(): Response
     {
         /** @var UserAdapter|null $userAdapter */
