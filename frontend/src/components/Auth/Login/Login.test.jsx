@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import Login from "./Login";
 import userEvent from "@testing-library/user-event";
 
@@ -13,7 +13,7 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("../../../actions/auth", () => ({
   __esModule: true,
-  LoginAction: jest.fn().mockResolvedValue({ success: true }),
+  LoginAction: jest.fn().mockResolvedValue({ ok: true }),
 }));
 
 describe("Login form", () => {
@@ -32,7 +32,7 @@ describe("Login form", () => {
     expect(registerLink).toHaveAttribute("href", "/join/register");
 
     const forgotPassword = screen.getByRole("link", { name: "Забыли свой пароль?" });
-    expect(forgotPassword).toHaveAttribute("href", "/join/reset");
+    expect(forgotPassword).toHaveAttribute("href", "/join/reset/request");
   });
 
   it("shows validations errors", async () => {
@@ -66,7 +66,6 @@ describe("Login form", () => {
     await user.type(emailInput, "flaaim@list.ru");
     await user.type(passwordInput, "12345678");
     await user.click(submitButton);
-
     expect(mockPush).toHaveBeenCalledWith("/user/dashboard");
   });
 });
