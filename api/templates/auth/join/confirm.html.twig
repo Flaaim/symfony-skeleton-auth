@@ -1,10 +1,38 @@
 {% extends 'mail.html.twig' %}
 
+{% block title %}Подтверждение регистрации | RTN-TEST.RU{% endblock %}
+{% block preheader %}Завершите регистрацию, подтвердив ваш адрес электронной почты.{% endblock %}
+
 {% block body %}
+    <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #0f172a;">Здравствуйте!</h2>
 
-    <p style="margin: 0 0 10px 0">Confirm your email:</p>
+    <p style="margin: 0 0 25px 0;">
+        Спасибо за регистрацию. Чтобы завершить создание аккаунта и получить полный доступ к тестам, пожалуйста, подтвердите ваш адрес электронной почты, нажав на кнопку ниже.
+    </p>
 
-    {% set url = frontend_url('join/email', {'token': token} ) %}
-    <p style="margin: 0"><a style="color: #1a8aee; text-decoration: none" href="{{ url }}"><span style="color: #1a8aee; text-decoration: underline">{{ url }}</span></a></p>
+    {% set url = frontend_url('join/confirm', {'token': token } ) %}
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px;">
+        <tr>
+            <td align="center">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="center" style="border-radius: 6px;" bgcolor="#2563eb">
+                            <a href="{{ url }}" target="_blank" style="font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px; padding: 14px 30px; border: 1px solid #2563eb; display: inline-block; font-weight: bold;">
+                                Подтвердить email
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin: 0 0 10px 0; font-size: 14px; color: #64748b;">
+        Если кнопка не работает, скопируйте и вставьте эту ссылку в адресную строку браузера:
+    </p>
+    <p style="margin: 0; font-size: 14px; word-break: break-all;">
+        <a style="color: #2563eb; text-decoration: underline;" href="{{ url }}">{{ url }}</a>
+    </p>
 
 {% endblock %}
