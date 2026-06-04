@@ -184,18 +184,16 @@ export async function joinConfirm(token: string): Promise<ApiResponse> {
   }
 }
 
-export async function requestResetPassword(email: string): Promise<ApiResponse> {
+export async function passwordResetRequest(email: string): Promise<ApiResponse> {
   try {
-    const response = await fetch(API.auth.requestResetPassword(),
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ email: email }),
-      }
-    );
+    const response = await fetch(API.auth.passwordResetRequest(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ email: email }),
+    });
     const parsed = await handleApiResponse(response);
     if (!parsed.ok) {
       return { ok: false, error: parsed.error };
@@ -203,6 +201,27 @@ export async function requestResetPassword(email: string): Promise<ApiResponse> 
     return { ok: true };
   } catch (error) {
     console.error("Join confirm token request error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function passwordResetConfirm(token: string, password: string): Promise<ApiResponse> {
+  try{
+    const response = await fetch(API.auth.passwordResetConfirm(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ token: token, password: password }),
+    });
+    const parsed = await handleApiResponse(response);
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
+    }
+    return { ok: true };
+  }catch (error){
+    console.error("Join confirm password reset error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
