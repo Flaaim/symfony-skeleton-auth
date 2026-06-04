@@ -15,9 +15,9 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { requestResetPassword } from "@/actions/auth";
 import { MailCheck } from "lucide-react";
 import Link from "next/link";
+import {passwordResetRequest} from "@/actions/auth";
 
 const schema = z.object({
   email: z.email("Пожалуйста, введите корректный email адрес."),
@@ -36,7 +36,7 @@ export default function RequestResetPassword() {
     },
   });
   async function onSubmit(values: FormData) {
-    const result = await requestResetPassword(values.email);
+    const result = await passwordResetRequest(values.email)
     if (!result.ok) {
       form.setError("root", { type: "server", message: result.error });
       return;

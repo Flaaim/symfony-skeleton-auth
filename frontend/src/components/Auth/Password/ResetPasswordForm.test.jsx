@@ -1,22 +1,18 @@
 import ResetPasswordForm from "./ResetPasswordForm";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event/dist/cjs/index.js";
-import { requestResetPassword } from "../../../actions/auth";
+import { passwordResetRequest } from "../../../actions/auth";
 
 jest.mock("../../../actions/auth", () => {
   const mockFn = jest.fn();
   return {
     __esModule: true,
     default: mockFn,
-    requestResetPassword: mockFn,
+    passwordResetRequest: mockFn,
   };
 });
 
-jest.mock("next/navigation", () => ({
-  useRouter: () => ({ push: jest.fn() }),
-}));
-
-const mockRequestResetPassword = jest.mocked(requestResetPassword);
+const mockRequestResetPassword = jest.mocked(passwordResetRequest);
 describe("Reset password form", () => {
   it("renders email field and the submit button", () => {
     render(<ResetPasswordForm />);
@@ -43,7 +39,7 @@ describe("Reset password form", () => {
 
   it("show success card", async () => {
     const user = userEvent.setup();
-    mockRequestResetPassword.mockResolvedValue({ success: true });
+    mockRequestResetPassword.mockResolvedValue({ ok: true });
 
     render(<ResetPasswordForm />);
     const emailInput = screen.getByLabelText("Электронная почта");
@@ -52,7 +48,7 @@ describe("Reset password form", () => {
     await user.type(emailInput, "valid@email.ru");
     await user.click(submitButton);
 
-    const successTitle = await screen.findByText(/Проверьте вашу почту/i);
+    const successTitle = await screen.findByText("Проверьте вашу почту");
     expect(successTitle).toBeInTheDocument();
   });
 });
