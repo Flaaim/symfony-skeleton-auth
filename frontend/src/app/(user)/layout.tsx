@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/User/Dashboard/DashboardSidebar";
 import { fetchUser } from "@/actions/auth";
+import {redirect} from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Панель пользователя",
@@ -15,11 +16,17 @@ export default async function UserDashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const response = await fetchUser();
+  let profile;
+  try{
+    profile = await fetchUser();
+  }catch (error){
+    console.error("Ошибка авторизации в лейауте, перенаправление...", error);
+    redirect('/join/login')
+  }
   return (
     <SidebarProvider>
       <div className="grid min-h-screen w-full grid-cols-[auto_1fr] max-[765px]:grid-cols-1">
-        <DashboardSidebar email={response.data.email} />
+        <DashboardSidebar email={profile.email} />
         <div className="flex min-h-screen flex-col">
           <header className="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />

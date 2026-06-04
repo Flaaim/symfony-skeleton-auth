@@ -1,6 +1,6 @@
 "use server";
 
-import { JoinData, LoginData } from "@/interfaces/auth.interface";
+import {JoinData, LoginData, ProfileDTO} from "@/interfaces/auth.interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ApiResponse } from "@/interfaces/response.interface";
@@ -13,7 +13,7 @@ interface TokenResponseData {
   expires_in: number;
   token_type: string;
 }
-async function handleApiResponse(response: Response): Promise<ApiResponse<T>> {
+async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
   const text = await response.text();
   let data;
 
@@ -227,8 +227,7 @@ export async function passwordResetConfirm(token: string, password: string): Pro
   }
 }
 
-export async function fetchUser(): Promise<ApiResponse> {
-  try{
+export async function fetchUser(): Promise<ProfileDTO> {
     const response = await apiFetch(`/v1/user/profile`, {
       method: "GET",
       headers: {
@@ -236,15 +235,10 @@ export async function fetchUser(): Promise<ApiResponse> {
         Accept: "application/json",
       }
     });
-    const parsed = await handleApiResponse(response);
-    if(!parsed.ok){
-      return { ok: false, error: parsed.error };
+
+    const parsed = await handleApiResponse<ProfileDTO>(response);
+    if(!parsed.ok || !parsed.data){
+      throw new Error(parsed.error || "Не удалось загрузить профиль");
     }
-    return { ok: true, data: parsed.data }
-  }catch (error){
-    console.error("Get user profile error", error);
-    return { ok: false, error: "Не удалось подключиться к серверу API." };
-  }
-
-
+    return parsed.data;
 }
