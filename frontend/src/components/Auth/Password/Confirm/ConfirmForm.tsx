@@ -1,21 +1,26 @@
-"use client"
+"use client";
 
-import {JSX, Suspense, useEffect, useState} from "react";
-import {useSearchParams} from "next/navigation";
-import {z} from "zod";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Check, Loader2, Wrench, XCircle} from "lucide-react";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
+import { JSX, Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { z } from "zod";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Check, Loader2, Wrench, XCircle } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {passwordResetConfirm} from "@/actions/auth";
-
+import { passwordResetConfirm } from "@/actions/auth";
 
 const tokenSchema = z.uuid("Неверный формат токена");
-
 
 const schema = z
   .object({
@@ -46,8 +51,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false)
-
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
@@ -67,7 +71,6 @@ const ResetPasswordFormContent = (): JSX.Element => {
       return;
     }
     setLoading(false);
-
   }, [token]);
 
   const form = useForm({
@@ -101,16 +104,14 @@ const ResetPasswordFormContent = (): JSX.Element => {
     );
   }
 
-  if(isSuccess) {
+  if (isSuccess) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
             <Check className="h-10 w-10 text-green-600" />
           </div>
-          <CardTitle className="text-2xl font-semibold tracking-tight">
-            Успешно
-          </CardTitle>
+          <CardTitle className="text-2xl font-semibold tracking-tight">Успешно</CardTitle>
           <CardDescription className="text-base">
             Ваш пароль успешно изменен. Используйте его для входа на сайт.
           </CardDescription>
@@ -121,9 +122,9 @@ const ResetPasswordFormContent = (): JSX.Element => {
           </Button>
         </CardFooter>
       </Card>
-    )
+    );
   }
-  if(error){
+  if (error) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
@@ -133,9 +134,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
           <CardTitle className="text-2xl font-semibold tracking-tight">
             <h1>Ошибка доступа</h1>
           </CardTitle>
-          <CardDescription className="text-base text-red-600">
-            {error}
-          </CardDescription>
+          <CardDescription className="text-base text-red-600">{error}</CardDescription>
         </CardHeader>
         <CardFooter className="justify-center">
           <Button variant="outline">
@@ -155,7 +154,8 @@ const ResetPasswordFormContent = (): JSX.Element => {
           <h1>Восстановление доступа</h1>
         </CardTitle>
         <CardDescription>
-          Для того чтобы восстановить доступ к аккаунту, необходимо придумать новый надежный пароль и подтвердить его.
+          Для того чтобы восстановить доступ к аккаунту, необходимо придумать новый надежный пароль
+          и подтвердить его.
         </CardDescription>
       </CardHeader>
       <CardContent className="text-start">
@@ -221,19 +221,26 @@ const ResetPasswordFormContent = (): JSX.Element => {
             </Button>
           </div>
           <div className="space-y-4 pt-4">
-            Вернуться на <Link className="link" href="/join/login">страницу входа</Link>
+            Вернуться на{" "}
+            <Link className="link" href="/join/login">
+              страницу входа
+            </Link>
           </div>
         </div>
       </CardFooter>
     </Card>
   );
-}
-
-
+};
 
 export default function ResetPasswordForm() {
   return (
-    <Suspense fallback={<div className="flex justify-center p-8"><Loader2 className="h-8 w-8 animate-spin text-gray-400" /></div>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        </div>
+      }
+    >
       <ResetPasswordFormContent />
     </Suspense>
   );

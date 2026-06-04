@@ -2,13 +2,20 @@
 
 import { z } from "zod";
 import { useSearchParams } from "next/navigation";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { JSX, Suspense, useEffect, useRef, useState } from "react";
-import {Check, Loader2, XCircle} from "lucide-react";
+import { Check, Loader2, XCircle } from "lucide-react";
 import { joinConfirm } from "@/actions/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {ApiResponse} from "@/interfaces/response.interface";
+import { ApiResponse } from "@/interfaces/response.interface";
 const tokenSchema = z.uuid("Неверный формат токена");
 
 const ConfirmEmailContent = (): JSX.Element => {
@@ -52,7 +59,7 @@ const ConfirmEmailContent = (): JSX.Element => {
     initializeConfirmToken();
   }, [token]);
 
-  if(loading){
+  if (loading) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader>
@@ -69,7 +76,7 @@ const ConfirmEmailContent = (): JSX.Element => {
       </Card>
     );
   }
-  if(result && result.ok){
+  if (result && result.ok) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader>
@@ -81,7 +88,7 @@ const ConfirmEmailContent = (): JSX.Element => {
           </CardTitle>
         </CardHeader>
         <CardDescription className="flex flex-col items-center justify-center space-y-4 pt-6">
-            Ваша почта успешно подтверждена!
+          Ваша почта успешно подтверждена!
         </CardDescription>
         <CardFooter>
           <Button variant="link" className="w-full">
@@ -93,7 +100,7 @@ const ConfirmEmailContent = (): JSX.Element => {
       </Card>
     );
   }
-  if(error || (result && !result.ok)){
+  if (error || (result && !result.ok)) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
@@ -122,7 +129,13 @@ const ConfirmEmailContent = (): JSX.Element => {
 
 export default function ConfirmEmail() {
   return (
-    <Suspense fallback={<div className="flex justify-center p-8"><Loader2 className="h-8 w-8 animate-spin text-gray-400" /></div>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        </div>
+      }
+    >
       <ConfirmEmailContent />
     </Suspense>
   );

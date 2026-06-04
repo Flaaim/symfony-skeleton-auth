@@ -206,7 +206,7 @@ export async function passwordResetRequest(email: string): Promise<ApiResponse> 
 }
 
 export async function passwordResetConfirm(token: string, password: string): Promise<ApiResponse> {
-  try{
+  try {
     const response = await fetch(API.auth.passwordResetConfirm(), {
       method: "POST",
       headers: {
@@ -220,7 +220,7 @@ export async function passwordResetConfirm(token: string, password: string): Pro
       return { ok: false, error: parsed.error };
     }
     return { ok: true };
-  }catch (error){
+  } catch (error) {
     console.error("Join confirm password reset error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }

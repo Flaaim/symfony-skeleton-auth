@@ -55,7 +55,6 @@ describe("join form", () => {
     await user.clear(passwordInput);
     await user.clear(confirmPasswordInput);
 
-
     await user.type(passwordInput, "12345678");
     await user.type(confirmPasswordInput, "123456789");
     await user.click(emailInput);

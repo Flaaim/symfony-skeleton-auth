@@ -11,6 +11,6 @@ export const API = {
     revokeToken: () => BASE_URL + `/v1/auth/token/revoke`,
     joinConfirm: () => BASE_URL + `/v1/auth/join/confirm`,
     passwordResetRequest: () => BASE_URL + `/v1/auth/password/reset/request`,
-    passwordResetConfirm: () => BASE_URL + `/v1/auth/password/reset`
+    passwordResetConfirm: () => BASE_URL + `/v1/auth/password/reset`,
   },
 };
