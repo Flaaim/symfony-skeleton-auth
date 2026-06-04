@@ -44,7 +44,7 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 export default function JoinByEmail() {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   const form = useForm({
     mode: "onBlur",
@@ -73,7 +73,7 @@ export default function JoinByEmail() {
             <MailCheck className="h-10 w-10 text-green-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
-            Проверьте вашу почту
+            <h1>Проверьте вашу почту</h1>
           </CardTitle>
           <CardDescription className="text-base">
             Мы отправили письмо со ссылкой для подтверждения на адрес

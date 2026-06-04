@@ -52,6 +52,10 @@ describe("join form", () => {
       await screen.findByText(/Пароль должен содержать минимум 8 символов/i)
     ).toBeInTheDocument();
 
+    await user.clear(passwordInput);
+    await user.clear(confirmPasswordInput);
+
+
     await user.type(passwordInput, "12345678");
     await user.type(confirmPasswordInput, "123456789");
     await user.click(emailInput);
@@ -61,7 +65,7 @@ describe("join form", () => {
 
   it("show success card", async () => {
     const user = userEvent.setup();
-    mockJoinAction.mockResolvedValue({ success: true });
+    mockJoinAction.mockResolvedValue({ ok: true });
 
     render(<JoinByEmail />);
 

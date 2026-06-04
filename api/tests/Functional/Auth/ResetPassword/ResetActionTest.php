@@ -45,7 +45,7 @@ final class ResetActionTest extends WebTestCase
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
 
-        $this->client->jsonRequest('PUT', '/v1/auth/password/reset', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset', [
             'token' => ResetFixture::ACTIVE_TOKEN,
             'password' => 'new-password',
         ]);
@@ -66,7 +66,7 @@ final class ResetActionTest extends WebTestCase
 
     public function testTokenNotFound(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/auth/password/reset', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset', [
             'token' => Uuid::uuid4()->toString(),
             'password' => 'new-password',
         ]);
@@ -83,7 +83,7 @@ final class ResetActionTest extends WebTestCase
 
     public function testTokenInvalid(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/auth/password/reset', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset', [
             'token' => 'invalid-token',
             'password' => 'new-password',
         ]);
@@ -97,7 +97,7 @@ final class ResetActionTest extends WebTestCase
 
     public function testTokenExpired(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/auth/password/reset', [
+        $this->client->jsonRequest('POST', '/v1/auth/password/reset', [
             'token' => ResetFixture::EXPIRED_TOKEN,
             'password' => 'new-password',
         ]);
