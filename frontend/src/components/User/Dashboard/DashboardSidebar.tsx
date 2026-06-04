@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Logout } from "@/actions/auth";
+import Link from "next/link";
 
 const items = [{ title: "Панель", url: "/user/dashboard", icon: LayoutDashboard }];
 export interface DashboardSidebarProps {
@@ -56,7 +57,7 @@ export function DashboardSidebar({ email }: DashboardSidebarProps) {
                 <User className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate text-xs">{email}</span>
+                <span className="truncate text-xs"><Link href="/user/profile">{email}</Link></span>
               </div>
             </SidebarMenuButton>
             <SidebarMenuButton onClick={handleLogout} className="text-destructive cursor-pointer">
