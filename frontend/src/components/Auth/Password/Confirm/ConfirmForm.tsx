@@ -106,7 +106,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-            <CheckCheck className="h-10 w-10 text-green-600" />
+            <Check className="h-10 w-10 text-green-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Успешно
@@ -233,7 +233,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
 
 export default function ResetPasswordForm() {
   return (
-    <Suspense>
+    <Suspense fallback={<div className="flex justify-center p-8"><Loader2 className="h-8 w-8 animate-spin text-gray-400" /></div>}>
       <ResetPasswordFormContent />
     </Suspense>
   );
