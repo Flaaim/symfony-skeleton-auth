@@ -13,12 +13,16 @@ final class Handler
         private readonly UserFetcherInterface $fetcher,
     ) {}
 
-    public function handle(Query $query): array
+    public function handle(Query $query): ProfileDTO
     {
         $user = $this->fetcher->findDetail($query->userId);
         if (null === $user) {
             throw new DomainException('User not found');
         }
-        return $user;
+
+        return new ProfileDTO(
+            $user['id'],
+            $user['email'],
+        );
     }
 }

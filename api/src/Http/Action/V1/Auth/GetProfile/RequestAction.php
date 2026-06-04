@@ -34,8 +34,8 @@ final class RequestAction
 
         $query = new Query($userId);
 
-        $result = $this->handler->handle($query);
+        $profile = $this->handler->handle($query);
 
-        return new JsonResponse($result, Response::HTTP_OK);
+        return new JsonResponse($profile, Response::HTTP_OK);
     }
 }
