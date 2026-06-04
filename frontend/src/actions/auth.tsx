@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
+import {apiFetch} from "@/lib/apiClient";
 
 interface TokenResponseData {
   access_token: string;
@@ -224,4 +225,26 @@ export async function passwordResetConfirm(token: string, password: string): Pro
     console.error("Join confirm password reset error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
+}
+
+export async function fetchUser(): Promise<ApiResponse> {
+  try{
+    const response = await apiFetch(`/v1/user/profile`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      }
+    });
+    const parsed = await handleApiResponse(response);
+    if(!parsed.ok){
+      return { ok: false, error: parsed.error };
+    }
+    return { ok: true, data: parsed.data }
+  }catch (error){
+    console.error("Get user profile error", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+
+
 }

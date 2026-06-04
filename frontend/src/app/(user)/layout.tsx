@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { Toaster } from "sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/User/Dashboard/DashboardSidebar";
-import { fetchEmail } from "@/actions/user";
+import { fetchUser } from "@/actions/auth";
 
 export const metadata: Metadata = {
   title: "Панель пользователя",
@@ -15,11 +15,11 @@ export default async function UserDashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const data = await fetchEmail();
+  const response = await fetchUser();
   return (
     <SidebarProvider>
       <div className="grid min-h-screen w-full grid-cols-[auto_1fr] max-[765px]:grid-cols-1">
-        <DashboardSidebar email={data.email} />
+        <DashboardSidebar email={response.data.email} />
         <div className="flex min-h-screen flex-col">
           <header className="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
