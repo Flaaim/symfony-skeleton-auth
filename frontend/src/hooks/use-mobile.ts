@@ -4,8 +4,8 @@ const MOBILE_BREAKPOINT = 768;
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean>(() => {
-    if (typeof window === "undefined") return false
-    return window.innerWidth < MOBILE_BREAKPOINT
+    if (typeof window === "undefined") return false;
+    return window.innerWidth < MOBILE_BREAKPOINT;
   });
 
   React.useEffect(() => {
@@ -16,7 +16,7 @@ export function useIsMobile() {
     mql.addEventListener("change", onChange);
     onChange();
 
-    return () => mql.removeEventListener("change", onChange)
+    return () => mql.removeEventListener("change", onChange);
   }, []);
 
   return isMobile;

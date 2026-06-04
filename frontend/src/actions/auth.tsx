@@ -3,8 +3,8 @@
 import { JoinData, LoginData } from "@/interfaces/auth.interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import {ApiResponse} from "@/interfaces/response.interface";
-import {API} from "@/app/api";
+import { ApiResponse } from "@/interfaces/response.interface";
+import { API } from "@/app/api";
 
 interface TokenResponseData {
   access_token: string;
@@ -12,9 +12,7 @@ interface TokenResponseData {
   expires_in: number;
   token_type: string;
 }
-async function handleApiResponse(
-  response: Response
-): Promise<ApiResponse<T>> {
+async function handleApiResponse(response: Response): Promise<ApiResponse<T>> {
   const text = await response.text();
   let data;
 
@@ -47,7 +45,7 @@ export async function JoinAction(data: JoinData): Promise<ApiResponse> {
       },
       body: JSON.stringify({
         email: data.email,
-        password: data.password
+        password: data.password,
       }),
     });
     const parsed = await handleApiResponse(response);
@@ -112,7 +110,9 @@ export async function LoginAction(data: LoginData): Promise<ApiResponse> {
   }
 }
 
-export async function RefreshSessionAction(refreshToken: string): Promise<TokenResponseData | null> {
+export async function RefreshSessionAction(
+  refreshToken: string
+): Promise<TokenResponseData | null> {
   try {
     const response = await fetch(API.auth.refreshToken(), {
       method: "POST",

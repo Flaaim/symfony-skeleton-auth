@@ -3,7 +3,7 @@
 import { apiFetch } from "@/lib/apiClient";
 
 export async function fetchEmail() {
-  const response = await apiFetch("/v1/user/email");
+  const response = await apiFetch("/v1/user/profile");
 
   if (!response.ok) {
     let errorMessage = "Произошла ошибка при запросе";
