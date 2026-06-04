@@ -35,9 +35,6 @@ final class UserProvider implements UserProviderInterface
         } catch (Exception $e) {
             throw new UserNotFoundException('User not found.');
         }
-        if (!$user) {
-            throw new UserNotFoundException('User not found.');
-        }
         return new UserAdapter($user->getId()->getValue());
     }
 }
