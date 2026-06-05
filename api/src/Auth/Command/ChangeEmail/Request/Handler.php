@@ -18,7 +18,6 @@ final class Handler
     public function __construct(
         private readonly UserRepository $users,
         private readonly Tokenizer $tokenizer,
-        private readonly NewEmailConfirmTokenSender $sender,
         private readonly Flusher $flusher
     ) {}
 
