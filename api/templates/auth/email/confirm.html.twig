@@ -10,7 +10,7 @@
         Мы получили запрос на изменение адреса электронной почты для вашего аккаунта. Чтобы подтвердить этот новый адрес, нажмите на кнопку ниже:
     </p>
 
-    {% set url = frontend_url('email/confirm', {'token': token } ) %}
+    {% set url = frontend_url('email/change/confirm', {'token': token } ) %}
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px; margin-top: 15px;">
         <tr>
