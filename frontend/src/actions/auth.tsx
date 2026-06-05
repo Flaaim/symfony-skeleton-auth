@@ -235,10 +235,33 @@ export async function fetchUser(): Promise<ProfileDTO> {
         Accept: "application/json",
       }
     });
-
+    console.log(response)
     const parsed = await handleApiResponse<ProfileDTO>(response);
     if(!parsed.ok || !parsed.data){
       throw new Error(parsed.error || "Не удалось загрузить профиль");
     }
     return parsed.data;
+}
+
+export default async function requestEmailChange(email: string, id: string): Promise<ApiResponse> {
+  try {
+    const response = await apiFetch(API.auth.requestEmailChange(), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({email: email, userId: id}),
+    });
+    console.log(response)
+    const parsed = await handleApiResponse(response);
+
+    if (!parsed.ok) {
+      return {ok: false, error: parsed.error};
+    }
+    return {ok: true};
+  } catch (error) {
+    console.error("Request email change error:", error);
+    return {ok: false, error: "Не удалось подключиться к серверу API."};
+  }
 }
