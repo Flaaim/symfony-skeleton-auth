@@ -84,7 +84,7 @@ export default function RequestResetPassword() {
         <Button variant="ghost" size="sm" className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900">
           <Link href="/user/profile" className="inline-flex items-center">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            <span>Назад в профиль</span>
+            <span>На страницу входа</span>
           </Link>
         </Button>
       </div>
