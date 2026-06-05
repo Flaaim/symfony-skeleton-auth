@@ -5,13 +5,13 @@ import {ProfileDTO} from "@/interfaces/auth.interface";
 import {useState} from "react";
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import requestEmailChange from "@/actions/auth";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {ArrowLeft, Mail, MailCheck} from "lucide-react";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import {requestEmailChange} from "@/actions/auth";
 
 const schema = z.object({
   email: z.email("Пожалуйста, введите корректный email адрес.")

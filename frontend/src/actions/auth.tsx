@@ -243,7 +243,7 @@ export async function fetchUser(): Promise<ProfileDTO> {
     return parsed.data;
 }
 
-export default async function requestEmailChange(email: string, id: string): Promise<ApiResponse> {
+export async function requestEmailChange(email: string, id: string): Promise<ApiResponse> {
   try {
     const response = await apiFetch(API.auth.requestEmailChange(), {
       method: "PUT",
@@ -262,6 +262,27 @@ export default async function requestEmailChange(email: string, id: string): Pro
     return {ok: true};
   } catch (error) {
     console.error("Request email change error:", error);
+    return {ok: false, error: "Не удалось подключиться к серверу API."};
+  }
+}
+
+export async function changeEmailConfirm(token: string): Promise<ApiResponse> {
+  try {
+    const response = await fetch(API.auth.confirmEmailChange(), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({token: token}),
+    });
+    const parsed = await handleApiResponse(response);
+    if (!parsed.ok) {
+      return {ok: false, error: parsed.error};
+    }
+    return {ok: true};
+  } catch (error) {
+    console.error("Change email confirm token request error:", error);
     return {ok: false, error: "Не удалось подключиться к серверу API."};
   }
 }
