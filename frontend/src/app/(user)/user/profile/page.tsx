@@ -1,7 +1,6 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {KeyRound, Mail, Shield, UserIcon} from "lucide-react";
 import {Button} from "@base-ui/react";
-import {ProfileDTO} from "@/interfaces/auth.interface";
 import {fetchUser} from "@/actions/auth";
 import {redirect} from "next/navigation";
 import Link from "next/link";
@@ -71,7 +70,7 @@ export default async function ProfilePage(){
                 <p className="text-base font-medium pl-6">{profile.email}</p>
               </div>
               <Button variant="secondary" size="sm">
-                <Link href="/user/dashboard/profile/change-email">
+                <Link href="/user/profile/change-email">
                   Изменить email
                 </Link>
               </Button>
