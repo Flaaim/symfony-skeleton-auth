@@ -13,4 +13,7 @@ export const API = {
     passwordResetRequest: () => BASE_URL + `/v1/auth/password/reset/request`,
     passwordResetConfirm: () => BASE_URL + `/v1/auth/password/reset`,
   },
+  user: {
+    profile: () => BASE_URL + `/v1/user/profile`
+  }
 };

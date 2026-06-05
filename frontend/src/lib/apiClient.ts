@@ -14,7 +14,9 @@ export async function apiFetch(url: string, options: RequestInit = {}): Promise<
     fetchHeaders.set("Authorization", `Bearer ${access_token}`);
   }
 
-  return await fetch(`${process.env.INTERNAL_BACKEND_URL}${url}`, {
+  const fetchUrl = url.startsWith("http") ? url : `${process.env.INTERNAL_BACKEND_URL}${url}`;
+
+  return await fetch(fetchUrl, {
     ...restOptions,
     headers: Object.fromEntries(fetchHeaders.entries()),
   });
