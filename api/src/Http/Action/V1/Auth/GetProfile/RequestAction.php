@@ -8,7 +8,6 @@ use App\Auth\Query\GetProfile\Handler;
 use App\Auth\Query\GetProfile\Query;
 use App\OAuth\Entity\UserAdapter;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,7 +26,7 @@ final class RequestAction
         $userAdapter = $this->security->getUser();
 
         if (!$userAdapter instanceof UserAdapter) {
-            throw new AccessDeniedException('Access Denied.');
+            return new JsonResponse(['message' => 'Access Denied.'], Response::HTTP_UNAUTHORIZED);
         }
 
         $userId = $userAdapter->getUserIdentifier();
