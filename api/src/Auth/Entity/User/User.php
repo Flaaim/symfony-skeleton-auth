@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Entity\User;
 
 use App\Auth\Event\ChangeEmailRequested;
+use App\Auth\Event\EmailChanged;
 use App\Auth\Event\JoinByEmailRequested;
 use App\Auth\Event\NetworkAttached;
 use App\Auth\Event\PasswordReset;
@@ -229,6 +230,11 @@ final class User implements AggregateRoot
         $this->email = $this->newEmail;
         $this->newEmail = null;
         $this->newEmailToken = null;
+
+        $this->recordEvent(new EmailChanged(
+            $this->getId()->getValue(),
+            $this->email->getValue()
+        ));
     }
 
     public function changeRole(Role $role): void

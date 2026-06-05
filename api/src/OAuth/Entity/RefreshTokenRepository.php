@@ -49,7 +49,16 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     {
         return !$this->exists($tokenId);
     }
-
+    public function revokeForUser(string $identifier): void
+    {
+        $this->repo->createQueryBuilder('t')
+            ->update()
+            ->set('t.revoked', ':revokedStatus')
+            ->where('t.userIdentifier = :identifier')
+            ->setParameter('revokedStatus', true)
+            ->setParameter('identifier', $identifier)
+            ->getQuery()->execute();
+    }
     private function exists(string $id): bool
     {
         return $this->repo->createQueryBuilder('t')
