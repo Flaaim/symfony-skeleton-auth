@@ -286,3 +286,44 @@ export async function changeEmailConfirm(token: string): Promise<ApiResponse> {
     return {ok: false, error: "Не удалось подключиться к серверу API."};
   }
 }
+
+export async function yandexLoginAction(code: string): Promise<ApiResponse>{
+  try{
+    const response = await fetch(API.auth.yandexLogin(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ code }),
+    })
+    const parsed = await handleApiResponse<TokenResponseData>(response);
+    if (!parsed.ok || !parsed.data) {
+      return { ok: false, error: parsed.error || "Ошибка авторизации через Яндекс" };
+    }
+
+    if (parsed.data.access_token) {
+      const cookieStore = await cookies();
+      cookieStore.set({
+        name: "access_token",
+        value: String(parsed.data.access_token),
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: Number(parsed.data.expires_in),
+      });
+      cookieStore.set({
+        name: "refresh_token",
+        value: String(parsed.data.refresh_token),
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 2592000,
+      });
+    }
+    return { ok: true };
+  } catch (error) {
+    console.error("Yandex Auth Error:", error);
+    return { ok: false, error: "Ошибка соединения с сервером" };
+  }
+}
