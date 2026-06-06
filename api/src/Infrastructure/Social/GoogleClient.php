@@ -16,7 +16,7 @@ final class GoogleClient implements ClientInterface
         private readonly string $redirectUri,
     ) {}
 
-    public function fetchUser(string $code): array
+    public function fetchUser(string $code): SocialUserDTO
     {
         $tokenResponse = $this->client->request('POST', 'https://oauth2.googleapis.com/token', [
             'body' => [
@@ -38,10 +38,12 @@ final class GoogleClient implements ClientInterface
             ]
         ]);
         $userData = $infoResponse->toArray();
-        return [
-            'identity' => $userData['id'],
-            'email' => $userData['email'] ?? null,
-        ];
+
+        return new SocialUserDTO(
+            (string)$userData['id'],
+            $this->getProvider(),
+            $userData['email'] ?? null
+        );
     }
 
     public function getProvider(): string

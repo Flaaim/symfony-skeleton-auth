@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Social\Registry;
 
 use App\Infrastructure\Social\ClientInterface;
+use App\Infrastructure\Social\SocialUserDTO;
 
 final class ClientRegistry
 {
@@ -19,12 +20,12 @@ final class ClientRegistry
         }
         $this->clients = $clients;
     }
-    public function create(string $provider): ClientInterface
+    public function create(string $code, string $provider): SocialUserDTO
     {
         foreach ($this->clients as $client) {
             /** @var ClientInterface $client */
             if($client->getProvider() === $provider){
-                return $client;
+                return $client->fetchUser($code);
             }
         }
         throw new \DomainException('Provider {$provider} is not supported.');

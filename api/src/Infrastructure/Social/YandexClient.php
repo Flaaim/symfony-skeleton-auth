@@ -16,7 +16,7 @@ final class YandexClient implements ClientInterface
         private readonly string $clientSecret,
     ) {}
 
-    public function fetchUser(string $code): array
+    public function fetchUser(string $code): SocialUserDTO
     {
         $tokenResponse = $this->client->request('POST', 'https://oauth.yandex.ru/token', [
             'body' => [
@@ -39,10 +39,12 @@ final class YandexClient implements ClientInterface
         ]);
 
         $userData = $infoResponse->toArray();
-        return [
-            'identity' => $userData['id'],
-            'email' => $userData['default_email'] ?? null,
-        ];
+
+        return new SocialUserDTO(
+            (string)$userData['id'],
+            $this->getProvider(),
+            $userData['default_email'] ?? null
+        );
     }
     public function getProvider(): string
     {

@@ -54,27 +54,27 @@ final class SocialGrant extends AbstractGrant
         }
 
         try{
-            $provider = $this->registry->create($network);
-            $socialUser = $provider->fetchUser($code);
+            $socialUser = $this->registry->create($code, $network);
         }catch (\Throwable $e){
-            $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
+            $this->logger->error('Social Auth Error (Provider fetch): {message}', [
                 'message' => $e->getMessage(),
                 'exception' => $e,
             ]);
             throw OAuthServerException::serverError('Ошибка авторизации через соцсеть: ' . $e->getMessage());
         }
-
+        $this->logger->error('Social Auth Error (Provider fetch): {message}', [
+            'message' => $socialUser->email
+        ]);
         try{
-            $emailValue = $socialUser['email'] ?? ($socialUser['identity'] . '@' . $network . '.local');
-            $localUser = $this->domainUserRepository->findByEmail(new Email($emailValue));
+            $localUser = $this->domainUserRepository->findByEmail(new Email($socialUser->email));
             if (!$localUser) {
-                $command = new Command($emailValue, $network, $socialUser['identity']);
+                $command = new Command($socialUser->email, $network, $socialUser->identity);
                 $this->joinHandler->handle($command);
 
-                $localUser = $this->domainUserRepository->findByEmail(new Email($emailValue));
+                $localUser = $this->domainUserRepository->findByEmail(new Email($socialUser->email));
             }
         }catch (\Throwable $e) {
-            $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
+            $this->logger->error('Social Auth Error (Database/Register):', [
                 'message' => $e->getMessage(),
                 'exception' => $e,
             ]);
@@ -100,7 +100,7 @@ final class SocialGrant extends AbstractGrant
 
             return $responseType;
         } catch (\Throwable $e) {
-            $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
+            $this->logger->error('Social Auth Error (Token Generation):', [
                 'message' => $e->getMessage(),
                 'exception' => $e,
             ]);
