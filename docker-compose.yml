@@ -70,6 +70,9 @@ services:
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      YANDEX_CLIENT_ID: 448fcb38cd354521abe6abd7322a21ca
+      YANDEX_CLIENT_SECRET: c28905e0f14d40a9aeff6253c0a16df3
+      NEXT_PUBLIC_YANDEX_REDIRECT_URI: "http://localhost:3000/join/callback/yandex"
     volumes:
       - ./api:/app
     depends_on:
@@ -107,6 +110,9 @@ services:
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      YANDEX_CLIENT_ID: 448fcb38cd354521abe6abd7322a21ca
+      YANDEX_CLIENT_SECRET: c28905e0f14d40a9aeff6253c0a16df3
+      NEXT_PUBLIC_YANDEX_REDIRECT_URI: "http://localhost:3000/join/callback/yandex"
     secrets:
       - jwt_public_key
       - jwt_private_key
