@@ -23,7 +23,7 @@ final class Network
         private User $user,
         #[ORM\Column(type: 'string', length: 16)]
         private string $network,
-        #[ORM\Column(type: 'string', length: 16)]
+        #[ORM\Column(type: 'string', length: 255)]
         private string $identity
     ) {
         Assert::notEmpty($network);
