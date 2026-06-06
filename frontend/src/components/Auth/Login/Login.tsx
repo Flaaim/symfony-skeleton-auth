@@ -49,6 +49,17 @@ export default function Login() {
     const qs = new URLSearchParams(options);
     return `${rootUrl}?${qs.toString()}`;
   }
+  const getGoogleAuthUrl = () => {
+    const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth"
+    const options = {
+      response_type: "code",
+      scope: "email",
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
+    }
+    const qs = new URLSearchParams(options);
+    return `${rootUrl}?${qs.toString()}`;
+  }
   async function onSubmit(values: FormData) {
     const result = await LoginAction(values);
 
@@ -137,10 +148,15 @@ export default function Login() {
                 {form.formState.isSubmitting ? "Загрузка..." : "Войти"}
               </Button>
             </div>
-            <div className="space-y-4 pt-4">
+            <div className="flex gap-2 space-y-4 pt-4">
               <Button variant="outline" type="button" className="cursor-pointer py-2">
                 <Link href={getYandexAuthUrl()}>
                   Войти через Яндекс
+                </Link>
+              </Button>
+              <Button variant="outline" type="button" className="cursor-pointer py-2">
+                <Link href={getGoogleAuthUrl()}>
+                  Войти через Google
                 </Link>
               </Button>
             </div>
