@@ -16,6 +16,7 @@ use League\OAuth2\Server\Grant\AbstractGrant;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
 final class SocialGrant extends AbstractGrant
 {
@@ -23,6 +24,7 @@ final class SocialGrant extends AbstractGrant
         private readonly YandexClient $yandexClient,
         private readonly Handler $joinHandler,
         private readonly UserRepository $domainUserRepository,
+        private readonly LoggerInterface $logger,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
     ) {
         $this->setRefreshTokenRepository($refreshTokenRepository);
@@ -52,6 +54,10 @@ final class SocialGrant extends AbstractGrant
         try{
             $socialUser = $this->yandexClient->fetchUser($code);
         }catch (\Throwable $e){
+            $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
             throw OAuthServerException::serverError('Ошибка авторизации через соцсеть: ' . $e->getMessage());
         }
 
@@ -64,10 +70,18 @@ final class SocialGrant extends AbstractGrant
                 $localUser = $this->domainUserRepository->findByEmail(new Email($socialUser['email']));
             }
         }catch (\Throwable $e) {
+            $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
             throw OAuthServerException::serverError('Ошибка при регистрации через соцсеть: ' . $e->getMessage());
         }
 
         if (!$localUser) {
+            $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
             throw OAuthServerException::serverError('Не удалось получить пользователя после регистрации.');
         }
 
@@ -86,7 +100,10 @@ final class SocialGrant extends AbstractGrant
 
             return $responseType;
         } catch (\Throwable $e) {
-
+            $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
             throw OAuthServerException::serverError('Ошибка на этапе генерации токенов: ' . $e->getMessage());
         }
 
