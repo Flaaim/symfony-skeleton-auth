@@ -69,3 +69,9 @@ services:
         arguments:
             $clientId: '%env(YANDEX_CLIENT_ID)%'
             $clientSecret: '%env(YANDEX_CLIENT_SECRET)%'
+
+    App\Infrastructure\Social\GoogleClient:
+        arguments:
+            $clientId: '%env(GOOGLE_CLIENT_ID)%'
+            $clientSecret: '%env(GOOGLE_CLIENT_SECRET)%'
+            $redirectUri: '%env(GOOGLE_REDIRECT_URL)%'
