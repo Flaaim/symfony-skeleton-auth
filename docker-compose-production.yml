@@ -57,6 +57,12 @@ services:
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_REDIRECT_URI: ${YANDEX_REDIRECT_URI}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URL: ${http://localhost:3000/join/callback/google}
     secrets:
       - jwt_public_key
       - jwt_private_key
@@ -86,6 +92,12 @@ services:
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_REDIRECT_URI: ${YANDEX_REDIRECT_URI}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URL: ${http://localhost:3000/join/callback/google}
     secrets:
       - jwt_public_key
       - jwt_private_key
