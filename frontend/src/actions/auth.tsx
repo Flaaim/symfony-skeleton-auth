@@ -235,7 +235,7 @@ export async function fetchUser(): Promise<ProfileDTO> {
         Accept: "application/json",
       }
     });
-    console.log(response)
+
     const parsed = await handleApiResponse<ProfileDTO>(response);
     if(!parsed.ok || !parsed.data){
       throw new Error(parsed.error || "Не удалось загрузить профиль");
@@ -333,6 +333,55 @@ export async function yandexLoginAction(code: string): Promise<ApiResponse>{
     return { ok: true };
   } catch (error) {
     console.error("Yandex Auth Error:", error);
+    return { ok: false, error: "Ошибка соединения с сервером" };
+  }
+}
+
+export async function googleLoginAction(code:string): Promise<ApiResponse> {
+  const body = new URLSearchParams({
+    grant_type: "social",
+    client_id: "frontend",
+    client_secret: "my-super-secret-123",
+    network: "google",
+    code: code,
+  });
+
+  try{
+    const response = await fetch(API.auth.socialLogin(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
+      },
+      body: body.toString(),
+    })
+    const parsed = await handleApiResponse<TokenResponseData>(response);
+    if (!parsed.ok || !parsed.data) {
+      return { ok: false, error: parsed.error || "Ошибка авторизации через Google" };
+    }
+
+    if (parsed.data.access_token) {
+      const cookieStore = await cookies();
+      cookieStore.set({
+        name: "access_token",
+        value: String(parsed.data.access_token),
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: Number(parsed.data.expires_in),
+      });
+      cookieStore.set({
+        name: "refresh_token",
+        value: String(parsed.data.refresh_token),
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 2592000,
+      });
+    }
+    return { ok: true };
+  }catch (error) {
+    console.error("Google Auth Error:", error);
     return { ok: false, error: "Ошибка соединения с сервером" };
   }
 }
