@@ -14,7 +14,7 @@ export const API = {
     passwordResetConfirm: () => BASE_URL + `/v1/auth/password/reset`,
     requestEmailChange: () => BASE_URL + `/v1/auth/email/change/request`,
     confirmEmailChange: () => BASE_URL + `/v1/auth/email/change/confirm`,
-    yandexLogin: () => BASE_URL + `/v1/auth/join/network/request`
+    yandexLogin: () => BASE_URL + `/token`
   },
   user: {
     profile: () => BASE_URL + `/v1/user/profile`

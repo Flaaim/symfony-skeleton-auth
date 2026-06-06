@@ -288,14 +288,23 @@ export async function changeEmailConfirm(token: string): Promise<ApiResponse> {
 }
 
 export async function yandexLoginAction(code: string): Promise<ApiResponse>{
+
+  const body = new URLSearchParams({
+    grant_type: "social",
+    client_id: "frontend",
+    client_secret: "my-super-secret-123",
+    network: "yandex",
+    code: code,
+  });
+
   try{
     const response = await fetch(API.auth.yandexLogin(), {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
       },
-      body: JSON.stringify({ code }),
+      body: body.toString(),
     })
     const parsed = await handleApiResponse<TokenResponseData>(response);
     if (!parsed.ok || !parsed.data) {
