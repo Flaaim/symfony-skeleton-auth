@@ -7,8 +7,7 @@ namespace App\OAuth\Grant;
 use App\Auth\Command\JoinByNetwork\Command;
 use App\Auth\Command\JoinByNetwork\Handler;
 use App\Auth\Entity\User\Email;
-use App\Infrastructure\Social\YandexClient;
-use App\OAuth\Entity\UserAdapter;
+use App\Infrastructure\Social\ClientInterface;
 use DateInterval;
 use App\Auth\Entity\User\UserRepository;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -21,7 +20,7 @@ use Psr\Log\LoggerInterface;
 final class SocialGrant extends AbstractGrant
 {
     public function __construct(
-        private readonly YandexClient $yandexClient,
+        private readonly ClientInterface $client,
         private readonly Handler $joinHandler,
         private readonly UserRepository $domainUserRepository,
         private readonly LoggerInterface $logger,
@@ -52,7 +51,7 @@ final class SocialGrant extends AbstractGrant
         }
 
         try{
-            $socialUser = $this->yandexClient->fetchUser($code);
+            $socialUser = $this->client->fetchUser($code);
         }catch (\Throwable $e){
             $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
                 'message' => $e->getMessage(),
@@ -78,10 +77,6 @@ final class SocialGrant extends AbstractGrant
         }
 
         if (!$localUser) {
-            $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
-                'message' => $e->getMessage(),
-                'exception' => $e,
-            ]);
             throw OAuthServerException::serverError('Не удалось получить пользователя после регистрации.');
         }
 

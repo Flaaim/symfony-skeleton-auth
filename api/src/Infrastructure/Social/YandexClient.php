@@ -7,7 +7,7 @@ namespace App\Infrastructure\Social;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class YandexClient
+final class YandexClient implements ClientInterface
 {
     public function __construct(
         private readonly HttpClientInterface $client,
