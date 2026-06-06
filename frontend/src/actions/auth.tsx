@@ -298,7 +298,7 @@ export async function yandexLoginAction(code: string): Promise<ApiResponse>{
   });
 
   try{
-    const response = await fetch(API.auth.yandexLogin(), {
+    const response = await fetch(API.auth.socialLogin(), {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
