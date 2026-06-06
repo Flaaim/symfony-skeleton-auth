@@ -16,8 +16,9 @@ parameters:
           secret: 'my-super-secret-123'
           redirect_uri: '%env(FRONTEND_URL)%/oauth'
           grant_types:
-              password:
-              refresh_token:
+              - 'password'
+              - 'refresh_token'
+              - 'social'
 
 
 services:
@@ -40,6 +41,7 @@ services:
         factory: [ 'App\Infrastructure\OAuth\Factory\OAuthRepositoryFactory', 'createClientRepository' ]
         arguments:
             $clients: '%oauth.clients%'
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -62,3 +64,8 @@ services:
     App\Auth\Service\Tokenizer:
         arguments:
             $interval: 'PT1H'
+
+    App\Infrastructure\Social\YandexClient:
+        arguments:
+            $clientId: '%env(YANDEX_CLIENT_ID)%'
+            $clientSecret: '%env(YANDEX_CLIENT_SECRET)%'
