@@ -75,3 +75,7 @@ services:
             $clientId: '%env(GOOGLE_CLIENT_ID)%'
             $clientSecret: '%env(GOOGLE_CLIENT_SECRET)%'
             $redirectUri: '%env(GOOGLE_REDIRECT_URL)%'
+
+    App\Infrastructure\Social\Registry\ClientRegistry:
+        arguments:
+            $clients: ['@App\Infrastructure\Social\GoogleClient', '@App\Infrastructure\Social\YandexClient']

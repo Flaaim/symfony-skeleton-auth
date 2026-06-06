@@ -8,6 +8,9 @@ use App\Auth\Command\JoinByNetwork\Command;
 use App\Auth\Command\JoinByNetwork\Handler;
 use App\Auth\Entity\User\Email;
 use App\Infrastructure\Social\ClientInterface;
+use App\Infrastructure\Social\Registry\ClientRegistry;
+use App\Infrastructure\Social\GoogleClient;
+use App\Infrastructure\Social\YandexClient;
 use DateInterval;
 use App\Auth\Entity\User\UserRepository;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -20,11 +23,11 @@ use Psr\Log\LoggerInterface;
 final class SocialGrant extends AbstractGrant
 {
     public function __construct(
-        private readonly ClientInterface $client,
-        private readonly Handler $joinHandler,
-        private readonly UserRepository $domainUserRepository,
+        private readonly ClientRegistry  $registry,
+        private readonly Handler         $joinHandler,
+        private readonly UserRepository  $domainUserRepository,
         private readonly LoggerInterface $logger,
-        RefreshTokenRepositoryInterface $refreshTokenRepository,
+        RefreshTokenRepositoryInterface  $refreshTokenRepository,
     ) {
         $this->setRefreshTokenRepository($refreshTokenRepository);
         $this->refreshTokenTTL = new \DateInterval('P1M');
@@ -51,7 +54,8 @@ final class SocialGrant extends AbstractGrant
         }
 
         try{
-            $socialUser = $this->client->fetchUser($code);
+            $provider = $this->registry->create($network);
+            $socialUser = $provider->fetchUser($code);
         }catch (\Throwable $e){
             $this->logger->error('Social Auth Error (Yandex fetch): {message}', [
                 'message' => $e->getMessage(),
@@ -61,12 +65,13 @@ final class SocialGrant extends AbstractGrant
         }
 
         try{
-            $localUser = $this->domainUserRepository->findByEmail(new Email($socialUser['email']));
+            $emailValue = $socialUser['email'] ?? ($socialUser['identity'] . '@' . $network . '.local');
+            $localUser = $this->domainUserRepository->findByEmail(new Email($emailValue));
             if (!$localUser) {
-                $command = new Command($socialUser['email'], $network, $socialUser['identity']);
+                $command = new Command($emailValue, $network, $socialUser['identity']);
                 $this->joinHandler->handle($command);
 
-                $localUser = $this->domainUserRepository->findByEmail(new Email($socialUser['email']));
+                $localUser = $this->domainUserRepository->findByEmail(new Email($emailValue));
             }
         }catch (\Throwable $e) {
             $this->logger->error('Social Auth Error (Yandex fetch): {message}', [

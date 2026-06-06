@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Social;
 
+use App\Infrastructure\Social\Registry\Provider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class GoogleClient implements ClientInterface
@@ -41,5 +42,10 @@ final class GoogleClient implements ClientInterface
             'identity' => $userData['id'],
             'email' => $userData['email'] ?? null,
         ];
+    }
+
+    public function getProvider(): string
+    {
+        return Provider::Google->value;
     }
 }

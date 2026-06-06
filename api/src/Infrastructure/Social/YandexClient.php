@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Social;
 
 
+use App\Infrastructure\Social\Registry\Provider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class YandexClient implements ClientInterface
@@ -42,5 +43,9 @@ final class YandexClient implements ClientInterface
             'identity' => $userData['id'],
             'email' => $userData['default_email'] ?? null,
         ];
+    }
+    public function getProvider(): string
+    {
+        return Provider::Yandex->value;
     }
 }
