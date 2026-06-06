@@ -39,7 +39,16 @@ export default function Login() {
       password: "",
     },
   });
-
+  const getYandexAuthUrl = () => {
+    const rootUrl = "https://oauth.yandex.ru/authorize";
+    const options = {
+      response_type: "code",
+      client_id: process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID as string,
+      redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI as string,
+    };
+    const qs = new URLSearchParams(options);
+    return `${rootUrl}?${qs.toString()}`;
+  }
   async function onSubmit(values: FormData) {
     const result = await LoginAction(values);
 
@@ -126,6 +135,13 @@ export default function Login() {
                 className="cursor-pointer py-2"
               >
                 {form.formState.isSubmitting ? "Загрузка..." : "Войти"}
+              </Button>
+            </div>
+            <div className="space-y-4 pt-4">
+              <Button variant="outline" type="button" className="cursor-pointer py-2">
+                <Link href={getYandexAuthUrl()}>
+                  Войти через Яндекс
+                </Link>
               </Button>
             </div>
             <div className="space-y-4 pt-4">
