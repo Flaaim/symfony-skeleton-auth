@@ -71,8 +71,8 @@ services:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
     environment:
       APP_DEBUG: 0
-      SITE_URL: ${API_SITE_URL}
-      SITE_NAME: ${API_SITE_NAME}
+      SITE_URL: ${SITE_URL}
+      SITE_NAME: ${SITE_NAME}
       DB_HOST: api-postgres
       DB_USER: app
       DB_PASSWORD: ${API_DB_PASSWORD}
@@ -83,8 +83,8 @@ services:
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
-      MAILER_FROM_NAME: admin
-      FRONTEND_URL: http://localhost:8000
+      MAILER_FROM_NAME: ${API_MAILER_FROM_NAME}
+      FRONTEND_URL: ${FRONTEND_URL}
       MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
@@ -97,7 +97,7 @@ services:
       YANDEX_REDIRECT_URI: ${YANDEX_REDIRECT_URI}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      GOOGLE_REDIRECT_URL: ${http://localhost:3000/join/callback/google}
+      GOOGLE_REDIRECT_URL: ${GOOGLE_REDIRECT_URL}
     secrets:
       - jwt_public_key
       - jwt_private_key
@@ -107,7 +107,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: app
-      POSTGRES_PASSWORD: ${API_DB_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: app
     volumes:
       - api-postgres:/var/lib/postgresql/data
