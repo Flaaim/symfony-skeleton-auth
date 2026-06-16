@@ -10,5 +10,6 @@ export interface LoginData {
 }
 export interface ProfileDTO {
   id: string
-  email: string
+  email: string,
+  networks: []
 }

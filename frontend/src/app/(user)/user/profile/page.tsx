@@ -1,19 +1,24 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {KeyRound, Mail, Shield, UserIcon} from "lucide-react";
+import {CheckCircle2, KeyRound, Link2, Mail, Shield, UserIcon} from "lucide-react";
 import {Button} from "@base-ui/react";
 import {fetchUser} from "@/actions/auth";
 import {redirect} from "next/navigation";
 import Link from "next/link";
 
-
 export default async function ProfilePage(){
+
   let profile;
-  try{
+
+  try {
     profile = await fetchUser();
-  }catch (error){
+  } catch (error) {
     console.error("Ошибка авторизации в лейауте, перенаправление...", error);
-    redirect('/join/login')
+    redirect('/join/login');
   }
+  const attachedNetworks: string[] = profile.networks || [];
+  const isYandexAttached = attachedNetworks.includes('yandex');
+
+  console.log(profile)
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-4 md:p-8">
       <div>
@@ -89,6 +94,48 @@ export default async function ProfilePage(){
                   Изменить пароль
                 </Link>
               </Button>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="md:col-span-2 shadow-sm">
+          <CardHeader>
+            <div className="flex items-center gap-2 mb-1">
+              <Link2 className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="text-xl">Связанные аккаунты</CardTitle>
+            </div>
+            <CardDescription>
+              Привяжите аккаунты социальных сетей для быстрого и безопасного входа в систему.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#FFCC00] text-black font-bold shadow-sm">
+                  Я
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Яндекс ID</p>
+                  {isYandexAttached ? (
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                      <p className="text-xs text-green-600 font-medium">Привязан</p>
+                    </div>
+                  ) : (
+                    <p className="text-xs text-muted-foreground mt-0.5">Не привязан</p>
+                  )}
+                </div>
+              </div>
+              {isYandexAttached ? (
+                <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                  Отвязать
+                </Button>
+              ) : (
+                <Button variant="secondary" size="sm">
+                  <Link href="/api/auth/attach/yandex">
+                    Привязать
+                  </Link>
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
