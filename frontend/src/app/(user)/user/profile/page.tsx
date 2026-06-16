@@ -15,10 +15,25 @@ export default async function ProfilePage(){
     console.error("Ошибка авторизации в лейауте, перенаправление...", error);
     redirect('/join/login');
   }
-  const attachedNetworks: string[] = profile.networks || [];
-  const isYandexAttached = attachedNetworks.includes('yandex');
 
-  console.log(profile)
+  const getYandexAuthUrl = (isAttach = false) => {
+    const rootUrl = "https://oauth.yandex.ru/authorize";
+
+    const redirectUri = isAttach ? process.env.NEXT_PUBLIC_YANDEX_ATTACH_REDIRECT_URI : process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI
+
+    const options = {
+      response_type: "code",
+      client_id: process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID as string,
+      redirect_uri: redirectUri as string,
+    };
+    const qs = new URLSearchParams(options);
+    return `${rootUrl}?${qs.toString()}`;
+  }
+
+  const attachedNetworks: string[] = profile.networks || [];
+  const isYandexAttached = attachedNetworks.some(net => net.network === "yandex");
+
+  console.log(attachedNetworks)
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-4 md:p-8">
       <div>
@@ -126,12 +141,10 @@ export default async function ProfilePage(){
                 </div>
               </div>
               {isYandexAttached ? (
-                <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
-                  Отвязать
-                </Button>
+                ''
               ) : (
                 <Button variant="secondary" size="sm">
-                  <Link href="/api/auth/attach/yandex">
+                  <Link href={getYandexAuthUrl(true)}>
                     Привязать
                   </Link>
                 </Button>

@@ -385,3 +385,26 @@ export async function googleLoginAction(code:string): Promise<ApiResponse> {
     return { ok: false, error: "Ошибка соединения с сервером" };
   }
 }
+
+
+export async function attachNetworkAction(network: string, code: string) {
+  try {
+    const response = await fetch(API.auth.attachNetwork(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({network:network, code: code})
+    })
+
+    const parsed = await handleApiResponse<TokenResponseData>(response);
+    if (!parsed.ok || !parsed.data) {
+      return { ok: false, error: parsed.error || "Ошибка привязки соцсети" };
+    }
+    return { ok: true };
+  } catch (error) {
+    console.error("Yandex Attach Error:", error);
+    return {ok: false, error: "Ошибка соединения с сервером"};
+  }
+}
