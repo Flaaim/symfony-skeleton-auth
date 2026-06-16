@@ -1,7 +1,9 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN corepack enable
+COPY package.json yarn.lock .yarnrc.yml* ./
+RUN yarn install --immutable
 COPY . .
 
 ARG NEXT_PUBLIC_BACKEND_URL
