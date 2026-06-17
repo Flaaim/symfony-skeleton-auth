@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import {apiFetch} from "@/lib/apiClient";
+import {revalidatePath} from "next/cache";
 
 interface TokenResponseData {
   access_token: string;
@@ -295,6 +296,7 @@ export async function yandexLoginAction(code: string): Promise<ApiResponse>{
     client_secret: "my-super-secret-123",
     network: "yandex",
     code: code,
+    redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI as string
   });
 
   try{
@@ -344,6 +346,7 @@ export async function googleLoginAction(code:string): Promise<ApiResponse> {
     client_secret: "my-super-secret-123",
     network: "google",
     code: code,
+    redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI as string
   });
 
   try{
@@ -387,21 +390,30 @@ export async function googleLoginAction(code:string): Promise<ApiResponse> {
 }
 
 
-export async function attachNetworkAction(network: string, code: string) {
+export async function attachNetworkAction(network: string, code: string, redirectUri: string) {
+
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('access_token')?.value;
+
+  if (!accessToken) {
+    return { ok: false, error: 'Не найден токен авторизации' };
+  }
+
   try {
     const response = await fetch(API.auth.attachNetwork(), {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({network:network, code: code})
+      body: JSON.stringify({network:network, code: code, redirect_uri: redirectUri })
     })
 
-    const parsed = await handleApiResponse<TokenResponseData>(response);
+    const parsed = await handleApiResponse(response);
     if (!parsed.ok || !parsed.data) {
       return { ok: false, error: parsed.error || "Ошибка привязки соцсети" };
     }
+    revalidatePath('/user/profile');
     return { ok: true };
   } catch (error) {
     console.error("Yandex Attach Error:", error);

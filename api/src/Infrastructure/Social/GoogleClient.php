@@ -12,11 +12,10 @@ final class GoogleClient implements ClientInterface
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly string $clientId,
-        private readonly string $clientSecret,
-        private readonly string $redirectUri,
+        private readonly string $clientSecret
     ) {}
 
-    public function fetchUser(string $code): SocialUserDTO
+    public function fetchUser(string $code, string $redirectUri): SocialUserDTO
     {
         $tokenResponse = $this->client->request('POST', 'https://oauth2.googleapis.com/token', [
             'body' => [
@@ -24,7 +23,7 @@ final class GoogleClient implements ClientInterface
                 'code' => $code,
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
-                'redirect_uri' => $this->redirectUri
+                'redirect_uri' => $redirectUri
             ],
         ]);
         $tokenData = $tokenResponse->toArray();

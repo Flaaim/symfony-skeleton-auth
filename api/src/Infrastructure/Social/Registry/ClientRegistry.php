@@ -20,12 +20,12 @@ final class ClientRegistry
         }
         $this->clients = $clients;
     }
-    public function create(string $code, string $provider): SocialUserDTO
+    public function create(string $code, string $provider, string $redirectUri): SocialUserDTO
     {
         foreach ($this->clients as $client) {
             /** @var ClientInterface $client */
             if($client->getProvider() === $provider){
-                return $client->fetchUser($code);
+                return $client->fetchUser($code, $redirectUri);
             }
         }
         throw new \DomainException('Provider {$provider} is not supported.');

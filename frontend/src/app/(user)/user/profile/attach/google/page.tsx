@@ -7,7 +7,7 @@ import {attachNetworkAction} from "@/actions/auth";
 
 
 
-const YandexCallbackContent = () => {
+const GoogleCallbackContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -24,8 +24,8 @@ const YandexCallbackContent = () => {
         router.replace("/user/profile");
         return;
       }
-      const redirectUri = process.env.NEXT_PUBLIC_YANDEX_ATTACH_REDIRECT_URI as string;
-      const result = await attachNetworkAction("yandex", code, redirectUri);
+      const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_ATTACH_REDIRECT_URI as string;
+      const result = await attachNetworkAction("google", code, redirectUri);
 
       if(result.ok){
         router.replace("/user/profile");
@@ -57,7 +57,7 @@ const YandexCallbackContent = () => {
         <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
       </div>
       <h1 className="text-2xl font-semibold tracking-tight mb-2">
-        Связываемся с Яндексом...
+        Связываемся с Google...
       </h1>
       <p className="text-muted-foreground">
         Пожалуйста, подождите, мы настраиваем ваш профиль.
@@ -68,14 +68,14 @@ const YandexCallbackContent = () => {
 
 
 
-export default function YandexCallbackPage() {
+export default function GoogleCallbackPage() {
   return (
     <Suspense fallback={
       <div className="flex min-h-[60vh] items-center justify-center">
         <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
       </div>
     }>
-      <YandexCallbackContent />
+      <GoogleCallbackContent />
     </Suspense>
   );
 }

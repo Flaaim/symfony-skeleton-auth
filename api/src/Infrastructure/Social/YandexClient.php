@@ -16,7 +16,7 @@ final class YandexClient implements ClientInterface
         private readonly string $clientSecret,
     ) {}
 
-    public function fetchUser(string $code): SocialUserDTO
+    public function fetchUser(string $code, string $redirectUri): SocialUserDTO
     {
         $tokenResponse = $this->client->request('POST', 'https://oauth.yandex.ru/token', [
             'body' => [
@@ -24,6 +24,7 @@ final class YandexClient implements ClientInterface
                 'code' => $code,
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
+                'redirect_uri' => $redirectUri
             ],
         ]);
         $tokenData = $tokenResponse->toArray();

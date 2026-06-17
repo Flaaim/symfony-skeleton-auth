@@ -56,11 +56,21 @@ final class UserRepository
             ->select('COUNT(t.id)')
             ->innerJoin('t.networks', 'n')
             ->andWhere('n.network = :network and n.identity = :identity')
-            ->setParameter(':network', $network)
-            ->setParameter(':identity', $identity)
+            ->setParameter('network', $network)
+            ->setParameter('identity', $identity)
             ->getQuery()->getSingleScalarResult() > 0;
     }
-
+    public function findByNetwork(string $network, string $identity): ?User
+    {
+        return $this->repo->createQueryBuilder('u')
+            ->innerJoin('u.networks', 'n')
+            ->andWhere('n.network = :network')
+            ->andWhere('n.identity = :identity')
+            ->setParameter('network', $network)
+            ->setParameter('identity', $identity)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     /**
      * @return object|User|null
      * @psalm-return User|null

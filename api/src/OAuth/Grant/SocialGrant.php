@@ -45,13 +45,14 @@ final class SocialGrant extends AbstractGrant
         $parsedBody = $request->getParsedBody();
         $network = $parsedBody['network'] ?? null;
         $code = $parsedBody['code'] ?? null;
+        $redirectUri = $parsedBody['redirect_uri'] ?? null;
 
-        if (!$network || !$code) {
+        if (!$network || !$code || !$redirectUri) {
             throw OAuthServerException::invalidRequest('network or code');
         }
 
         try{
-            $socialUser = $this->registry->create($code, $network);
+            $socialUser = $this->registry->create($code, $network, $redirectUri);
         }catch (\Throwable $e){
             $this->logger->error('Social Auth Error (Provider fetch): {message}', [
                 'message' => $e->getMessage(),
@@ -63,13 +64,21 @@ final class SocialGrant extends AbstractGrant
             'message' => $socialUser->email
         ]);
         try{
-            $localUser = $this->domainUserRepository->findByEmail(new Email($socialUser->email));
+            $localUser = $this->domainUserRepository->findByNetwork($socialUser->network, $socialUser->identity);
             if (!$localUser) {
-                $command = new Command($socialUser->email, $network, $socialUser->identity);
+
+                $existingEmailUser = $this->domainUserRepository->findByEmail(new Email($socialUser->email));
+                if ($existingEmailUser) {
+                    throw new \DomainException('Пользователь с таким email уже существует. Войдите обычным способом и привяжите аккаунт в настройках профиля.');
+                }
+
+                $command = new Command($socialUser->email, $socialUser->network, $socialUser->identity);
                 $this->joinHandler->handle($command);
 
-                $localUser = $this->domainUserRepository->findByEmail(new Email($socialUser->email));
+                $localUser = $this->domainUserRepository->findByNetwork($socialUser->network, $socialUser->identity);
             }
+        }catch (\DomainException $e){
+            throw OAuthServerException::invalidGrant($e->getMessage());
         }catch (\Throwable $e) {
             $this->logger->error('Social Auth Error (Database/Register):', [
                 'message' => $e->getMessage(),

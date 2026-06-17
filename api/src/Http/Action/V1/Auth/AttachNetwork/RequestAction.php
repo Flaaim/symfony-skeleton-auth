@@ -37,13 +37,14 @@ final class RequestAction
 
         $network = (string)($body['network'] ?? '');
         $code = (string)($body['code'] ?? '');
+        $redirectUri = (string)($body['redirect_uri'] ?? '');
 
-        if($network === '' || $code === '') {
+        if($network === '' || $code === '' || $redirectUri === '') {
             return new JsonResponse(['error' => 'Network and code are required'], Response::HTTP_BAD_REQUEST);
         }
 
         try{
-            $socialUser = $this->socialClientRegistry->create($code, $network);
+            $socialUser = $this->socialClientRegistry->create($code, $network, $redirectUri);
 
             $command = new Command($currentUserId, $socialUser->network, $socialUser->identity);
 
