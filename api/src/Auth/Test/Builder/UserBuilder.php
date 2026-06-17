@@ -118,7 +118,13 @@ final class UserBuilder
         }
 
         if (null !== $this->network && null !== $this->identity) {
-            $user->attachNetwork($this->network, $this->identity);
+            $user = User::joinByNetwork(
+                $this->id,
+                $this->date,
+                $this->email,
+                $this->network,
+                $this->identity
+            );
         }
 
         if (null !== $this->newEmailChangeToken && null !== $this->newEmail) {

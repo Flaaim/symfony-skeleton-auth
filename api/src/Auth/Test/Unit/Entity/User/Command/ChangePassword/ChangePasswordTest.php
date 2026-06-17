@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Test\Unit\Entity\User\Command\ChangePassword;
 
+use App\Auth\Event\PasswordChanged;
 use App\Auth\Service\PasswordHasher;
 use App\Auth\Test\Builder\UserBuilder;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  * @internal
  * @coversNothing
  */
-final class ChangePassword extends TestCase
+final class ChangePasswordTest extends TestCase
 {
     public function testSuccess(): void
     {
@@ -29,8 +30,12 @@ final class ChangePassword extends TestCase
         );
 
         self::assertEquals($hash, $user->getPasswordHash());
-    }
 
+        $events = $user->releaseEvents();
+        $event = end($events);
+
+        self::assertInstanceOf(PasswordChanged::class, $event);
+    }
     public function testWrongCurrent(): void
     {
         $user = new UserBuilder()
@@ -50,7 +55,7 @@ final class ChangePassword extends TestCase
     public function testByNetwork(): void
     {
         $user = new UserBuilder()
-            ->viaNetwork()
+            ->viaNetwork('google', '000001')
             ->build();
 
         $hasher = $this->createHasher(false, 'new-hash');
