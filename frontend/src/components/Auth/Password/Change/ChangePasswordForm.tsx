@@ -7,7 +7,7 @@ import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import {ArrowLeft, Mail, Wrench} from "lucide-react";
+import {ArrowLeft, MailCheck, Wrench} from "lucide-react";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 import {Input} from "@/components/ui/input";
@@ -39,8 +39,10 @@ const schema = z
   });
 
 type FormData = z.infer<typeof schema>;
-
-export default function ChangePasswordForm(){
+interface ChangePasswordFormProps {
+  profile: ProfileDTO
+}
+export default function ChangePasswordForm({profile}: ChangePasswordFormProps){
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({
@@ -62,6 +64,33 @@ export default function ChangePasswordForm(){
 
     setIsSuccess(true);
   }
+  if(isSuccess) {
+    return (
+      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
+        <CardHeader className="space-y-4">
+          <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
+            <MailCheck className="h-10 w-10 text-green-600" />
+          </div>
+          <CardTitle className="text-2xl font-semibold tracking-tight">
+            <h1>Пароль изменён</h1>
+          </CardTitle>
+          <CardDescription className="text-base">
+            Пароль был изменен. На ваш адрес электронной почты отправлено письмо уведомление.
+            <br />
+            <strong className="text-foreground">{profile.email}</strong>.
+          </CardDescription>
+        </CardHeader>
+        <CardFooter>
+          <Button variant="link" className="w-full">
+            <Link className="link" href="/user/profile">
+              Вернуться в профиль
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
       <div className="mb-6">

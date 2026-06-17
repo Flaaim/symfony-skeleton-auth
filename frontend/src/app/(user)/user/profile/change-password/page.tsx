@@ -13,6 +13,6 @@ export default async function ChangePasswordPage() {
     redirect('/join/login')
   }
   return (
-   <ChangePasswordForm />
+   <ChangePasswordForm profile={profile} />
   )
 }
