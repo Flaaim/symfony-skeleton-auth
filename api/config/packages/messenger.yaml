@@ -25,6 +25,7 @@ framework:
             'App\Auth\Event\UserJoinConfirmed': async
             'App\Auth\Event\NetworkAttached': async
             'App\Auth\Event\ChangeEmailRequested': async
+            'App\Auth\Event\PasswordChanged': async
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
 
 when@test:
