@@ -1,6 +1,7 @@
 import RequestChangePassword from "@/components/Auth/Email/ChangeEmailForm";
 import {fetchUser} from "@/actions/auth";
 import {redirect} from "next/navigation";
+import RequestChangeEmail from "@/components/Auth/Email/ChangeEmailForm";
 
 
 export default async function changeEmailPage() {
@@ -12,6 +13,6 @@ export default async function changeEmailPage() {
     redirect('/join/login')
   }
   return (
-    <RequestChangePassword profile={profile}/>
+    <RequestChangeEmail profile={profile}/>
   )
 }

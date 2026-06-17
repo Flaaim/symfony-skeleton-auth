@@ -18,11 +18,11 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
-interface RequestChangePasswordProps {
+interface RequestChangeEmailProps {
   profile: ProfileDTO
 }
 
-export default function RequestChangePassword({profile}: RequestChangePasswordProps) {
+export default function RequestChangeEmail({profile}: RequestChangeEmailProps) {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({
