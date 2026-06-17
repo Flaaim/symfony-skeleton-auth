@@ -11,6 +11,7 @@ import {ArrowLeft, Mail, Wrench} from "lucide-react";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 import {Input} from "@/components/ui/input";
+import {changePassword} from "@/actions/auth";
 
 const schema = z
   .object({
@@ -39,10 +40,7 @@ const schema = z
 
 type FormData = z.infer<typeof schema>;
 
-interface ChangePasswordFormProps{
-  profile: ProfileDTO
-}
-export default function ChangePasswordForm({profile}: ChangePasswordFormProps){
+export default function ChangePasswordForm(){
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({

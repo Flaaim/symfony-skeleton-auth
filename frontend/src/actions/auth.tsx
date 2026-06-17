@@ -420,3 +420,26 @@ export async function attachNetworkAction(network: string, code: string, redirec
     return {ok: false, error: "Ошибка соединения с сервером"};
   }
 }
+
+export async function changePassword(old_password: string, new_password: string) {
+  try {
+    const response = await apiFetch(API.auth.changePassword(), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({old_password: old_password, new_password: new_password}),
+    });
+    console.log(response)
+    const parsed = await handleApiResponse(response);
+
+    if (!parsed.ok) {
+      return {ok: false, error: parsed.error};
+    }
+    return {ok: true};
+  } catch (error) {
+    console.error("Change password error:", error);
+    return {ok: false, error: "Не удалось подключиться к серверу API."};
+  }
+}
