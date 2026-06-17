@@ -118,7 +118,7 @@ export default async function ProfilePage(){
                 <p className="text-base font-medium pl-6">••••••••••••</p>
               </div>
               <Button variant="secondary" size="sm">
-                <Link href="/user/dashboard/profile/change-password">
+                <Link href="/user/profile/change-password">
                   Изменить пароль
                 </Link>
               </Button>
