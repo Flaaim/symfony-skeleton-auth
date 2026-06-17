@@ -34,7 +34,7 @@ export default function RequestChangeEmail({profile}: RequestChangeEmailProps) {
   });
   async function onSubmit(values: FormData) {
 
-    const result = await requestEmailChange(values.email, profile.id);
+    const result = await requestEmailChange(values.email);
 
     if (!result.ok) {
       form.setError("root", { type: "server", message: result.error });

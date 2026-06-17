@@ -244,7 +244,7 @@ export async function fetchUser(): Promise<ProfileDTO> {
     return parsed.data;
 }
 
-export async function requestEmailChange(email: string, id: string): Promise<ApiResponse> {
+export async function requestEmailChange(email: string): Promise<ApiResponse> {
   try {
     const response = await apiFetch(API.auth.requestEmailChange(), {
       method: "PUT",
@@ -252,7 +252,7 @@ export async function requestEmailChange(email: string, id: string): Promise<Api
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({email: email, userId: id}),
+      body: JSON.stringify({email: email}),
     });
     console.log(response)
     const parsed = await handleApiResponse(response);
