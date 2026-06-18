@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Auth\ChangeEmail;
 
+use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\User;
 use App\Auth\Entity\User\UserRepository;
 use App\Auth\Event\ChangeEmailRequested;
+use App\Auth\Service\Tokenizer;
+use App\Infrastructure\Doctrine\Flusher;
+use App\OAuth\Entity\UserAdapter;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
@@ -23,6 +27,8 @@ final class RequestActionTest extends WebTestCase
 {
     private readonly KernelBrowser $client;
     private readonly UserRepository $users;
+    private readonly User $authenticatedUserValid;
+    private readonly Flusher $flusher;
 
     protected function setUp(): void
     {
@@ -34,29 +40,18 @@ final class RequestActionTest extends WebTestCase
 
         /** @var EntityManagerInterface $em */
         $em = $container->get(EntityManagerInterface::class);
+        $this->flusher = new Flusher($em);
+
         $this->users = new UserRepository($em);
-    }
 
-    public function testNotFound(): void
-    {
-        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
-            'userId' => Uuid::uuid4()->toString(),
-            'email' => 'email@email.com',
-        ]);
-
-        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
-
-        self::assertJson($body = $this->client->getResponse()->getContent());
-        $data = Json::decode($body);
-
-        self::assertEquals(['message' => 'User is not found.'], $data);
+        $this->authenticatedUserValid = $this->users->findByEmail(new Email(RequestFixture::VALID['email']));
     }
 
     public function testEmailExists(): void
     {
+        $this->client->loginUser(new UserAdapter($this->authenticatedUserValid->getId()->getValue()));
         $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
-            'userId' => RequestFixture::VALID['userId'],
-            'email' => RequestFixture::EXISTS['email'],
+            'email' => RequestFixture::EXISTS['email']
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -67,25 +62,10 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals(['message' => 'Email is already in use.'], $data);
     }
 
-    public function testNotActive(): void
-    {
-        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
-            'userId' => RequestFixture::NOT_ACTIVE['userId'],
-            'email' => 'some@email.ru',
-        ]);
-
-        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
-        self::assertJson($body = $this->client->getResponse()->getContent());
-
-        $data = Json::decode($body);
-
-        self::assertEquals(['message' => 'User is not active.'], $data);
-    }
-
     public function testEmailTheSame(): void
     {
+        $this->client->loginUser(new UserAdapter($this->authenticatedUserValid->getId()->getValue()));
         $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
-            'userId' => RequestFixture::VALID['userId'],
             'email' => RequestFixture::VALID['email'],
         ]);
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -97,13 +77,19 @@ final class RequestActionTest extends WebTestCase
 
     public function testRequestAlready(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
-            'userId' => RequestFixture::VALID['userId'],
-            'email' => 'some@email.ru',
-        ]);
+        $user = $this->users->findByEmail(new Email(RequestFixture::VALID['email']));
+        $user->requestEmailChanging(
+            new Tokenizer('PT1H')->generate(new \DateTimeImmutable('+1 day')),
+            new \DateTimeImmutable(),
+            new Email('another@email.ru')
+        );
+
+        $this->flusher->flush();
+
+        $testUser = new UserAdapter($this->authenticatedUserValid->getId()->getValue());
+        $this->client->loginUser($testUser);
 
         $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
-            'userId' => RequestFixture::VALID['userId'],
             'email' => 'another@email.ru',
         ]);
 
@@ -121,12 +107,12 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        $this->client->loginUser(new UserAdapter($this->authenticatedUserValid->getId()->getValue()));
         /** @var InMemoryTransport $transport */
         $transport = $this->client->getContainer()->get('messenger.transport.async');
         $transport->reset();
 
         $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
-            'userId' => RequestFixture::VALID['userId'],
             'email' => 'some@email.ru',
         ]);
 
