@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Auth\ChangePassword;
 
+use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\User;
 use App\Auth\Entity\User\UserRepository;
+use App\OAuth\Entity\UserAdapter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -22,6 +25,10 @@ final class RequestActionTest extends WebTestCase
 
     private readonly UserRepository $users;
 
+    private readonly User $authenticatedByEmailUser;
+
+    private readonly User $authenticatedByNetworkUser;
+
     protected function setUp(): void
     {
         $this->client = self::createClient();
@@ -33,30 +40,17 @@ final class RequestActionTest extends WebTestCase
         /** @var EntityManagerInterface $em */
         $em = $container->get(EntityManagerInterface::class);
         $this->users = new UserRepository($em);
-    }
 
-    public function testNotFound(): void
-    {
-        $this->client->jsonRequest('PUT', '/v1/auth/user/password/change', [
-            'userId' => 'd2b1416a-cf3b-4212-a9cb-7f2264eeed71',
-            'currentPassword' => 'hashedPassword',
-            'newPassword' => 'newPassword',
-        ]);
-
-        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
-
-        self::assertJson($body = $this->client->getResponse()->getContent());
-        $data = Json::decode($body);
-
-        self::assertEquals(['message' => 'User is not found.'], $data);
+        $this->authenticatedByEmailUser = $this->users->findByEmail(new Email(RequestFixture::EMAIL));
+        $this->authenticatedByNetworkUser = $this->users->findByEmail(new Email(RequestFixture::JOIN_BY_GOOGLE['email']));
     }
 
     public function testOldPasswordNotFound(): void
     {
+        $this->client->loginUser(new UserAdapter($this->authenticatedByNetworkUser->getId()->getValue()));
         $this->client->jsonRequest('PUT', '/v1/auth/user/password/change', [
-            'userId' => RequestFixture::JOIN_BY_GOOGLE['userId'],
-            'currentPassword' => 'hashedPassword',
-            'newPassword' => 'newPassword',
+            'old_password' => 'hashedPassword',
+            'new_password' => 'newPassword',
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -69,10 +63,10 @@ final class RequestActionTest extends WebTestCase
 
     public function testIncorrectCurrentPassword(): void
     {
+        $this->client->loginUser(new UserAdapter($this->authenticatedByEmailUser->getId()->getValue()));
         $this->client->jsonRequest('PUT', '/v1/auth/user/password/change', [
-            'userId' => RequestFixture::USER_ID,
-            'currentPassword' => 'Incorrect',
-            'newPassword' => 'newPassword',
+            'old_password' => 'Incorrect',
+            'new_password' => 'newPassword',
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -85,10 +79,10 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        $this->client->loginUser(new UserAdapter($this->authenticatedByEmailUser->getId()->getValue()));
         $this->client->jsonRequest('PUT', '/v1/auth/user/password/change', [
-            'userId' => RequestFixture::USER_ID,
-            'currentPassword' => RequestFixture::PASSWORD,
-            'newPassword' => 'newPassword',
+            'old_password' => RequestFixture::PASSWORD,
+            'new_password' => 'newPassword',
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
