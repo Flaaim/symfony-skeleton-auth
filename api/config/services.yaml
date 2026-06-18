@@ -75,6 +75,17 @@ services:
             $clientId: '%env(GOOGLE_CLIENT_ID)%'
             $clientSecret: '%env(GOOGLE_CLIENT_SECRET)%'
 
+    App\Infrastructure\Social\Registry\ClientRegistryInterface: '@App\Infrastructure\Social\Registry\ClientRegistry'
+
     App\Infrastructure\Social\Registry\ClientRegistry:
         arguments:
             $clients: ['@App\Infrastructure\Social\GoogleClient', '@App\Infrastructure\Social\YandexClient']
+
+
+when@test:
+    services:
+        _defaults:
+            autowire: true
+            autoconfigure: true
+
+        App\Infrastructure\Social\Registry\ClientRegistry: '@App\Infrastructure\Social\Registry\FakeRegistry'

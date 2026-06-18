@@ -7,7 +7,7 @@ namespace App\Infrastructure\Social\Registry;
 use App\Infrastructure\Social\ClientInterface;
 use App\Infrastructure\Social\SocialUserDTO;
 
-final class ClientRegistry
+final class ClientRegistry implements ClientRegistryInterface
 {
     /** @var array<ClientInterface> $clients */
     private array $clients;

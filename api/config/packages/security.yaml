@@ -23,6 +23,7 @@ security:
             stateless: true
             provider: app_user_provider
             oauth2: true
+            entry_point: App\Infrastructure\Security\ApiAuthenticationEntryPoint
 
         main:
             lazy: true

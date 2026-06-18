@@ -73,6 +73,8 @@ services:
       YANDEX_CLIENT_ID: 448fcb38cd354521abe6abd7322a21ca
       YANDEX_CLIENT_SECRET: c28905e0f14d40a9aeff6253c0a16df3
       YANDEX_REDIRECT_URI: "http://localhost:3000/join/callback/yandex"
+      GOOGLE_CLIENT_ID: ""
+      GOOGLE_CLIENT_SECRET: ""
       GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
     volumes:
       - ./api:/app
@@ -114,6 +116,8 @@ services:
       YANDEX_CLIENT_ID: 448fcb38cd354521abe6abd7322a21ca
       YANDEX_CLIENT_SECRET: c28905e0f14d40a9aeff6253c0a16df3
       YANDEX_REDIRECT_URI: "http://localhost:3000/join/callback/yandex"
+      GOOGLE_CLIENT_ID: ""
+      GOOGLE_CLIENT_SECRET: ""
       GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
     secrets:
       - jwt_public_key
