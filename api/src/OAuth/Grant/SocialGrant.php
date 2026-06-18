@@ -8,6 +8,7 @@ use App\Auth\Command\JoinByNetwork\Command;
 use App\Auth\Command\JoinByNetwork\Handler;
 use App\Auth\Entity\User\Email;
 use App\Infrastructure\Social\Registry\ClientRegistry;
+use App\Infrastructure\Social\Registry\ClientRegistryInterface;
 use DateInterval;
 use App\Auth\Entity\User\UserRepository;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -20,7 +21,7 @@ use Psr\Log\LoggerInterface;
 final class SocialGrant extends AbstractGrant
 {
     public function __construct(
-        private readonly ClientRegistry  $registry,
+        private readonly ClientRegistryInterface  $registry,
         private readonly Handler         $joinHandler,
         private readonly UserRepository  $domainUserRepository,
         private readonly LoggerInterface $logger,
