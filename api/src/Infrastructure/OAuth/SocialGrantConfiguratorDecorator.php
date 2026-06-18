@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\OAuth;
 
 use App\OAuth\Grant\SocialGrant;
+use DateInterval;
 use League\Bundle\OAuth2ServerBundle\AuthorizationServer\GrantConfigurator;
 use League\OAuth2\Server\AuthorizationServer;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
@@ -20,6 +21,6 @@ final class SocialGrantConfiguratorDecorator
     public function __invoke(AuthorizationServer $authorizationServer): void
     {
         ($this->inner)($authorizationServer);
-        $authorizationServer->enableGrantType($this->socialGrant, new \DateInterval('PT1H'));
+        $authorizationServer->enableGrantType($this->socialGrant, new DateInterval('PT1H'));
     }
 }

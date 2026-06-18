@@ -15,6 +15,7 @@ final class RequestFixture extends AbstractFixture
     public const string ID = '00000000-0000-0000-0000-000000000002';
     public const string EMAIL = 'test@email.ru';
     public const string PASSWORD = 'password';
+
     public function load(ObjectManager $manager): void
     {
         $user = new UserBuilder()

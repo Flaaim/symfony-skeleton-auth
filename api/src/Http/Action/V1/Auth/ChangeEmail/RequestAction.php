@@ -24,7 +24,7 @@ final class RequestAction
     public function __invoke(Request $request): Response
     {
         $user = $this->security->getUser();
-        if($user === null) {
+        if (null === $user) {
             return new Response(null, Response::HTTP_UNAUTHORIZED);
         }
 

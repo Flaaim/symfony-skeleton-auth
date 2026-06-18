@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RequestAction
 {
     public function __construct(
-        private readonly Fetcher  $fetcher,
+        private readonly Fetcher $fetcher,
         private readonly Security $security,
     ) {}
 
@@ -25,7 +25,7 @@ final class RequestAction
         /** @var UserAdapter|null $currentUser */
         $currentUser = $this->security->getUser();
 
-        if ($currentUser === null) {
+        if (null === $currentUser) {
             return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 

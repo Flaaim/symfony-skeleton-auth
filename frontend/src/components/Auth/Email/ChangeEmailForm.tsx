@@ -1,28 +1,35 @@
 "use client";
 
-import {z} from "zod";
-import {ProfileDTO} from "@/interfaces/auth.interface";
-import {useState} from "react";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {ArrowLeft, Mail, MailCheck} from "lucide-react";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
+import { z } from "zod";
+import { ProfileDTO } from "@/interfaces/auth.interface";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ArrowLeft, Mail, MailCheck } from "lucide-react";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {requestEmailChange} from "@/actions/auth";
+import { requestEmailChange } from "@/actions/auth";
 
 const schema = z.object({
-  email: z.email("Пожалуйста, введите корректный email адрес.")
+  email: z.email("Пожалуйста, введите корректный email адрес."),
 });
 
 type FormData = z.infer<typeof schema>;
 interface RequestChangeEmailProps {
-  profile: ProfileDTO
+  profile: ProfileDTO;
 }
 
-export default function RequestChangeEmail({profile}: RequestChangeEmailProps) {
+export default function RequestChangeEmail({ profile }: RequestChangeEmailProps) {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({
@@ -33,7 +40,6 @@ export default function RequestChangeEmail({profile}: RequestChangeEmailProps) {
     },
   });
   async function onSubmit(values: FormData) {
-
     const result = await requestEmailChange(values.email);
 
     if (!result.ok) {
@@ -43,7 +49,7 @@ export default function RequestChangeEmail({profile}: RequestChangeEmailProps) {
 
     setIsSuccess(true);
   }
-  if(isSuccess){
+  if (isSuccess) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
@@ -61,7 +67,8 @@ export default function RequestChangeEmail({profile}: RequestChangeEmailProps) {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground text-sm">
-            Пожалуйста, перейдите по ссылке в письме, чтобы завершить привязку нового адреса к вашему аккаунту.
+            Пожалуйста, перейдите по ссылке в письме, чтобы завершить привязку нового адреса к
+            вашему аккаунту.
           </p>
         </CardContent>
         <CardFooter>
@@ -78,7 +85,11 @@ export default function RequestChangeEmail({profile}: RequestChangeEmailProps) {
   return (
     <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
       <div className="mb-6">
-        <Button variant="ghost" size="sm" className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900"
+        >
           <Link href="/user/profile" className="inline-flex items-center">
             <ArrowLeft className="mr-2 h-4 w-4" />
             <span>Назад в профиль</span>
@@ -95,7 +106,8 @@ export default function RequestChangeEmail({profile}: RequestChangeEmailProps) {
             Изменение Email
           </CardTitle>
           <CardDescription className="text-center">
-            Введите новый адрес электронной почты. Мы отправим на него письмо с ссылкой для подтверждения.
+            Введите новый адрес электронной почты. Мы отправим на него письмо с ссылкой для
+            подтверждения.
           </CardDescription>
         </CardHeader>
 

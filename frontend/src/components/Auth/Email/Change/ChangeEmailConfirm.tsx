@@ -1,4 +1,3 @@
-
 "use client";
 
 import { z } from "zod";
@@ -16,7 +15,7 @@ import { Check, Loader2, XCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ApiResponse } from "@/interfaces/response.interface";
-import {changeEmailConfirm} from "@/actions/auth";
+import { changeEmailConfirm } from "@/actions/auth";
 const tokenSchema = z.uuid("Неверный формат токена");
 
 const ConfirmEmailContent = (): JSX.Element => {

@@ -16,9 +16,9 @@ export const API = {
     requestEmailChange: () => BASE_URL + `/v1/auth/email/change/request`,
     confirmEmailChange: () => BASE_URL + `/v1/auth/email/change/confirm`,
     socialLogin: () => BASE_URL + `/token`,
-    attachNetwork: () => BASE_URL + `/v1/auth/network/attach`
+    attachNetwork: () => BASE_URL + `/v1/auth/network/attach`,
   },
   user: {
-    profile: () => BASE_URL + `/v1/user/profile`
-  }
+    profile: () => BASE_URL + `/v1/user/profile`,
+  },
 };

@@ -25,7 +25,7 @@ final class RequestAction
     public function __invoke(Request $request): Response
     {
         $currentUser = $this->security->getUser();
-        if($currentUser === null) {
+        if (null === $currentUser) {
             return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
         $userId = $currentUser->getUserIdentifier();

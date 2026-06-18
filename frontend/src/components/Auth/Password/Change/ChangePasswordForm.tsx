@@ -1,17 +1,24 @@
 "use client";
 
-import {z} from "zod";
-import {ProfileDTO} from "@/interfaces/auth.interface";
-import {useState} from "react";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Button} from "@/components/ui/button";
+import { z } from "zod";
+import { ProfileDTO } from "@/interfaces/auth.interface";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {ArrowLeft, MailCheck, Wrench} from "lucide-react";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {Input} from "@/components/ui/input";
-import {changePassword} from "@/actions/auth";
+import { ArrowLeft, MailCheck, Wrench } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { changePassword } from "@/actions/auth";
 
 const schema = z
   .object({
@@ -40,9 +47,9 @@ const schema = z
 
 type FormData = z.infer<typeof schema>;
 interface ChangePasswordFormProps {
-  profile: ProfileDTO
+  profile: ProfileDTO;
 }
-export default function ChangePasswordForm({profile}: ChangePasswordFormProps){
+export default function ChangePasswordForm({ profile }: ChangePasswordFormProps) {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({
@@ -55,7 +62,7 @@ export default function ChangePasswordForm({profile}: ChangePasswordFormProps){
     },
   });
   async function onSubmit(values: FormData) {
-    const result = await changePassword(values.old_password, values.new_password)
+    const result = await changePassword(values.old_password, values.new_password);
 
     if (!result.ok) {
       form.setError("root", { type: "server", message: result.error });
@@ -64,7 +71,7 @@ export default function ChangePasswordForm({profile}: ChangePasswordFormProps){
 
     setIsSuccess(true);
   }
-  if(isSuccess) {
+  if (isSuccess) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
@@ -94,7 +101,11 @@ export default function ChangePasswordForm({profile}: ChangePasswordFormProps){
   return (
     <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
       <div className="mb-6">
-        <Button variant="ghost" size="sm" className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900"
+        >
           <Link href="/user/profile" className="inline-flex items-center">
             <ArrowLeft className="mr-2 h-4 w-4" />
             <span>Назад в профиль</span>

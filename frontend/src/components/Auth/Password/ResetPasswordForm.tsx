@@ -15,7 +15,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import {ArrowLeft, MailCheck} from "lucide-react";
+import { ArrowLeft, MailCheck } from "lucide-react";
 import Link from "next/link";
 import { passwordResetRequest } from "@/actions/auth";
 
@@ -78,10 +78,13 @@ export default function RequestResetPassword() {
     );
   }
   return (
-
     <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
       <div className="mb-6">
-        <Button variant="ghost" size="sm" className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900"
+        >
           <Link href="/user/profile" className="inline-flex items-center">
             <ArrowLeft className="mr-2 h-4 w-4" />
             <span>На страницу входа</span>

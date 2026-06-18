@@ -12,6 +12,7 @@ use App\Auth\Event\ChangeEmailRequested;
 use App\Auth\Service\Tokenizer;
 use App\Infrastructure\Doctrine\Flusher;
 use App\OAuth\Entity\UserAdapter;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -51,7 +52,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->loginUser(new UserAdapter($this->authenticatedUserValid->getId()->getValue()));
         $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [
-            'email' => RequestFixture::EXISTS['email']
+            'email' => RequestFixture::EXISTS['email'],
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -79,8 +80,8 @@ final class RequestActionTest extends WebTestCase
     {
         $user = $this->users->findByEmail(new Email(RequestFixture::VALID['email']));
         $user->requestEmailChanging(
-            new Tokenizer('PT1H')->generate(new \DateTimeImmutable('+1 day')),
-            new \DateTimeImmutable(),
+            new Tokenizer('PT1H')->generate(new DateTimeImmutable('+1 day')),
+            new DateTimeImmutable(),
             new Email('another@email.ru')
         );
 

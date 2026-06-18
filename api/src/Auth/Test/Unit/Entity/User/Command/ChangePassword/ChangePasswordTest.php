@@ -36,6 +36,7 @@ final class ChangePasswordTest extends TestCase
 
         self::assertInstanceOf(PasswordChanged::class, $event);
     }
+
     public function testWrongCurrent(): void
     {
         $user = new UserBuilder()

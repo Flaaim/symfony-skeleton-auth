@@ -24,9 +24,8 @@ final class RequestAction
     #[Route('/v1/auth/user/password/change', 'auth.user.password.change', methods: ['PUT'])]
     public function __invoke(Request $request): Response
     {
-
         $currentUser = $this->security->getUser();
-        if($currentUser === null) {
+        if (null === $currentUser) {
             return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
         $body = $request->toArray();

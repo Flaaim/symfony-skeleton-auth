@@ -1,12 +1,12 @@
 "use server";
 
-import {JoinData, LoginData, ProfileDTO} from "@/interfaces/auth.interface";
+import { JoinData, LoginData, ProfileDTO } from "@/interfaces/auth.interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
-import {apiFetch} from "@/lib/apiClient";
-import {revalidatePath} from "next/cache";
+import { apiFetch } from "@/lib/apiClient";
+import { revalidatePath } from "next/cache";
 
 interface TokenResponseData {
   access_token: string;
@@ -229,19 +229,19 @@ export async function passwordResetConfirm(token: string, password: string): Pro
 }
 
 export async function fetchUser(): Promise<ProfileDTO> {
-    const response = await apiFetch(API.user.profile(), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      }
-    });
+  const response = await apiFetch(API.user.profile(), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
 
-    const parsed = await handleApiResponse<ProfileDTO>(response);
-    if(!parsed.ok || !parsed.data){
-      throw new Error(parsed.error || "Не удалось загрузить профиль");
-    }
-    return parsed.data;
+  const parsed = await handleApiResponse<ProfileDTO>(response);
+  if (!parsed.ok || !parsed.data) {
+    throw new Error(parsed.error || "Не удалось загрузить профиль");
+  }
+  return parsed.data;
 }
 
 export async function requestEmailChange(email: string): Promise<ApiResponse> {
@@ -252,18 +252,18 @@ export async function requestEmailChange(email: string): Promise<ApiResponse> {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({email: email}),
+      body: JSON.stringify({ email: email }),
     });
-    console.log(response)
+    console.log(response);
     const parsed = await handleApiResponse(response);
 
     if (!parsed.ok) {
-      return {ok: false, error: parsed.error};
+      return { ok: false, error: parsed.error };
     }
-    return {ok: true};
+    return { ok: true };
   } catch (error) {
     console.error("Request email change error:", error);
-    return {ok: false, error: "Не удалось подключиться к серверу API."};
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
 
@@ -275,31 +275,30 @@ export async function changeEmailConfirm(token: string): Promise<ApiResponse> {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({token: token}),
+      body: JSON.stringify({ token: token }),
     });
     const parsed = await handleApiResponse(response);
     if (!parsed.ok) {
-      return {ok: false, error: parsed.error};
+      return { ok: false, error: parsed.error };
     }
-    return {ok: true};
+    return { ok: true };
   } catch (error) {
     console.error("Change email confirm token request error:", error);
-    return {ok: false, error: "Не удалось подключиться к серверу API."};
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
 
-export async function yandexLoginAction(code: string): Promise<ApiResponse>{
-
+export async function yandexLoginAction(code: string): Promise<ApiResponse> {
   const body = new URLSearchParams({
     grant_type: "social",
     client_id: "frontend",
     client_secret: "my-super-secret-123",
     network: "yandex",
     code: code,
-    redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI as string
+    redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI as string,
   });
 
-  try{
+  try {
     const response = await fetch(API.auth.socialLogin(), {
       method: "POST",
       headers: {
@@ -307,7 +306,7 @@ export async function yandexLoginAction(code: string): Promise<ApiResponse>{
         Accept: "application/json",
       },
       body: body.toString(),
-    })
+    });
     const parsed = await handleApiResponse<TokenResponseData>(response);
     if (!parsed.ok || !parsed.data) {
       return { ok: false, error: parsed.error || "Ошибка авторизации через Яндекс" };
@@ -339,17 +338,17 @@ export async function yandexLoginAction(code: string): Promise<ApiResponse>{
   }
 }
 
-export async function googleLoginAction(code:string): Promise<ApiResponse> {
+export async function googleLoginAction(code: string): Promise<ApiResponse> {
   const body = new URLSearchParams({
     grant_type: "social",
     client_id: "frontend",
     client_secret: "my-super-secret-123",
     network: "google",
     code: code,
-    redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI as string
+    redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI as string,
   });
 
-  try{
+  try {
     const response = await fetch(API.auth.socialLogin(), {
       method: "POST",
       headers: {
@@ -357,7 +356,7 @@ export async function googleLoginAction(code:string): Promise<ApiResponse> {
         Accept: "application/json",
       },
       body: body.toString(),
-    })
+    });
     const parsed = await handleApiResponse<TokenResponseData>(response);
     if (!parsed.ok || !parsed.data) {
       return { ok: false, error: parsed.error || "Ошибка авторизации через Google" };
@@ -383,41 +382,39 @@ export async function googleLoginAction(code:string): Promise<ApiResponse> {
       });
     }
     return { ok: true };
-  }catch (error) {
+  } catch (error) {
     console.error("Google Auth Error:", error);
     return { ok: false, error: "Ошибка соединения с сервером" };
   }
 }
 
-
 export async function attachNetworkAction(network: string, code: string, redirectUri: string) {
-
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get('access_token')?.value;
+  const accessToken = cookieStore.get("access_token")?.value;
 
   if (!accessToken) {
-    return { ok: false, error: 'Не найден токен авторизации' };
+    return { ok: false, error: "Не найден токен авторизации" };
   }
 
   try {
     const response = await fetch(API.auth.attachNetwork(), {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({network:network, code: code, redirect_uri: redirectUri })
-    })
+      body: JSON.stringify({ network: network, code: code, redirect_uri: redirectUri }),
+    });
 
     const parsed = await handleApiResponse(response);
     if (!parsed.ok || !parsed.data) {
       return { ok: false, error: parsed.error || "Ошибка привязки соцсети" };
     }
-    revalidatePath('/user/profile');
+    revalidatePath("/user/profile");
     return { ok: true };
   } catch (error) {
     console.error("Yandex Attach Error:", error);
-    return {ok: false, error: "Ошибка соединения с сервером"};
+    return { ok: false, error: "Ошибка соединения с сервером" };
   }
 }
 
@@ -429,17 +426,17 @@ export async function changePassword(old_password: string, new_password: string)
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({old_password: old_password, new_password: new_password}),
+      body: JSON.stringify({ old_password: old_password, new_password: new_password }),
     });
-    console.log(response)
+    console.log(response);
     const parsed = await handleApiResponse(response);
 
     if (!parsed.ok) {
-      return {ok: false, error: parsed.error};
+      return { ok: false, error: parsed.error };
     }
-    return {ok: true};
+    return { ok: true };
   } catch (error) {
     console.error("Change password error:", error);
-    return {ok: false, error: "Не удалось подключиться к серверу API."};
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

@@ -60,6 +60,7 @@ final class UserRepository
             ->setParameter('identity', $identity)
             ->getQuery()->getSingleScalarResult() > 0;
     }
+
     public function findByNetwork(string $network, string $identity): ?User
     {
         return $this->repo->createQueryBuilder('u')
@@ -71,6 +72,7 @@ final class UserRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
     /**
      * @return object|User|null
      * @psalm-return User|null

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Auth\Query\GetProfile;
 
 use Doctrine\DBAL\Connection;
-use DomainException;
 
 final class Fetcher
 {
@@ -34,10 +33,10 @@ final class Fetcher
         );
 
         foreach ($result as $row) {
-            if($row['network'] !== null) {
+            if (null !== $row['network']) {
                 $profile->networks[] = [
                     'network' => $row['network'],
-                    'identity' => $row['identity']
+                    'identity' => $row['identity'],
                 ];
             }
         }

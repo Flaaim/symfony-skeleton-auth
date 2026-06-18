@@ -13,12 +13,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final class SendEmailOnPasswordChangedHandler
 {
-
     public function __construct(
         private readonly PasswordChangeSender $sender,
         private readonly LoggerInterface $logger
-    )
-    {}
+    ) {}
+
     public function __invoke(PasswordChanged $event): void
     {
         $email = $event->email;
@@ -26,7 +25,7 @@ final class SendEmailOnPasswordChangedHandler
         $this->sender->send(new Email($email));
 
         $this->logger->info(
-            'Password user: '.$userId.' has been changed.' ,
+            'Password user: ' . $userId . ' has been changed.',
         );
     }
 }

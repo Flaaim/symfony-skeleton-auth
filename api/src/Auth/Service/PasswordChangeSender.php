@@ -8,8 +8,8 @@ use App\Auth\Entity\User\Email;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Twig\Environment;
 use Symfony\Component\Mime\Email as SymfonyEmail;
+use Twig\Environment;
 
 final class PasswordChangeSender
 {
@@ -20,19 +20,17 @@ final class PasswordChangeSender
         private Environment $twig
     ) {}
 
-
     public function send(Email $email): void
     {
         $message = new SymfonyEmail()
             ->subject('Change password')
             ->to($email->getValue())
-            ->html($this->twig->render(self::TEMPLATE,));
+            ->html($this->twig->render(self::TEMPLATE));
 
-        try{
+        try {
             $this->mailer->send($message);
-        }catch (TransportExceptionInterface $e){
+        } catch (TransportExceptionInterface $e) {
             throw new TransportException($e->getMessage());
         }
     }
-
 }

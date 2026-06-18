@@ -9,7 +9,7 @@ export interface LoginData {
   password: string;
 }
 export interface ProfileDTO {
-  id: string
-  email: string,
-  networks: []
+  id: string;
+  email: string;
+  networks: [];
 }

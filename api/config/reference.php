@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // This file is auto-generated and is for apps only. Bundles SHOULD NOT rely on its content.
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
@@ -1578,9 +1580,7 @@ final class App
     public static function config(array $config): array
     {
         /** @var ConfigType $config */
-        $config = AppReference::config($config);
-
-        return $config;
+        return AppReference::config($config);
     }
 }
 

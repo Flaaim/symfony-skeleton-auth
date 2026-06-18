@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-
 final class RequestAction
 {
     public function __construct(
@@ -28,7 +27,7 @@ final class RequestAction
     public function __invoke(Request $request): Response
     {
         $currentUser = $this->security->getUser();
-        if ($currentUser === null) {
+        if (null === $currentUser) {
             return new JsonResponse(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
         $currentUserId = $currentUser->getUserIdentifier();
@@ -39,7 +38,7 @@ final class RequestAction
         $code = (string)($body['code'] ?? '');
         $redirectUri = (string)($body['redirect_uri'] ?? '');
 
-        if($network === '' || $code === '' || $redirectUri === '') {
+        if ('' === $network || '' === $code || '' === $redirectUri) {
             return new JsonResponse(['error' => 'Network, code or redirect uri are required.'], Response::HTTP_BAD_REQUEST);
         }
 

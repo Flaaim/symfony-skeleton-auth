@@ -11,7 +11,7 @@ final class FakeRegistry implements ClientRegistryInterface
 {
     public function create(string $code, string $provider, string $redirectUri): SocialUserDTO
     {
-        $email = ($code === 'conflict') ? AuthorizeFixture::ACTIVE_EMAIL : 'test@gmail.com';
+        $email = ('conflict' === $code) ? AuthorizeFixture::ACTIVE_EMAIL : 'test@gmail.com';
         return new SocialUserDTO($code, $provider, $email);
     }
 }

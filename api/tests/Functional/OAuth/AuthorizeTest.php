@@ -123,6 +123,7 @@ final class AuthorizeTest extends WebTestCase
             'error' => 'invalid_request',
         ], $data);
     }
+
     public function testSocialAuthSuccess(): void
     {
         $this->client->request(
@@ -151,6 +152,7 @@ final class AuthorizeTest extends WebTestCase
         self::assertArrayHasKey('access_token', $data);
         self::assertArrayHasKey('refresh_token', $data);
     }
+
     public function testSocialAuthEmailConflict(): void
     {
         $this->client->request(

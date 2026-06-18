@@ -13,8 +13,7 @@ final class LogOutUserOnPasswordChangedHandler
 {
     public function __construct(
         private readonly RefreshTokenRepository $refreshToken,
-    )
-    {}
+    ) {}
 
     public function __invoke(PasswordChanged $event): void
     {

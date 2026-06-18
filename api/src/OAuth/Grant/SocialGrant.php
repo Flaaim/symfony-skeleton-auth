@@ -7,29 +7,31 @@ namespace App\OAuth\Grant;
 use App\Auth\Command\JoinByNetwork\Command;
 use App\Auth\Command\JoinByNetwork\Handler;
 use App\Auth\Entity\User\Email;
-use App\Infrastructure\Social\Registry\ClientRegistry;
+use App\Auth\Entity\User\UserRepository;
 use App\Infrastructure\Social\Registry\ClientRegistryInterface;
 use DateInterval;
-use App\Auth\Entity\User\UserRepository;
+use DomainException;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\AbstractGrant;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class SocialGrant extends AbstractGrant
 {
     public function __construct(
-        private readonly ClientRegistryInterface  $registry,
-        private readonly Handler         $joinHandler,
-        private readonly UserRepository  $domainUserRepository,
+        private readonly ClientRegistryInterface $registry,
+        private readonly Handler $joinHandler,
+        private readonly UserRepository $domainUserRepository,
         private readonly LoggerInterface $logger,
-        RefreshTokenRepositoryInterface  $refreshTokenRepository,
+        RefreshTokenRepositoryInterface $refreshTokenRepository,
     ) {
         $this->setRefreshTokenRepository($refreshTokenRepository);
-        $this->refreshTokenTTL = new \DateInterval('P1M');
+        $this->refreshTokenTTL = new DateInterval('P1M');
     }
+
     public function getIdentifier(): string
     {
         return 'social';
@@ -39,8 +41,7 @@ final class SocialGrant extends AbstractGrant
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,
         DateInterval $accessTokenTTL
-    ): ResponseTypeInterface
-    {
+    ): ResponseTypeInterface {
         $client = $this->validateClient($request);
 
         $parsedBody = $request->getParsedBody();
@@ -52,9 +53,9 @@ final class SocialGrant extends AbstractGrant
             throw OAuthServerException::invalidRequest('network or code');
         }
 
-        try{
+        try {
             $socialUser = $this->registry->create($code, $network, $redirectUri);
-        }catch (\Throwable $e){
+        } catch (Throwable $e) {
             $this->logger->error('Social Auth Error (Provider fetch): {message}', [
                 'message' => $e->getMessage(),
                 'exception' => $e,
@@ -62,15 +63,14 @@ final class SocialGrant extends AbstractGrant
             throw OAuthServerException::serverError('Ошибка авторизации через соцсеть: ' . $e->getMessage());
         }
         $this->logger->error('Social Auth Error (Provider fetch): {message}', [
-            'message' => $socialUser->email
+            'message' => $socialUser->email,
         ]);
-        try{
+        try {
             $localUser = $this->domainUserRepository->findByNetwork($socialUser->network, $socialUser->identity);
             if (!$localUser) {
-
                 $existingEmailUser = $this->domainUserRepository->findByEmail(new Email($socialUser->email));
                 if ($existingEmailUser) {
-                    throw new \DomainException('Пользователь с таким email уже существует. Войдите обычным способом и привяжите аккаунт в настройках профиля.');
+                    throw new DomainException('Пользователь с таким email уже существует. Войдите обычным способом и привяжите аккаунт в настройках профиля.');
                 }
 
                 $command = new Command($socialUser->email, $socialUser->network, $socialUser->identity);
@@ -78,9 +78,9 @@ final class SocialGrant extends AbstractGrant
 
                 $localUser = $this->domainUserRepository->findByNetwork($socialUser->network, $socialUser->identity);
             }
-        }catch (\DomainException $e){
+        } catch (DomainException $e) {
             throw OAuthServerException::invalidGrant($e->getMessage());
-        }catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error('Social Auth Error (Database/Register):', [
                 'message' => $e->getMessage(),
                 'exception' => $e,
@@ -97,7 +97,6 @@ final class SocialGrant extends AbstractGrant
 
             $userIdentifier = (string)$localUser->getId()->getValue();
 
-
             $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $userIdentifier, $scopes);
 
             $refreshToken = $this->issueRefreshToken($accessToken);
@@ -106,13 +105,12 @@ final class SocialGrant extends AbstractGrant
             $responseType->setRefreshToken($refreshToken);
 
             return $responseType;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error('Social Auth Error (Token Generation):', [
                 'message' => $e->getMessage(),
                 'exception' => $e,
             ]);
             throw OAuthServerException::serverError('Ошибка на этапе генерации токенов: ' . $e->getMessage());
         }
-
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Social;
 
-
 use App\Infrastructure\Social\Registry\Provider;
+use DomainException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class YandexClient implements ClientInterface
@@ -24,14 +24,14 @@ final class YandexClient implements ClientInterface
                 'code' => $code,
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
-                'redirect_uri' => $redirectUri
+                'redirect_uri' => $redirectUri,
             ],
         ]);
         $tokenData = $tokenResponse->toArray();
         $yandexAccessToken = $tokenData['access_token'] ?? null;
 
         if (!$yandexAccessToken) {
-            throw new \DomainException('Failed to get Yandex access token.');
+            throw new DomainException('Failed to get Yandex access token.');
         }
         $infoResponse = $this->client->request('GET', 'https://login.yandex.ru/info?format=json', [
             'headers' => [
@@ -47,6 +47,7 @@ final class YandexClient implements ClientInterface
             $userData['default_email'] ?? null
         );
     }
+
     public function getProvider(): string
     {
         return Provider::Yandex->value;

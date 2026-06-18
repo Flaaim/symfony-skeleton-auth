@@ -12,7 +12,6 @@ use App\OAuth\Entity\UserAdapter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
@@ -28,12 +27,12 @@ final class RequestActionTest extends WebTestCase
     private readonly UserRepository $users;
     private readonly User $authenticatedUserByGoogle;
     private readonly User $authenticatedUserByEmail;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->client = self::createClient();
         $this->client->disableReboot();
-
 
         $container = $this->client->getContainer();
         $fixtures = new FixturesLoader($container);
@@ -47,6 +46,7 @@ final class RequestActionTest extends WebTestCase
         $this->authenticatedUserByGoogle = $this->users->findByEmail(new Email(RequestFixture::JOIN_BY_GOOGLE['email']));
         $this->authenticatedUserByEmail = $this->users->findByEmail(new Email(RequestFixture::JOIN_BY_YANDEX['email']));
     }
+
     public function testAlreadyAttached(): void
     {
         $this->client->loginUser(new UserAdapter($this->authenticatedUserByGoogle->getId()->getValue()));
@@ -78,7 +78,6 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['message' => 'Unauthorized. Please provide a valid Bearer token.'], $data);
-
     }
 
     public function testSuccess(): void
@@ -125,5 +124,4 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['error' => 'Network, code or redirect uri are required.'], $data);
     }
-
 }
