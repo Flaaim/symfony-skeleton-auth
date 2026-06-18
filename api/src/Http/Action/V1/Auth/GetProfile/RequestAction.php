@@ -22,14 +22,14 @@ final class RequestAction
 
     public function __invoke(): Response
     {
-        /** @var UserAdapter|null $userAdapter */
-        $userAdapter = $this->security->getUser();
+        /** @var UserAdapter|null $currentUser */
+        $currentUser = $this->security->getUser();
 
-        if (!$userAdapter instanceof UserAdapter) {
-            return new JsonResponse(['message' => 'Access Denied.'], Response::HTTP_UNAUTHORIZED);
+        if ($currentUser === null) {
+            return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
-        $userId = $userAdapter->getUserIdentifier();
+        $userId = $currentUser->getUserIdentifier();
 
         $query = new Query($userId);
 

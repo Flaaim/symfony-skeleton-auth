@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Auth\GetProfile;
 
+use App\Auth\Entity\User\Email;
+use App\Auth\Entity\User\User;
+use App\Auth\Entity\User\UserRepository;
+use App\OAuth\Entity\UserAdapter;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
@@ -12,7 +17,9 @@ use Tests\Functional\OAuth\AuthorizeFixture;
 
 final class RequestActionTest extends WebTestCase
 {
-    private KernelBrowser $client;
+    private readonly KernelBrowser $client;
+    private readonly UserRepository $users;
+    private readonly User $authenticatedUser;
     public function setUp(): void
     {
         parent::setUp();
@@ -22,44 +29,32 @@ final class RequestActionTest extends WebTestCase
         $fixturesLoader = new FixturesLoader($container);
         $fixturesLoader->loadFixtures([RequestFixture::class]);
 
+        /** @var EntityManagerInterface $em */
+        $em = $container->get(EntityManagerInterface::class);
+        $this->users = new UserRepository($em);
+
+        $this->authenticatedUser = $this->users->findByEmail(new Email(RequestFixture::EMAIL));
     }
 
-    public function testUnloggedUser(): void
+    public function testUnauthorizedUser(): void
     {
-        $this->client->request('GET', '/v1/user/profile');
 
+        $this->client->jsonRequest('GET', '/v1/user/profile');
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
         self::assertJson($body = $this->client->getResponse()->getContent());
 
         $data = Json::decode($body);
 
         self::assertEquals([
-            'message' => 'Access Denied.',
+            'message' => 'Unauthorized. Please provide a valid Bearer token.',
         ], $data);
     }
 
     public function testSuccess(): void
     {
-        $this->client->request(
-            'POST',
-            '/token',
-            [
-                'grant_type' => 'password',
-                'client_id' => 'frontend',
-                'client_secret' => 'my-super-secret-123',
-                'username' => RequestFixture::EMAIL,
-                'password' => RequestFixture::PASSWORD,
-            ]
-        );
+        $this->client->loginUser(new UserAdapter($this->authenticatedUser->getId()->getValue()));
 
-        self::assertJson($content = (string)$this->client->getResponse()->getContent());
-
-        $data = Json::decode($content);
-
-        $this->client->jsonRequest('GET', '/v1/user/profile', [], [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $data['access_token'],
-        ]);
-
+        $this->client->jsonRequest('GET', '/v1/user/profile');
         self::assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         self::assertJson($body = (string)$this->client->getResponse()->getContent());
@@ -67,7 +62,8 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
         self::assertEquals([
             'id' => RequestFixture::ID,
-            'email' => RequestFixture::EMAIL
+            'email' => RequestFixture::EMAIL,
+            'networks' => []
         ], $data);
     }
 }
