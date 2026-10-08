@@ -2,40 +2,42 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Query\GetProfile;
+namespace App\Auth\Query;
+
 
 use Doctrine\DBAL\Connection;
 
-final class Fetcher
+final readonly class UserFetcher implements UserFetcherInterface
 {
+
     public function __construct(
-        private readonly Connection $connection
+        private Connection $connection,
     ) {}
 
-    public function fetch(Query $query): ?Profile
+    public function findProfile(string $userId): ?array
     {
         $qb = $this->connection->createQueryBuilder();
         $qb->select('u.id, u.email', 'un.network', 'un.identity')
             ->from('users', 'u')
             ->leftJoin('u', 'user_networks', 'un', 'u.id = un.user_id')
             ->where('u.id = :id')
-            ->setParameter('id', $query->userId)
+            ->setParameter('id', $userId)
             ->executeQuery();
 
         $result = $qb->fetchAllAssociative();
+
         if (empty($result)) {
             return null;
         }
 
-        $profile = new Profile(
-            $result[0]['id'],
-            $result[0]['email'],
-        );
+        $profile = [];
+        $profile['id'] = $result[0]['id'];
+        $profile['email'] = $result[0]['email'];
 
         foreach ($result as $row) {
             if (null !== $row['network']) {
-                $profile->networks[] = [
-                    'network' => $row['network'],
+                $profile['network'][] = [
+                    'name' => $row['network'],
                     'identity' => $row['identity'],
                 ];
             }

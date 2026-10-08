@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Auth\GetProfile;
 
-use App\Auth\Query\GetProfile\Fetcher;
 use App\Auth\Query\GetProfile\Query;
+use App\Auth\Query\GetProfile\QueryHandler;
 use App\OAuth\Entity\UserAdapter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RequestAction
 {
     public function __construct(
-        private readonly Fetcher $fetcher,
+        private readonly QueryHandler $handler,
         private readonly Security $security,
     ) {}
 
@@ -33,7 +33,7 @@ final class RequestAction
 
         $query = new Query($userId);
 
-        $profile = $this->fetcher->fetch($query);
+        $profile = $this->handler->handle($query);
 
         return new JsonResponse($profile, Response::HTTP_OK);
     }
