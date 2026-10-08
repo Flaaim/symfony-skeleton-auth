@@ -33,6 +33,5 @@
     <plugins>
         <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin" />
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin" />
-        <pluginClass class="Lctrs\PsalmPsrContainerPlugin\Plugin" />
     </plugins>
 </psalm>

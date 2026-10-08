@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "addcbe724deee760434bc10799afb1a0",
+    "content-hash": "1046ed7b4ed514ae3027741515f511aa",
     "packages": [
         {
             "name": "brick/math",
@@ -9994,85 +9994,6 @@
                 "source": "https://github.com/kelunik/certificate/tree/v1.1.3"
             },
             "time": "2023-02-03T21:26:53+00:00"
-        },
-        {
-            "name": "lctrs/psalm-psr-container-plugin",
-            "version": "1.11.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Lctrs/psalm-psr-container-plugin.git",
-                "reference": "07f62846ad46ddb3a78a507f2645c849c9cd7b09"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Lctrs/psalm-psr-container-plugin/zipball/07f62846ad46ddb3a78a507f2645c849c9cd7b09",
-                "reference": "07f62846ad46ddb3a78a507f2645c849c9cd7b09",
-                "shasum": ""
-            },
-            "require": {
-                "ext-simplexml": "*",
-                "nikic/php-parser": "^5.4.0",
-                "php": "~8.2.27 || ~8.3.16 || ~8.4.3",
-                "psr/container": "^1.1.2 || ^2.0.2",
-                "symfony/polyfill-php84": "^1.31.0",
-                "vimeo/psalm": "^6.8.8"
-            },
-            "require-dev": {
-                "codeception/codeception": "5.2.1",
-                "codeception/module-asserts": "3.0.0",
-                "codeception/module-cli": "2.0.1",
-                "codeception/module-filesystem": "3.0.1",
-                "doctrine/coding-standard": "12.0.0",
-                "ergebnis/composer-normalize": "2.45.0",
-                "ergebnis/license": "2.6.0",
-                "maglnet/composer-require-checker": "4.16.1",
-                "phpstan/extension-installer": "1.4.3",
-                "phpstan/phpstan": "2.1.6",
-                "phpstan/phpstan-deprecation-rules": "2.0.1",
-                "phpstan/phpstan-phpunit": "2.0.4",
-                "phpstan/phpstan-strict-rules": "2.0.3",
-                "phpunit/phpunit": "11.5.10",
-                "psalm/plugin-phpunit": "0.19.2",
-                "weirdan/codeception-psalm-module": "0.14.0"
-            },
-            "type": "psalm-plugin",
-            "extra": {
-                "psalm": {
-                    "pluginClass": "Lctrs\\PsalmPsrContainerPlugin\\Plugin"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Lctrs\\PsalmPsrContainerPlugin\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jérôme Parmentier",
-                    "email": "jerome@prmntr.me"
-                }
-            ],
-            "description": "Let Psalm understand better psr11 containers",
-            "homepage": "https://github.com/Lctrs/psalm-psr-container-plugin",
-            "keywords": [
-                "code",
-                "container",
-                "inspection",
-                "php",
-                "psalm",
-                "psalm-plugin",
-                "psr",
-                "psr11"
-            ],
-            "support": {
-                "issues": "https://github.com/Lctrs/psalm-psr-container-plugin/issues",
-                "source": "https://github.com/Lctrs/psalm-psr-container-plugin"
-            },
-            "time": "2025-02-27T22:31:28+00:00"
         },
         {
             "name": "mikey179/vfsstream",
