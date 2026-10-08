@@ -51,6 +51,7 @@ return new Config()
                 __DIR__ . '/src',
                 __DIR__ . '/tests',
             ])
+            ->notPath('reference.php')
             ->append([
                 __FILE__,
             ])
