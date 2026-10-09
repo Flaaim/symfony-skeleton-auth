@@ -34,6 +34,7 @@ final class Token
 
     public function getExpiresAt(): DateTimeImmutable
     {
+        Assert::notNull($this->expiresAt);
         return $this->expiresAt;
     }
 

@@ -39,8 +39,8 @@ final class PasswordChangeSenderTest extends TestCase
         $sender = new PasswordChangeSender($mailer, $twig);
         $mailer->expects(self::once())->method('send')->with(
             self::equalTo($symfonyEmail)
-        )->willReturnCallback(static function ($message) use ($symfonyEmail): void {
-            /** @var SymfonyEmail $message */
+        )->willReturnCallback(static function (SymfonyEmail $message) use ($symfonyEmail): void {
+
             self::assertEquals($symfonyEmail->getSubject(), $message->getSubject());
             self::assertEquals($symfonyEmail->getHtmlBody(), $message->getHtmlBody());
             self::assertEquals($symfonyEmail->getTo(), $message->getTo());

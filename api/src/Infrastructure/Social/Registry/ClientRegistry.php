@@ -27,7 +27,6 @@ final class ClientRegistry implements ClientRegistryInterface
     public function create(string $code, string $provider, string $redirectUri): SocialUserDTO
     {
         foreach ($this->clients as $client) {
-            /** @var ClientInterface $client */
             if ($client->getProvider() === $provider) {
                 return $client->fetchUser($code, $redirectUri);
             }

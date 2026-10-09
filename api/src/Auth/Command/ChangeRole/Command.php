@@ -15,7 +15,7 @@ final class Command
         public string $id,
         #[Assert\NotBlank]
         #[Assert\Choice(
-            choices: [Role::ADMIN, Role::USER, Role::TEACHER],
+            choices: [Role::ADMIN, Role::USER],
             message: 'The role must be a valid role.',
         )]
         public string $role,

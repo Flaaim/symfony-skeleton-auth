@@ -6,8 +6,9 @@ namespace App\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-final class Flusher
+final readonly class Flusher
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private EntityManagerInterface $em
     ) {}

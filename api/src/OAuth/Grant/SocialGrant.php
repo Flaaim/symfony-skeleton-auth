@@ -19,6 +19,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor Parent properties are set by OAuth server via setters.
+ */
 final class SocialGrant extends AbstractGrant
 {
     public function __construct(
@@ -45,11 +48,17 @@ final class SocialGrant extends AbstractGrant
         $client = $this->validateClient($request);
 
         $parsedBody = $request->getParsedBody();
+        if (!\is_array($parsedBody)) {
+            throw OAuthServerException::invalidRequest('network or code');
+        }
+
         $network = $parsedBody['network'] ?? null;
         $code = $parsedBody['code'] ?? null;
         $redirectUri = $parsedBody['redirect_uri'] ?? null;
 
-        if (!$network || !$code || !$redirectUri) {
+        if (!\is_string($network) || '' === $network
+            || !\is_string($code) || '' === $code
+            || !\is_string($redirectUri) || '' === $redirectUri) {
             throw OAuthServerException::invalidRequest('network or code');
         }
 
@@ -68,6 +77,9 @@ final class SocialGrant extends AbstractGrant
         try {
             $localUser = $this->domainUserRepository->findByNetwork($socialUser->network, $socialUser->identity);
             if (!$localUser) {
+                if($socialUser->email === null) {
+                    throw new \DomainException('Email cannot be null');
+                }
                 $existingEmailUser = $this->domainUserRepository->findByEmail(new Email($socialUser->email));
                 if ($existingEmailUser) {
                     throw new DomainException('Пользователь с таким email уже существует. Войдите обычным способом и привяжите аккаунт в настройках профиля.');
@@ -95,14 +107,15 @@ final class SocialGrant extends AbstractGrant
         try {
             $scopes = $this->validateScopes($this->getRequestParameter('scope', $request, $this->defaultScope));
 
-            $userIdentifier = (string)$localUser->getId()->getValue();
+            $userIdentifier = $localUser->getId()->getValue();
 
             $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $userIdentifier, $scopes);
 
             $refreshToken = $this->issueRefreshToken($accessToken);
-
             $responseType->setAccessToken($accessToken);
-            $responseType->setRefreshToken($refreshToken);
+            if (null !== $refreshToken) {
+                $responseType->setRefreshToken($refreshToken);
+            }
 
             return $responseType;
         } catch (Throwable $e) {

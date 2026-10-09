@@ -38,20 +38,21 @@ final class UserBuilder
         $this->hasher = new PasswordHasher(16);
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withId(Id $id): self
     {
         $clone = clone $this;
         $clone->id = $id;
         return $clone;
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withPassword(string $password): self
     {
         $clone = clone $this;
         $clone->password = $password;
         return $clone;
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withRole(Role $role): self
     {
         $clone = clone $this;
@@ -65,7 +66,7 @@ final class UserBuilder
         $clone->joinConfirmToken = $token;
         return $clone;
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withNewEmailChangeToken(Token $token, Email $newEmail): self
     {
         $clone = clone $this;

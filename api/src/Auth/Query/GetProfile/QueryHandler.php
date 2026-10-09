@@ -8,6 +8,7 @@ use App\Auth\Query\UserFetcherInterface;
 
 final readonly class QueryHandler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private UserFetcherInterface $users
     ) {}

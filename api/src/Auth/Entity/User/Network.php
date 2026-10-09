@@ -8,6 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
+/**
+ * @psalm-suppress UnusedProperty $id and $user are required by Doctrine mapping.
+ */
+
 #[ORM\Entity]
 #[ORM\Table(name: 'user_networks')]
 #[ORM\UniqueConstraint(name: 'network_identity_idx', columns: ['network', 'identity'])]

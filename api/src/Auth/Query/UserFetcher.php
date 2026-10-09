@@ -30,13 +30,15 @@ final readonly class UserFetcher implements UserFetcherInterface
             return null;
         }
 
-        $profile = [];
-        $profile['id'] = $result[0]['id'];
-        $profile['email'] = $result[0]['email'];
+        $profile = [
+            'id' => $result[0]['id'],
+            'email' => $result[0]['email'],
+            'networks' => [],
+        ];
 
         foreach ($result as $row) {
             if (null !== $row['network']) {
-                $profile['network'][] = [
+                $profile['networks'][] = [
                     'name' => $row['network'],
                     'identity' => $row['identity'],
                 ];

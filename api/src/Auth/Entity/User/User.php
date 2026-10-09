@@ -40,6 +40,7 @@ final class User implements AggregateRoot
     private ?Token $passwordResetToken = null;
     #[ORM\Column(type: 'user_email', nullable: true)]
     private ?Email $newEmail = null;
+    /** @var Token|null */
     #[ORM\Embedded(class: Token::class, columnPrefix: 'new_email_token_')]
     private ?Token $newEmailToken = null;
     #[ORM\Column(type: 'user_role')]
@@ -85,7 +86,7 @@ final class User implements AggregateRoot
         Email $email,
         string $network,
         string $identity
-    ) {
+    ): self {
         $user = new self($id, $date, $email, Status::active());
         $user->networks->add(new Network($user, $network, $identity));
 
@@ -262,7 +263,7 @@ final class User implements AggregateRoot
     {
         return $this->newEmail;
     }
-
+    /** @return Token|null */
     public function getNewEmailToken(): ?Token
     {
         return $this->newEmailToken;

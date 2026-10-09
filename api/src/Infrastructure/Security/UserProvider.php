@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security;
 
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\UserRepository as DomainUserRepository;
 use App\OAuth\Entity\UserAdapter;
 use Exception;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-
-final class UserProvider implements UserProviderInterface
+/**
+ * @implements UserProviderInterface<UserAdapter>
+ */
+final readonly class UserProvider implements UserProviderInterface
 {
     public function __construct(
-        private readonly DomainUserRepository $users
+        private DomainUserRepository $users
     ) {}
 
     public function refreshUser(UserInterface $user): UserInterface
@@ -36,5 +39,13 @@ final class UserProvider implements UserProviderInterface
             throw new UserNotFoundException('User not found.');
         }
         return new UserAdapter($user->getId()->getValue());
+    }
+
+    private function mapRoles(Role $role): array
+    {
+        return match (true) {
+            $role->isAdmin() => ['ROLE_USER', 'ROLE_ADMIN'],
+            default => ['ROLE_USER'],
+        };
     }
 }

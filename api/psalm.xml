@@ -18,9 +18,29 @@
             <errorLevel type="suppress">
                 <directory name="src/Data/Migration" />
                 <directory name="src/Auth/Fixture" />
+                <directory name="src/Auth/Query" />
                 <directory name="src/Http/Action" />
+                <directory name="src/Auth/Entity" />
+                <directory name="src/OAuth/MessageHandler" />
+                <directory name="src/Infrastructure" />
+                <directory name="src/Auth/MessageHandler" />
             </errorLevel>
         </UnusedClass>
+
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <directory name="src/Auth/Command" />
+                <directory name="src/Auth/Entity" />
+                <directory name="src/OAuth" />
+            </errorLevel>
+        </PossiblyUnusedMethod>
+
+        <PossiblyUnusedProperty>
+            <errorLevel type="suppress">
+                <directory name="src/Auth/Event" />
+                <directory name="src/Auth/Query" />
+            </errorLevel>
+        </PossiblyUnusedProperty>
 
         <MissingOverrideAttribute>
             <errorLevel type="suppress">

@@ -30,7 +30,7 @@ final class YandexClient implements ClientInterface
         $tokenData = $tokenResponse->toArray();
         $yandexAccessToken = $tokenData['access_token'] ?? null;
 
-        if (!$yandexAccessToken) {
+        if ($yandexAccessToken === null) {
             throw new DomainException('Failed to get Yandex access token.');
         }
         $infoResponse = $this->client->request('GET', 'https://login.yandex.ru/info?format=json', [

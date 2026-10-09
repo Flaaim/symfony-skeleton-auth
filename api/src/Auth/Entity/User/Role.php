@@ -9,7 +9,6 @@ use Webmozart\Assert\Assert;
 final class Role
 {
     public const USER = 'user';
-    public const TEACHER = 'teacher';
     public const ADMIN = 'admin';
 
     public function __construct(
@@ -18,18 +17,12 @@ final class Role
         Assert::oneOf($name, [
             self::USER,
             self::ADMIN,
-            self::TEACHER,
         ]);
     }
 
     public static function user(): self
     {
         return new self(self::USER);
-    }
-
-    public static function teacher(): self
-    {
-        return new self(self::TEACHER);
     }
 
     public function getName(): string
@@ -40,5 +33,10 @@ final class Role
     public function isEqualTo(self $other): bool
     {
         return $this->name === $other->name;
+    }
+
+    public function isAdmin(): bool
+    {
+        return self::ADMIN === $this->name;
     }
 }

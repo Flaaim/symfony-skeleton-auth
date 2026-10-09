@@ -37,8 +37,7 @@ final class ClearEmptyInputSubscriber implements EventSubscriberInterface
         }
     }
 
-    /** @psalm-suppress MissingReturnType MissingParamType */
-    private static function filterStrings($items)
+    private static function filterStrings(mixed $items): mixed
     {
         if (!\is_array($items)) {
             return $items;
